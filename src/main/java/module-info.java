@@ -8,6 +8,6 @@ module org.example.java24groupe02 {
     requires net.synedra.validatorfx;
     requires eu.hansolo.tilesfx;
 
-    opens org.example.java24groupe02 to javafx.fxml;
-    exports org.example.java24groupe02;
+    opens be.helha.java24groupe02 to javafx.fxml;
+    exports be.helha.java24groupe02;
 }
