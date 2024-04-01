@@ -6,9 +6,9 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="705.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.helha.java24groupe02.view.SnackViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="705.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.helha.java24groupe02.view.SnackViewController">
    <children>
-      <Button layoutX="610.0" layoutY="390.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="81.0" text="Ajouter">
+      <Button fx:id="buttonAddArticle" layoutX="610.0" layoutY="390.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="81.0" text="Ajouter">
          <font>
             <Font size="16.0" />
          </font>
@@ -20,5 +20,15 @@
       </Label>
       <Line endX="100.0" layoutX="604.0" layoutY="380.0" startX="-612.0" />
       <AnchorPane fx:id="anchorPaneViewSnacks" layoutX="14.0" layoutY="44.0" prefHeight="326.0" prefWidth="669.0" />
+      <Label layoutX="23.0" layoutY="405.0" text="Total:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelTotalPrice" layoutX="74.0" layoutY="405.0" text="0.00€">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
