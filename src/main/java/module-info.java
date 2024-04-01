@@ -1,4 +1,4 @@
-module org.example.java24groupe02 {
+module be.helha.java24groupe02 {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
@@ -8,6 +8,8 @@ module org.example.java24groupe02 {
     requires net.synedra.validatorfx;
     requires eu.hansolo.tilesfx;
 
-    opens org.example.java24groupe02 to javafx.fxml;
-    exports org.example.java24groupe02;
+    exports be.helha.java24groupe02.view;
+    opens be.helha.java24groupe02.view to javafx.fxml;
+    exports be.helha.java24groupe02.controller;
+    exports be.helha.java24groupe02.model;
 }
