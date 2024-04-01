@@ -8,7 +8,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="705.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.helha.java24groupe02.view.SnackViewController">
    <children>
-      <Button fx:id="buttonAddArticle" layoutX="610.0" layoutY="390.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="81.0" text="Ajouter">
+      <Button fx:id="buttonAddArticle" layoutX="610.0" layoutY="390.0" mnemonicParsing="false" onMouseClicked="#addSnackToOrder" prefHeight="48.0" prefWidth="81.0" text="Ajouter">
          <font>
             <Font size="16.0" />
          </font>
