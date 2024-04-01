@@ -1,6 +1,6 @@
 package be.helha.java24groupe02.controller;
 
-import be.helha.java24groupe02.view.HelloController;
+import be.helha.java24groupe02.view.SnackViewController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,9 +11,9 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloController.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
+        FXMLLoader fxmlLoader = new FXMLLoader(SnackViewController.class.getResource("SnacksView.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("Snacks App");
         stage.setScene(scene);
         stage.show();
     }
