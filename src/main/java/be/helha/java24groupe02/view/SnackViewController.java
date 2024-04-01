@@ -10,7 +10,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.control.Label;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,6 +89,7 @@ public class SnackViewController extends AnchorPane {
         currentXPosition += 100.0 + 10.0; // largeur du bouton + espacement horizontal
     }
 
+    // Gérer le clic sur un bouton de snack
     private void handleSnackButtonClick(Snack snack) {
        if (selectedSnacks.contains(snack)) {
             selectedSnacks.remove(snack);
@@ -102,6 +102,7 @@ public class SnackViewController extends AnchorPane {
         updateSnackButtonsAppearance();
     }
 
+    // Mettre à jour l'apparence des boutons de snacks
     private void updateSnackButtonsAppearance() {
         // Parcourir tous les boutons de snacks
         for (Node node : anchorPaneViewSnacks.getChildren()) {
@@ -121,6 +122,7 @@ public class SnackViewController extends AnchorPane {
         }
     }
 
+    // Récupérer l'id du snack correspondant à un bouton
     private Snack getSnackIdFromButton(Button button) {
         String buttonId = button.getId();
         for (Snack snack : snacks) {
@@ -131,9 +133,8 @@ public class SnackViewController extends AnchorPane {
         return null; // Si aucun snack correspondant n'est trouvé
     }
 
-
+    // Ajouter le snack à la commande
     private void addSnackToOrder(){
-        // Ajouter le snack à la commande
         for (Snack snack : selectedSnacks) {
             totalPrice += snack.getPrice();
         }
