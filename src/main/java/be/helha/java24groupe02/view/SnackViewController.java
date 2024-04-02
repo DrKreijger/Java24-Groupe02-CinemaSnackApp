@@ -20,6 +20,8 @@ public class SnackViewController extends AnchorPane {
     private Button addSnackToOrderButton;
     @FXML
     private Label totalPriceLabel;
+    @FXML
+    private AnchorPane anchorPaneViewOrder;
 
     // Position horizontale initiale
     private double currentXPosition = 10.0;
@@ -134,10 +136,22 @@ public class SnackViewController extends AnchorPane {
     }
 
     // Ajouter le snack à la commande
-    private void addSnackToOrder(){
+    private void addSnackToOrder() {
+        // Calculer le prix total
+        double totalPrice = 0.0;
         for (Snack snack : selectedSnacks) {
             totalPrice += snack.getPrice();
         }
+
+        // Afficher le prix total dans le label
         totalPriceLabel.setText(totalPrice + "€");
+
+        // Afficher les snacks sélectionnés dans anchorPaneViewOrder
+        for (Snack snack : selectedSnacks) {
+            // Créer le texte pour afficher le nom du snack dans anchorPaneViewOrder
+            Text snackText = new Text(snack.getName());
+            // Ajouter le texte à anchorPaneViewOrder
+            anchorPaneViewOrder.getChildren().add(snackText);
+        }
     }
 }
