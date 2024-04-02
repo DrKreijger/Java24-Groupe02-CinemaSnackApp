@@ -31,7 +31,7 @@
          </font>
       </Label>
       <Line endX="-100.00006103515625" endY="-379.0" layoutX="724.0" layoutY="379.0" startX="-100.00006103515625" startY="135.0" />
-      <AnchorPane fx:id="anchorPaneViewOrder" layoutX="633.0" layoutY="44.0" prefHeight="382.0" prefWidth="219.0" />
+      <AnchorPane fx:id="anchorPaneViewOrder" layoutX="633.0" layoutY="60.0" prefHeight="366.0" prefWidth="219.0" />
       <Label layoutX="660.0" layoutY="15.0" text="Commande en cours">
          <font>
             <Font size="18.0" />

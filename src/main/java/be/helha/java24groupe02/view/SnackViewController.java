@@ -140,18 +140,20 @@ public class SnackViewController extends AnchorPane {
         // Calculer le prix total
         double totalPrice = 0.0;
         for (Snack snack : selectedSnacks) {
+            // Créer le texte pour afficher le nom du snack dans anchorPaneViewOrder
+            Text snackText = new Text(snack.getName());
+
+            // Positionner le texte verticalement
+            snackText.setLayoutY(anchorPaneViewOrder.getChildren().size() * 20); // Espacement vertical entre les snacks dans anchorPaneViewOrder
+
+            // Ajouter le texte à anchorPaneViewOrder
+            anchorPaneViewOrder.getChildren().add(snackText);
+
+            // Ajouter le prix du snack au prix total
             totalPrice += snack.getPrice();
         }
 
         // Afficher le prix total dans le label
         totalPriceLabel.setText(totalPrice + "€");
-
-        // Afficher les snacks sélectionnés dans anchorPaneViewOrder
-        for (Snack snack : selectedSnacks) {
-            // Créer le texte pour afficher le nom du snack dans anchorPaneViewOrder
-            Text snackText = new Text(snack.getName());
-            // Ajouter le texte à anchorPaneViewOrder
-            anchorPaneViewOrder.getChildren().add(snackText);
-        }
     }
 }
