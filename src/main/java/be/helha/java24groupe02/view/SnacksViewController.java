@@ -20,8 +20,6 @@ public class SnacksViewController {
 
     private final ObservableList<Article> articlesOb;
 
-    private Article selectedArticle;
-
     public SnacksViewController() {
         List<Article> articles = new ArrayList<>();
         articles.add(new Article("Chips", 2.50));
@@ -40,7 +38,6 @@ public class SnacksViewController {
 
             articleBagListView.getItems().add(selectedArticle);
         } else {
-            // Afficher un message d'erreur si aucun article n'est sélectionné
             snacksText.setText("Veuillez sélectionner un article.");
         }
     }
