@@ -13,13 +13,20 @@ import javafx.scene.control.Label;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Contrôleur de vue pour la gestion des snacks.
+ */
 public class SnackViewController extends AnchorPane {
+
     @FXML
     private AnchorPane anchorPaneViewSnacks;
+
     @FXML
     private Button addSnackToOrderButton;
+
     @FXML
     private Label totalPriceLabel;
+
     @FXML
     private AnchorPane anchorPaneViewOrder;
 
@@ -27,8 +34,12 @@ public class SnackViewController extends AnchorPane {
     private double currentXPosition = 10.0;
     private double totalPrice = 0.0;
     private List<Snack> snacks = new ArrayList<>();
-    private List<Snack> selectedSnacks = new ArrayList<>();
+    private Snack selectedSnacks;
+    private List<Snack> cartItems = new ArrayList<>();
 
+    /**
+     * Initialise le contrôleur de vue.
+     */
     @FXML
     public void initialize() {
         // Ajouter des snacks
@@ -43,9 +54,14 @@ public class SnackViewController extends AnchorPane {
         for (Snack snack : snacks) {
             addSnackToInterface(snack);
         }
-        addSnackToOrderButton.setOnAction(event -> addSnackToOrder());
+        addSnackToOrderButton.setOnAction(event -> addSnackToCart());
     }
 
+    /**
+     * Ajoute un snack à l'interface utilisateur.
+     *
+     * @param snack le snack à ajouter
+     */
     private void addSnackToInterface(Snack snack) {
         // Créer une VBox pour organiser les éléments verticalement
         VBox vbox = new VBox(5); // espacement vertical entre les éléments
@@ -91,20 +107,19 @@ public class SnackViewController extends AnchorPane {
         currentXPosition += 100.0 + 10.0; // largeur du bouton + espacement horizontal
     }
 
-    // Gérer le clic sur un bouton de snack
+    /**
+     * Gère le clic sur un bouton de snack.
+     *
+     * @param snack le snack associé au bouton cliqué
+     */
     private void handleSnackButtonClick(Snack snack) {
-       if (selectedSnacks.contains(snack)) {
-            selectedSnacks.remove(snack);
-            System.out.println("Removed " + snack.getName());
-        } else {
-           selectedSnacks.clear();
-           selectedSnacks.add(snack);
-           System.out.println("Selected " + snack.getName());
-       }
+        selectedSnacks = snack;
         updateSnackButtonsAppearance();
     }
 
-    // Mettre à jour l'apparence des boutons de snacks
+    /**
+     * Met à jour l'apparence des boutons de snacks.
+     */
     private void updateSnackButtonsAppearance() {
         // Parcourir tous les boutons de snacks
         for (Node node : anchorPaneViewSnacks.getChildren()) {
@@ -113,7 +128,7 @@ public class SnackViewController extends AnchorPane {
                 Snack snack = getSnackIdFromButton(button);
 
                 // Vérifier si le snack est sélectionné
-                if (selectedSnacks.contains(snack)) {
+                if (selectedSnacks == snack) {
                     // Mettre à jour l'apparence pour le snack sélectionné
                     button.setStyle("-fx-background-color: lightblue;");
                 } else {
@@ -124,7 +139,12 @@ public class SnackViewController extends AnchorPane {
         }
     }
 
-    // Récupérer l'id du snack correspondant à un bouton
+    /**
+     * Récupère le snack associé à un bouton.
+     *
+     * @param button le bouton associé au snack
+     * @return le snack correspondant ou null si aucun snack correspondant n'est trouvé
+     */
     private Snack getSnackIdFromButton(Button button) {
         String buttonId = button.getId();
         for (Snack snack : snacks) {
@@ -135,25 +155,42 @@ public class SnackViewController extends AnchorPane {
         return null; // Si aucun snack correspondant n'est trouvé
     }
 
-    // Ajouter le snack à la commande
-    private void addSnackToOrder() {
+    /**
+     * Ajoute le snack sélectionné au panier.
+     */
+    private void addSnackToCart() {
+        if (selectedSnacks != null) {
+            cartItems.add(selectedSnacks);
+            addSnackToOrderSummary();
+            updateCartTotal();
+        }
+    }
+
+    /**
+     * Met à jour le prix total du panier.
+     */
+    private void updateCartTotal() {
         // Calculer le prix total
         double totalPrice = 0.0;
-        for (Snack snack : selectedSnacks) {
-            // Créer le texte pour afficher le nom du snack dans anchorPaneViewOrder
-            Text snackText = new Text(snack.getName());
-
-            // Positionner le texte verticalement
-            snackText.setLayoutY(anchorPaneViewOrder.getChildren().size() * 20); // Espacement vertical entre les snacks dans anchorPaneViewOrder
-
-            // Ajouter le texte à anchorPaneViewOrder
-            anchorPaneViewOrder.getChildren().add(snackText);
-
+        for (Snack snack : cartItems) {
             // Ajouter le prix du snack au prix total
             totalPrice += snack.getPrice();
         }
-
         // Afficher le prix total dans le label
         totalPriceLabel.setText(totalPrice + "€");
+    }
+
+    /**
+     * Ajoute le snack sélectionné au récapitulatif de la commande.
+     */
+    private void addSnackToOrderSummary() {
+        // Créer le texte pour afficher le nom du snack dans anchorPaneViewOrder
+        Text snackText = new Text(selectedSnacks.getName());
+
+        // Positionner le texte verticalement
+        snackText.setLayoutY(anchorPaneViewOrder.getChildren().size() * 20); // Espacement vertical entre les snacks dans anchorPaneViewOrder
+
+        // Ajouter le texte à anchorPaneViewOrder
+        anchorPaneViewOrder.getChildren().add(snackText);
     }
 }
