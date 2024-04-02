@@ -1,9 +1,9 @@
-package be.helha.java24groupe02.model;
+package be.helha.java24groupe02.models;
 
 /**
  * Représente un snack avec un nom et un prix.
  */
-public class Snack {
+public class Snacks {
     private String name;
     private double price;
 
@@ -13,7 +13,7 @@ public class Snack {
      * @param name  le nom du snack
      * @param price le prix du snack
      */
-    public Snack(String name, double price) {
+    public Snacks(String name, double price) {
         this.name = name;
         this.price = price;
     }

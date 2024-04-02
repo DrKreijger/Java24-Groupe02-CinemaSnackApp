@@ -1,6 +1,6 @@
-package be.helha.java24groupe02.view;
+package be.helha.java24groupe02.views;
 
-import be.helha.java24groupe02.model.Snack;
+import be.helha.java24groupe02.models.Snacks;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -33,9 +33,9 @@ public class SnackViewController extends AnchorPane {
     // Position horizontale initiale
     private double currentXPosition = 10.0;
     private double totalPrice = 0.0;
-    private List<Snack> snacks = new ArrayList<>();
-    private Snack selectedSnacks;
-    private List<Snack> cartItems = new ArrayList<>();
+    private List<Snacks> snacks = new ArrayList<>();
+    private Snacks selectedSnacks;
+    private List<Snacks> cartItems = new ArrayList<>();
 
     /**
      * Initialise le contrôleur de vue.
@@ -43,16 +43,16 @@ public class SnackViewController extends AnchorPane {
     @FXML
     public void initialize() {
         // Ajouter des snacks
-        Snack popcorn = new Snack("Popcorn", 2.50);
-        Snack cola = new Snack("Coca-Cola", 1.50);
-        Snack chips = new Snack("Chips", 3.00);
+        Snacks popcorn = new Snacks("Popcorn", 2.50);
+        Snacks cola = new Snacks("Coca-Cola", 1.50);
+        Snacks chips = new Snacks("Chips", 3.00);
 
         snacks.add(popcorn);
         snacks.add(cola);
         snacks.add(chips);
 
-        for (Snack snack : snacks) {
-            addSnackToInterface(snack);
+        for (Snacks snacks : this.snacks) {
+            addSnackToInterface(snacks);
         }
         addSnackToOrderButton.setOnAction(event -> addSnackToCart());
     }
@@ -60,9 +60,9 @@ public class SnackViewController extends AnchorPane {
     /**
      * Ajoute un snack à l'interface utilisateur.
      *
-     * @param snack le snack à ajouter
+     * @param snacks le snack à ajouter
      */
-    private void addSnackToInterface(Snack snack) {
+    private void addSnackToInterface(Snacks snacks) {
         // Créer une VBox pour organiser les éléments verticalement
         VBox vbox = new VBox(5); // espacement vertical entre les éléments
 
@@ -75,11 +75,11 @@ public class SnackViewController extends AnchorPane {
         imageView.setFitHeight(75); // hauteur de l'image
 
         // Créer le texte pour le nom du snack
-        Text nameText = new Text(snack.getName());
+        Text nameText = new Text(snacks.getName());
         nameText.setStyle("-fx-font-weight: bold;"); // style pour mettre en gras
 
         // Créer le texte pour le prix du snack
-        Text priceText = new Text("Prix: " + snack.getPrice() + "€");
+        Text priceText = new Text("Prix: " + snacks.getPrice() + "€");
 
         // Ajouter les éléments à la VBox
         vbox.getChildren().addAll(imageView, nameText, priceText);
@@ -91,10 +91,10 @@ public class SnackViewController extends AnchorPane {
         snackButton.setGraphic(vbox); // définir la VBox comme graphique du bouton
 
         // Définir l'action à effectuer lors du clic sur le bouton
-        snackButton.setOnAction(event -> handleSnackButtonClick(snack));
+        snackButton.setOnAction(event -> handleSnackButtonClick(snacks));
 
         // Attribuer l'ID au bouton
-        snackButton.setId(snack.getName() + "Button");
+        snackButton.setId(snacks.getName() + "Button");
 
         // Définir la position du bouton dans l'AnchorPane
         AnchorPane.setTopAnchor(snackButton, 10.0); // position verticale
@@ -110,10 +110,10 @@ public class SnackViewController extends AnchorPane {
     /**
      * Gère le clic sur un bouton de snack.
      *
-     * @param snack le snack associé au bouton cliqué
+     * @param snacks le snack associé au bouton cliqué
      */
-    private void handleSnackButtonClick(Snack snack) {
-        selectedSnacks = snack;
+    private void handleSnackButtonClick(Snacks snacks) {
+        selectedSnacks = snacks;
         updateSnackButtonsAppearance();
     }
 
@@ -125,10 +125,10 @@ public class SnackViewController extends AnchorPane {
         for (Node node : anchorPaneViewSnacks.getChildren()) {
             if (node instanceof Button) {
                 Button button = (Button) node;
-                Snack snack = getSnackIdFromButton(button);
+                Snacks snacks = getSnackIdFromButton(button);
 
                 // Vérifier si le snack est sélectionné
-                if (selectedSnacks == snack) {
+                if (selectedSnacks == snacks) {
                     // Mettre à jour l'apparence pour le snack sélectionné
                     button.setStyle("-fx-background-color: lightblue;");
                 } else {
@@ -145,11 +145,11 @@ public class SnackViewController extends AnchorPane {
      * @param button le bouton associé au snack
      * @return le snack correspondant ou null si aucun snack correspondant n'est trouvé
      */
-    private Snack getSnackIdFromButton(Button button) {
+    private Snacks getSnackIdFromButton(Button button) {
         String buttonId = button.getId();
-        for (Snack snack : snacks) {
-            if ((snack.getName() + "Button").equals(buttonId)) {
-                return snack;
+        for (Snacks snacks : this.snacks) {
+            if ((snacks.getName() + "Button").equals(buttonId)) {
+                return snacks;
             }
         }
         return null; // Si aucun snack correspondant n'est trouvé
@@ -172,9 +172,9 @@ public class SnackViewController extends AnchorPane {
     private void updateCartTotal() {
         // Calculer le prix total
         double totalPrice = 0.0;
-        for (Snack snack : cartItems) {
+        for (Snacks snacks : cartItems) {
             // Ajouter le prix du snack au prix total
-            totalPrice += snack.getPrice();
+            totalPrice += snacks.getPrice();
         }
         // Afficher le prix total dans le label
         totalPriceLabel.setText(totalPrice + "€");
