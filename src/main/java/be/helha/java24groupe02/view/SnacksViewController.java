@@ -16,30 +16,39 @@ public class SnacksViewController {
 
     @FXML
     private ListView<Article> articleListView;
-    private ObservableList<Article> articlesOb = FXCollections.observableArrayList();
+    private ListView<Article> articleBagListView;
+
+    private final ObservableList<Article> articlesOb;
+
     private Article selectedArticle;
 
-
-    private final List<Article> articles = new ArrayList<>();
-
-
     public SnacksViewController() {
+        List<Article> articles = new ArrayList<>();
         articles.add(new Article("Chips", 2.50));
         articles.add(new Article("Chocolate Bar", 1.75));
         articles.add(new Article("Soda", 1.00));
+
+
+        articlesOb = FXCollections.observableArrayList(articles);
     }
 
     @FXML
     protected void onBagButtonClick() {
-        snacksText.setText("Welcome to JavaFX Application!");
+        Article selectedArticle = articleListView.getSelectionModel().getSelectedItem();
+
+        if (selectedArticle != null) {
+
+            articleBagListView.getItems().add(selectedArticle);
+        } else {
+            // Afficher un message d'erreur si aucun article n'est sélectionné
+            snacksText.setText("Veuillez sélectionner un article.");
+        }
     }
 
     @FXML
     public void initialize() {
-        // Populate the ListView with articles
-        articleListView.getItems().addAll(articles);
-        articleListView.refresh();
-        // Set a custom cell factory for the ListView if needed
-        // articleListView.setCellFactory(...);
+
+        articleListView.setItems(articlesOb);
+
     }
 }

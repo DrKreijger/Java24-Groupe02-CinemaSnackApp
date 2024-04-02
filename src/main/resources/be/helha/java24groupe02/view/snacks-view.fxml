@@ -5,9 +5,10 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="458.0" prefWidth="621.0" spacing="20.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.helha.java24groupe02.view.SnacksViewController">
+<VBox alignment="CENTER" prefHeight="559.0" prefWidth="765.0" spacing="20.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.helha.java24groupe02.view.SnacksViewController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
@@ -15,6 +16,7 @@
              <Label fx:id="snacksText" prefHeight="18.0" prefWidth="38.0" text="Snacks" />
     <AnchorPane prefHeight="350.0" prefWidth="582.0">
         <ListView id="articleListView" fx:id="articleListView" prefHeight="350.0" prefWidth="582.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <BorderPane layoutX="482.0" layoutY="13.0" prefHeight="322.0" prefWidth="200.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="482.0" AnchorPane.rightAnchor="44.0" AnchorPane.topAnchor="13.0" />
     </AnchorPane>
     <Button id="addToBag" onAction="#onBagButtonClick" text="Ajouter dans le panier">
       <VBox.margin>
