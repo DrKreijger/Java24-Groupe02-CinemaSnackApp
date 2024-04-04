@@ -8,8 +8,8 @@ module be.helha.java24groupe02 {
     requires net.synedra.validatorfx;
     requires eu.hansolo.tilesfx;
 
-    exports be.helha.java24groupe02.view;
-    opens be.helha.java24groupe02.view to javafx.fxml;
-    exports be.helha.java24groupe02.controller;
-    exports be.helha.java24groupe02.model;
+    exports be.helha.java24groupe02.views;
+    opens be.helha.java24groupe02.views to javafx.fxml;
+    exports be.helha.java24groupe02.controllers;
+    exports be.helha.java24groupe02.models;
 }
