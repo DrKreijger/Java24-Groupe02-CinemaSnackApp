@@ -1,21 +1,24 @@
 package be.helha.java24groupe02.models;
 
 /**
- * Représente un snack avec un nom et un prix.
+ * Représente un snack avec un nom, un prix et une URL d'image.
  */
 public class Snacks {
     private String name;
     private double price;
+    private String imageUrl; // URL de l'image du snack
 
     /**
-     * Constructeur pour initialiser un snack avec un nom et un prix.
+     * Constructeur pour initialiser un snack avec un nom, un prix et une URL d'image.
      *
-     * @param name  le nom du snack
-     * @param price le prix du snack
+     * @param name     le nom du snack
+     * @param price    le prix du snack
+     * @param imageUrl l'URL de l'image du snack
      */
-    public Snacks(String name, double price) {
+    public Snacks(String name, double price, String imageUrl) {
         this.name = name;
         this.price = price;
+        this.imageUrl = imageUrl;
     }
 
     /**
@@ -52,5 +55,14 @@ public class Snacks {
      */
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    /**
+     * Obtient l'URL de l'image du snack.
+     *
+     * @return l'URL de l'image du snack
+     */
+    public String getImageUrl() {
+        return imageUrl;
     }
 }
