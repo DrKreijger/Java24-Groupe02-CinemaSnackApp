@@ -195,16 +195,20 @@ public class SnackViewController extends Pane {
 
     private void loadProductsFromDatabase() {
         try {
-            Connection connection = DriverManager.getConnection("jdbc:C:\\Users\\DrKreijger\\Documents\\Cours\\Bloc 2 Desktop\\Java24-Groupe02\\snacks.db");
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Products");
+            Connection connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\DrKreijger\\Documents\\Cours\\Bloc 2 Desktop\\Java24-Groupe02\\snacks.db");
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT Products.product_id, Products.name, Products.image_path, ProductVariants.flavor_id, " +
+                            "ProductVariants.size_id, ProductVariants.price " +
+                            "FROM Products " +
+                            "LEFT JOIN ProductVariants ON Products.product_id = ProductVariants.product_id"
+            );
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Product product = new Product();
-                product.setId(resultSet.getInt("id"));
+                product.setId(resultSet.getInt("product_id"));
                 product.setName(resultSet.getString("name"));
+                product.setImagePath(resultSet.getString("image_path"));
                 product.setPrice(resultSet.getDouble("price"));
-                product.setCategory(resultSet.getString("category"));
-                product.setImagePath(resultSet.getString("imagePath"));
                 products.add(product);
             }
             resultSet.close();
@@ -221,4 +225,5 @@ public class SnackViewController extends Pane {
             e.printStackTrace();
         }
     }
+
 }
