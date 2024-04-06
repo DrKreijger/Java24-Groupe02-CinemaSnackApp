@@ -189,13 +189,13 @@ public class SnackViewController extends Pane {
         // Positionner le texte verticalement
         snackText.setLayoutY(viewOrderPane.getChildren().size() * 20); // Espacement vertical entre les snacks dans anchorPaneViewOrder
 
-        // Ajouter le texte à anchorPaneViewOrder
+        // Ajouter le texte à viewOrderPane
         viewOrderPane.getChildren().add(snackText);
     }
 
     private void loadProductsFromDatabase() {
         try {
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+            Connection connection = DriverManager.getConnection("jdbc:C:\\Users\\DrKreijger\\Documents\\Cours\\Bloc 2 Desktop\\Java24-Groupe02\\snacks.db");
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM Products");
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -210,7 +210,14 @@ public class SnackViewController extends Pane {
             resultSet.close();
             statement.close();
             connection.close();
+
+            // Afficher les produits dans la console
+            System.out.println("Liste des produits chargés depuis la base de données :");
+            for (Product product : products) {
+                System.out.println(product);
+            }
         } catch (SQLException e) {
+            System.err.println("Erreur lors de la connexion à la base de données : " + e.getMessage());
             e.printStackTrace();
         }
     }
