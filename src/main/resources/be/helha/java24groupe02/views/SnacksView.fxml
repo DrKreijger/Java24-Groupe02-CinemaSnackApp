@@ -7,13 +7,12 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-width: 2;" BorderPane.alignment="CENTER">
          <children>
-            <Pane layoutX="11.0" layoutY="36.0" prefHeight="284.0" prefWidth="346.0" style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="35.0" />
-            <Button layoutX="14.0" layoutY="340.0" mnemonicParsing="false" text="Ajouter dans le panier" AnchorPane.bottomAnchor="12.799999999999955" AnchorPane.leftAnchor="14.0">
+            <Pane fx:id="viewSnacksPane" layoutX="11.0" layoutY="36.0" prefHeight="284.0" prefWidth="346.0" style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="35.0" />
+            <Button fx:id="addSnackToOrderButton" layoutX="14.0" layoutY="340.0" mnemonicParsing="false" text="Ajouter dans le panier" AnchorPane.bottomAnchor="12.799999999999955" AnchorPane.leftAnchor="14.0">
                <font>
                   <Font size="14.0" />
                </font>
@@ -23,7 +22,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label layoutX="294.0" layoutY="346.0" text="0.0€" AnchorPane.bottomAnchor="18.799999999999976">
+            <Label fx:id="totalPriceLabel" layoutX="294.0" layoutY="346.0" text="0.0€" AnchorPane.bottomAnchor="18.799999999999976">
                <font>
                   <Font size="14.0" />
                </font>
@@ -49,7 +48,7 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Pane layoutX="16.0" layoutY="34.0" prefHeight="287.0" prefWidth="200.0" style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="35.0" />
+            <Pane fx:id="viewOrderPane" layoutX="16.0" layoutY="34.0" prefHeight="287.0" prefWidth="200.0" style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="35.0" />
          </children>
       </AnchorPane>
    </right>
