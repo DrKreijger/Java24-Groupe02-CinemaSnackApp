@@ -36,6 +36,9 @@ public class SnackViewController {
     @FXML
     private Label totalPriceLabel;
 
+    @FXML
+    private VBox viewOrderVBox;
+
 
     // Position horizontale initiale
     private double currentXPosition = 10.0;
@@ -92,7 +95,7 @@ public class SnackViewController {
         snackButton.setOnAction(event -> handleSnackButtonClick(products));
 
         // Attribuer l'ID au bouton
-        snackButton.setId(products.getName() + "Button");
+        snackButton.setId(String.valueOf(products.getId()));
 
         // Définir la position du bouton dans l'AnchorPane
         AnchorPane.setTopAnchor(snackButton, 10.0); // position verticale
@@ -129,6 +132,7 @@ public class SnackViewController {
                 if (selectedProduct == products) {
                     // Mettre à jour l'apparence pour le snack sélectionné
                     button.setStyle("-fx-background-color: lightblue;");
+                    System.out.println("Snack sélectionné : " + products.getId());
                 } else {
                     // Mettre à jour l'apparence pour le snack non sélectionné
                     button.setStyle(""); // Reset style to default
@@ -146,7 +150,7 @@ public class SnackViewController {
     private Product getProductIdFromButton(Button button) {
         String buttonId = button.getId();
         for (Product products : this.products) {
-            if ((products.getName() + "Button").equals(buttonId)) {
+            if ((String.valueOf(products.getId()).equals(buttonId))) {
                 return products;
             }
         }
@@ -183,23 +187,17 @@ public class SnackViewController {
      */
     private void addProductToOrderSummary() {
         // Créer le texte pour afficher le nom du snack dans anchorPaneViewOrder
-        Text snackText = new Text(selectedProduct.getName());
-
-        // Positionner le texte verticalement
-        snackText.setLayoutY(viewOrderAnchorPane.getChildren().size() * 20); // Espacement vertical entre les snacks dans anchorPaneViewOrder
+        Text snackText = new Text(selectedProduct.getName() + "\n");
 
         // Ajouter le texte à viewOrderPane
-        viewOrderAnchorPane.getChildren().add(snackText);
+        viewOrderVBox.getChildren().add(snackText);
     }
 
     private void loadProductsFromDatabase() {
         try {
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\DrKreijger\\Documents\\Cours\\Bloc 2 Desktop\\Java24-Groupe02\\snacks.db");
+            Connection connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\DrKreijger\\Documents\\Cours\\Bloc 2 Desktop\\Java24-Groupe02\\snacks_simple.db");
             PreparedStatement statement = connection.prepareStatement(
-                    "SELECT Products.product_id, Products.name, Products.image_path, ProductVariants.flavor_id, " +
-                            "ProductVariants.size_id, ProductVariants.price " +
-                            "FROM Products " +
-                            "LEFT JOIN ProductVariants ON Products.product_id = ProductVariants.product_id"
+                    "SELECT * FROM Products"
             );
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -207,6 +205,9 @@ public class SnackViewController {
                 product.setId(resultSet.getInt("product_id"));
                 product.setName(resultSet.getString("name"));
                 product.setImagePath(resultSet.getString("image_path"));
+                product.setCategory(resultSet.getString("category"));
+                product.setFlavor(resultSet.getString("flavor"));
+                product.setSize(resultSet.getString("size"));
                 product.setPrice(resultSet.getDouble("price"));
                 products.add(product);
             }
@@ -224,5 +225,4 @@ public class SnackViewController {
             e.printStackTrace();
         }
     }
-
 }
