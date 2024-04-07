@@ -15,7 +15,7 @@
          <children>
             <FlowPane fx:id="viewSnacksFlowPane" hgap="5.0" layoutX="11.0" layoutY="36.0" prefHeight="284.0" prefWidth="346.0" style="-fx-background-color: lightgray;" vgap="5.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="35.0">
                <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </padding></FlowPane>
             <Button fx:id="addSnackToOrderButton" layoutX="14.0" layoutY="340.0" mnemonicParsing="false" text="Ajouter dans le panier" AnchorPane.bottomAnchor="12.799999999999955" AnchorPane.leftAnchor="14.0">
                <font>
