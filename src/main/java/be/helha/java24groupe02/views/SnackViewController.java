@@ -68,22 +68,34 @@ public class SnackViewController {
         VBox vbox = new VBox(5); // espacement vertical entre les éléments
 
         // Charger l'image du snack
-        Image image = new Image("file:java.png");
+        Image productImage = new Image("file:java.png");
 
         // Créer l'imageView pour le snack
-        ImageView imageView = new ImageView(image);
+        ImageView imageView = new ImageView(productImage);
         imageView.setFitWidth(75); // largeur de l'image
         imageView.setFitHeight(75); // hauteur de l'image
 
         // Créer le texte pour le nom du snack
-        Text nameText = new Text(products.getName());
-        nameText.setStyle("-fx-font-weight: bold;"); // style pour mettre en gras
+        Text productNameText = new Text(products.getName());
+        productNameText.setStyle("-fx-font-weight: bold;"); // style pour mettre en gras
 
         // Créer le texte pour le prix du snack
-        Text priceText = new Text("Prix: " + products.getPrice() + "€");
+        Text productPriceText = new Text("Prix: " + products.getPrice() + "€");
+
+        // Créer le texte pour la saveur du snack
+        Text productFlavorText = null;
+        if (products.getFlavor() != null && !products.getFlavor().isEmpty()) {
+            productFlavorText = new Text("Saveur: " + products.getFlavor());
+        }
+
+        // Créer le texte pour la taille du snack
+        Text productSizeText = new Text("Taille: " + products.getSize());
 
         // Ajouter les éléments à la VBox
-        vbox.getChildren().addAll(imageView, nameText, priceText);
+        vbox.getChildren().addAll(imageView, productNameText, productPriceText, productSizeText);
+        if (productFlavorText != null) {
+            vbox.getChildren().add(productFlavorText);
+        }
 
         // Créer le bouton pour le snack
         Button snackButton = new Button();
