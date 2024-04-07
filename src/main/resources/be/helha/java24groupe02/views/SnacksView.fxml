@@ -11,7 +11,7 @@
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-width: 2;" BorderPane.alignment="CENTER">
          <children>
-            <Pane fx:id="viewSnacksPane" layoutX="11.0" layoutY="36.0" prefHeight="284.0" prefWidth="346.0" style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="35.0" />
+            <AnchorPane fx:id="viewSnacksAnchorPane" layoutX="11.0" layoutY="36.0" prefHeight="284.0" prefWidth="346.0" style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="35.0" />
             <Button fx:id="addSnackToOrderButton" layoutX="14.0" layoutY="340.0" mnemonicParsing="false" text="Ajouter dans le panier" AnchorPane.bottomAnchor="12.799999999999955" AnchorPane.leftAnchor="14.0">
                <font>
                   <Font size="14.0" />
@@ -48,7 +48,8 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Pane fx:id="viewOrderPane" layoutX="16.0" layoutY="34.0" prefHeight="287.0" prefWidth="200.0" style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="35.0" />
+            <Pane layoutX="16.0" layoutY="34.0" prefHeight="287.0" prefWidth="200.0" style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="35.0" />
+            <AnchorPane fx:id="viewOrderAnchorPane" layoutX="16.0" layoutY="34.0" prefHeight="287.0" prefWidth="200.0" style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="35.0" />
          </children>
       </AnchorPane>
    </right>

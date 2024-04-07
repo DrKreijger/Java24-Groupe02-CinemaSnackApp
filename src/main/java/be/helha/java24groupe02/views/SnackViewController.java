@@ -1,7 +1,6 @@
 package be.helha.java24groupe02.views;
 
 import be.helha.java24groupe02.models.Product;
-import be.helha.java24groupe02.models.Snacks;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -23,13 +22,13 @@ import java.sql.SQLException;
 /**
  * Contrôleur de vue pour la gestion des snacks.
  */
-public class SnackViewController extends Pane {
+public class SnackViewController extends AnchorPane {
 
     @FXML
-    private Pane viewOrderPane;
+    private AnchorPane viewOrderAnchorPane;
 
     @FXML
-    private Pane viewSnacksPane;
+    private AnchorPane viewSnacksAnchorPane;
 
     @FXML
     private Button addSnackToOrderButton;
@@ -100,7 +99,7 @@ public class SnackViewController extends Pane {
         AnchorPane.setLeftAnchor(snackButton, currentXPosition); // position horizontale
 
         // Ajouter le bouton à l'AnchorPane
-        viewSnacksPane.getChildren().add(snackButton);
+        viewSnacksAnchorPane.getChildren().add(snackButton);
 
         // Mettre à jour la position horizontale pour le prochain bouton
         currentXPosition += 100.0 + 10.0; // largeur du bouton + espacement horizontal
@@ -121,7 +120,7 @@ public class SnackViewController extends Pane {
      */
     private void updateProductButtonAppearance() {
         // Parcourir tous les boutons de snacks
-        for (Node node : viewSnacksPane.getChildren()) {
+        for (Node node : viewSnacksAnchorPane.getChildren()) {
             if (node instanceof Button) {
                 Button button = (Button) node;
                 Product products = getProductIdFromButton(button);
@@ -187,10 +186,10 @@ public class SnackViewController extends Pane {
         Text snackText = new Text(selectedProduct.getName());
 
         // Positionner le texte verticalement
-        snackText.setLayoutY(viewOrderPane.getChildren().size() * 20); // Espacement vertical entre les snacks dans anchorPaneViewOrder
+        snackText.setLayoutY(viewOrderAnchorPane.getChildren().size() * 20); // Espacement vertical entre les snacks dans anchorPaneViewOrder
 
         // Ajouter le texte à viewOrderPane
-        viewOrderPane.getChildren().add(snackText);
+        viewOrderAnchorPane.getChildren().add(snackText);
     }
 
     private void loadProductsFromDatabase() {
