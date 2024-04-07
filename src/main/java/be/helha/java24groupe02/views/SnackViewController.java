@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.control.Label;
@@ -22,13 +22,13 @@ import java.sql.SQLException;
 /**
  * Contrôleur de vue pour la gestion des snacks.
  */
-public class SnackViewController extends AnchorPane {
+public class SnackViewController {
 
     @FXML
     private AnchorPane viewOrderAnchorPane;
 
     @FXML
-    private AnchorPane viewSnacksAnchorPane;
+    private FlowPane viewSnacksFlowPane;
 
     @FXML
     private Button addSnackToOrderButton;
@@ -99,7 +99,7 @@ public class SnackViewController extends AnchorPane {
         AnchorPane.setLeftAnchor(snackButton, currentXPosition); // position horizontale
 
         // Ajouter le bouton à l'AnchorPane
-        viewSnacksAnchorPane.getChildren().add(snackButton);
+        viewSnacksFlowPane.getChildren().add(snackButton);
 
         // Mettre à jour la position horizontale pour le prochain bouton
         currentXPosition += 100.0 + 10.0; // largeur du bouton + espacement horizontal
@@ -120,7 +120,7 @@ public class SnackViewController extends AnchorPane {
      */
     private void updateProductButtonAppearance() {
         // Parcourir tous les boutons de snacks
-        for (Node node : viewSnacksAnchorPane.getChildren()) {
+        for (Node node : viewSnacksFlowPane.getChildren()) {
             if (node instanceof Button) {
                 Button button = (Button) node;
                 Product products = getProductIdFromButton(button);
