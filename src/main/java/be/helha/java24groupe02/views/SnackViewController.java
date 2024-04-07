@@ -2,12 +2,14 @@ package be.helha.java24groupe02.views;
 
 import be.helha.java24groupe02.models.Product;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.control.Label;
@@ -198,11 +200,29 @@ public class SnackViewController {
      * Ajoute le snack sélectionné au récapitulatif de la commande.
      */
     private void addProductToOrderSummary() {
-        // Créer le texte pour afficher le nom du snack dans anchorPaneViewOrder
-        Text snackText = new Text(selectedProduct.getName() + "\n");
+        // Créer un GridPane pour organiser les informations du produit
+        GridPane productGrid = new GridPane();
+        productGrid.setPadding(new Insets(5));
+        productGrid.setHgap(10);
+        productGrid.setVgap(5);
 
-        // Ajouter le texte à viewOrderPane
-        viewOrderVBox.getChildren().add(snackText);
+        // Ajouter le nom, le prix, le goût et la taille du produit dans des labels
+        Label nameLabel = new Label("Nom: " + selectedProduct.getName());
+        Label priceLabel = new Label("Prix: " + selectedProduct.getPrice() + "€");
+        Label flavorLabel = new Label("Goût: " + selectedProduct.getFlavor());
+        Label sizeLabel = new Label("Taille: " + selectedProduct.getSize());
+
+        // Ajouter les labels au GridPane
+        productGrid.addRow(0, nameLabel);
+        productGrid.addRow(1, priceLabel);
+        productGrid.addRow(2, flavorLabel);
+        productGrid.addRow(3, sizeLabel);
+
+        // Appliquer un arrière-plan blanc au GridPane
+        productGrid.setStyle("-fx-background-color: #FFFFFF;");
+
+        // Ajouter le GridPane à votre VBox
+        viewOrderVBox.getChildren().add(productGrid);
     }
 
     private void loadProductsFromDatabase() {

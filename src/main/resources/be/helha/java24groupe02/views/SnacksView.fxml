@@ -53,7 +53,7 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <VBox fx:id="viewOrderVBox" prefHeight="287.0" prefWidth="200.0" style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="35.0" />
+            <VBox fx:id="viewOrderVBox" prefHeight="287.0" prefWidth="200.0" spacing="8.0" style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="35.0" />
          </children>
       </AnchorPane>
    </right>
