@@ -49,7 +49,7 @@ public class SnackViewController {
     private List<Product> cartItems = new ArrayList<>();
 
     /**
-     * Initialise le contrôleur de vue.
+     * Initialise le contrôleur de vue. Charge les produits depuis la base de données et les ajoute à l'interface.
      */
     @FXML
     public void initialize() {
@@ -225,6 +225,9 @@ public class SnackViewController {
         viewOrderVBox.getChildren().add(productGrid);
     }
 
+    /**
+     * Charge les produits depuis la base de données.
+     */
     private void loadProductsFromDatabase() {
         try {
             Connection connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\DrKreijger\\Documents\\Cours\\Bloc 2 Desktop\\Java24-Groupe02\\snacks_simple.db");
