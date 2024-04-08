@@ -7,6 +7,8 @@ module be.helha.java24groupe02 {
     requires com.dlsc.formsfx;
     requires net.synedra.validatorfx;
     requires eu.hansolo.tilesfx;
+    requires java.sql;
+    requires org.xerial.sqlitejdbc;
 
     exports be.helha.java24groupe02.views;
     opens be.helha.java24groupe02.views to javafx.fxml;
