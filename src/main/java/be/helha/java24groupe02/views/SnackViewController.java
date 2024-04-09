@@ -216,7 +216,6 @@ public class SnackViewController {
 
         // Ajouter les labels au GridPane
         productGrid.addRow(0, nameLabel);
-        productGrid.addRow(1, priceLabel);
         productGrid.addRow(2, flavorLabel);
         productGrid.addRow(3, sizeLabel);
 
@@ -225,6 +224,8 @@ public class SnackViewController {
 
         // Ajouter le GridPane à votre VBox
         viewOrderVBox.getChildren().add(productGrid);
+        // Ajouter le label du prix en dehors du GridPane à votre VBox
+        viewOrderVBox.getChildren().add(priceLabel);
     }
 
     /**
