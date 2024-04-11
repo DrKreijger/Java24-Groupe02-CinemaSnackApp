@@ -26,6 +26,7 @@ import java.sql.SQLException;
  */
 public class SnackViewController {
 
+    public Label totalPriceLabel1;
     @FXML
     private AnchorPane viewOrderAnchorPane;
 
@@ -194,6 +195,7 @@ public class SnackViewController {
         }
         // Afficher le prix total dans le label
         totalPriceLabel.setText(totalPrice + "€");
+        totalPriceLabel1.setText(totalPrice + "€");
     }
 
     /**
@@ -214,7 +216,6 @@ public class SnackViewController {
 
         // Ajouter les labels au GridPane
         productGrid.addRow(0, nameLabel);
-        productGrid.addRow(1, priceLabel);
         productGrid.addRow(2, flavorLabel);
         productGrid.addRow(3, sizeLabel);
 
@@ -223,6 +224,8 @@ public class SnackViewController {
 
         // Ajouter le GridPane à votre VBox
         viewOrderVBox.getChildren().add(productGrid);
+        // Ajouter le label du prix en dehors du GridPane à votre VBox
+        viewOrderVBox.getChildren().add(priceLabel);
     }
 
     /**
@@ -230,7 +233,9 @@ public class SnackViewController {
      */
     private void loadProductsFromDatabase() {
         try {
+
             Connection connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Dr.Kreijger\\Documents\\Cours\\Bloc 2 V2\\Java24-Groupe02\\snacks_simple.db");
+
             PreparedStatement statement = connection.prepareStatement(
                     "SELECT * FROM Products"
             );
