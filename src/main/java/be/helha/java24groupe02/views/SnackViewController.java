@@ -65,18 +65,37 @@ public class SnackViewController {
         addSnackToOrderButton.setOnAction(event -> addProductToCart());
     }
 
-    private void loadTemplateView(String snackName) {
+    private void loadTemplateView(String snackName, String snackFlavor, String snackSize, double snackPrice) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("TemplateViewSnack.fxml"));
             Parent root = loader.load();
             TemplateViewSnack templateView = loader.getController();
-            templateView.getNameSnackCart().setText(snackName);
+
+            // Vérifier que les labels sont correctement initialisés avant de les utiliser
+            if(templateView.getNameSnackCart() != null) {
+                templateView.getNameSnackCart().setText(snackName);
+            }
+            if(templateView.getFlavorSnackCart() != null) {
+                templateView.getFlavorSnackCart().setText(snackFlavor);
+            }
+            if(templateView.getSizeSnackCart() != null) {
+                templateView.getSizeSnackCart().setText(String.valueOf(snackSize)); // Convertir la taille en chaîne de caractères
+            }
+            if(templateView.getPriceSnackCart() != null) {
+                templateView.getPriceSnackCart().setText(snackPrice + "€");
+            }
+            if (templateView.getImageSnackCart() != null) {
+                templateView.getImageSnackCart().setImage(new Image("file:java.png"));
+            }
+            if (templateView.getQuantitySnackCart() != null) {
+                templateView.getQuantitySnackCart().setText("1");
+            }
+
             viewOrderVBox.getChildren().add(root);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
     /**
      * Ajoute un snack à l'interface utilisateur.
      *
@@ -195,7 +214,7 @@ public class SnackViewController {
         if (selectedProduct != null) {
             cartItems.add(selectedProduct);
             updateCartTotal();
-            loadTemplateView(selectedProduct.getName());
+            loadTemplateView(selectedProduct.getName(), selectedProduct.getFlavor(), selectedProduct.getSize(), selectedProduct.getPrice());
         }
     }
     /**
