@@ -12,13 +12,13 @@
       <Label layoutX="14.0" layoutY="84.0" prefHeight="22.0" prefWidth="69.0" text="Taille" />
       <Label layoutX="14.0" layoutY="121.0" prefHeight="22.0" prefWidth="69.0" text="Prix" />
       <ImageView fx:id="ImageSnackCart" fitHeight="132.0" fitWidth="142.0" layoutX="161.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true" />
-      <Button fx:id="removeSnackFromOrderButton" layoutX="145.0" layoutY="11.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="32.0" text="-" />
-      <Button fx:id="addSnackToOrderButton" layoutX="225.0" layoutY="11.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="32.0" text="+" />
+      <Button fx:id="removeSnackQuantityButton" layoutX="145.0" layoutY="11.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="32.0" text="-" />
+      <Button fx:id="addSnackQuantityButton" layoutX="225.0" layoutY="11.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="32.0" text="+" />
       <Button fx:id="DeleteSnackCart" layoutX="271.0" layoutY="11.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="32.0" text="X" />
       <Label fx:id="QuantitySnackCart" layoutX="193.0" layoutY="14.0" prefHeight="18.0" prefWidth="14.0" text="Label" />
-      <Label fx:id="NameSnackCart" layoutX="56.0" layoutY="17.0" prefHeight="18.0" prefWidth="127.0" text="Label" />
-      <Label fx:id="FlavorSnackCart" layoutX="56.0" layoutY="50.0" prefHeight="18.0" prefWidth="127.0" text="Label" />
-      <Label fx:id="SizeSnackCart" layoutX="56.0" layoutY="86.0" prefHeight="18.0" prefWidth="127.0" text="Label" />
-      <Label fx:id="PriceSnackCart" layoutX="57.0" layoutY="125.0" prefHeight="18.0" prefWidth="127.0" text="Label" />
+      <Label fx:id="NameSnackCart" layoutX="56.0" layoutY="17.0" prefHeight="18.0" prefWidth="82.0" text="Label" />
+      <Label fx:id="FlavorSnackCart" layoutX="56.0" layoutY="50.0" prefHeight="18.0" prefWidth="82.0" text="Label" />
+      <Label fx:id="SizeSnackCart" layoutX="56.0" layoutY="86.0" prefHeight="18.0" prefWidth="82.0" text="Label" />
+      <Label fx:id="PriceSnackCart" layoutX="57.0" layoutY="125.0" prefHeight="18.0" prefWidth="82.0" text="Label" />
    </children>
 </AnchorPane>

@@ -28,6 +28,8 @@ import java.sql.SQLException;
  */
 public class SnackViewController {
 
+    TemplateViewSnack templateViewSnack = new TemplateViewSnack();
+
     @FXML
     public Label totalPriceLabel1;
 
@@ -70,6 +72,7 @@ public class SnackViewController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("TemplateViewSnack.fxml"));
             Parent root = loader.load();
             TemplateViewSnack templateView = loader.getController();
+            templateViewSnack.addSnackQuantityButton.setOnAction(event -> templateViewSnack.addQuantitySnackCart());
 
             // Vérifier que les labels sont correctement initialisés avant de les utiliser
             if(templateView.getNameSnackCart() != null) {
@@ -96,6 +99,7 @@ public class SnackViewController {
             e.printStackTrace();
         }
     }
+
     /**
      * Ajoute un snack à l'interface utilisateur.
      *

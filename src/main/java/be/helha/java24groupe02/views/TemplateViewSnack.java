@@ -6,9 +6,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 
 public class TemplateViewSnack {
-
-    private int quantity = 1;
-
     @FXML
     private Label NameSnackCart;
 
@@ -25,39 +22,18 @@ public class TemplateViewSnack {
     private ImageView ImageSnackCart;
 
     @FXML
-    private Label QuantitySnackCart;
+    public Label QuantitySnackCart;
 
     @FXML
-    private Button removeSnackFromOrderButton;
+    public Button removeSnackQuantityButton;
 
     @FXML
-    private Button addSnackToOrderButton;
+    public Button addSnackQuantityButton;
 
     @FXML
-    private Button DeleteSnackCart;
+    public Button DeleteSnackCart;
 
     public void initialize() {
-        addSnackToOrderButton.setOnAction(event -> {
-            quantity++;
-            QuantitySnackCart.setText(String.valueOf(quantity));
-        });
-
-        removeSnackFromOrderButton.setOnAction(event -> {
-            if (quantity > 1) {
-                quantity--;
-                QuantitySnackCart.setText(String.valueOf(quantity));
-            }
-        });
-        DeleteSnackCart.setOnAction(event -> handleDeleteButtonClick());
-    }
-
-    private void handleDeleteButtonClick() {
-        NameSnackCart.setText("");
-        FlavorSnackCart.setText("");
-        SizeSnackCart.setText("");
-        PriceSnackCart.setText("");
-        ImageSnackCart.setImage(null);
-        QuantitySnackCart.setText("");
     }
 
     public Label getNameSnackCart() {
@@ -77,5 +53,8 @@ public class TemplateViewSnack {
     }
     public Label getQuantitySnackCart() {
         return QuantitySnackCart;
+    }
+    public void addQuantitySnackCart() {
+        QuantitySnackCart.setText(String.valueOf(Integer.parseInt(QuantitySnackCart.getText()) + 1));
     }
 }
