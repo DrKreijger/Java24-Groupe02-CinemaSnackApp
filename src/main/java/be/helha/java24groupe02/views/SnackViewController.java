@@ -26,9 +26,8 @@ import java.sql.SQLException;
  */
 public class SnackViewController {
 
-    public Label totalPriceLabel1;
     @FXML
-    private AnchorPane viewOrderAnchorPane;
+    public Label totalPriceLabel1;
 
     @FXML
     private FlowPane viewSnacksFlowPane;
@@ -233,7 +232,7 @@ public class SnackViewController {
      */
     private void loadProductsFromDatabase() {
         try {
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:D:\\Java Q2 202\\Java24-Groupe02\\snacks_simple.db");
+            Connection connection = DriverManager.getConnection("jdbc:sqlite:snacks_simple.db");
             PreparedStatement statement = connection.prepareStatement(
                     "SELECT * FROM Products"
             );
