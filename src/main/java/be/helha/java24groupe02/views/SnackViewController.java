@@ -32,9 +32,6 @@ public class SnackViewController {
     public Label totalPriceLabel1;
 
     @FXML
-    private AnchorPane viewOrderAnchorPane;
-
-    @FXML
     private FlowPane viewSnacksFlowPane;
 
     @FXML
