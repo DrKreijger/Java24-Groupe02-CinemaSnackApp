@@ -234,6 +234,7 @@ public class SnackViewController {
     private void loadProductsFromDatabase() {
         try {
             Connection connection = DriverManager.getConnection("jdbc:sqlite:snacks_simple.db");
+
             PreparedStatement statement = connection.prepareStatement(
                     "SELECT * FROM Products"
             );
