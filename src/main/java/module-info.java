@@ -1,4 +1,4 @@
-module be.helha.java24groupe02t {
+module be.helha.java24groupe02 {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;

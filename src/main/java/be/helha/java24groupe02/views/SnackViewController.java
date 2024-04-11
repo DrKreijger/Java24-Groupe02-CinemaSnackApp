@@ -26,7 +26,9 @@ import java.sql.SQLException;
  */
 public class SnackViewController {
 
+    @FXML
     public Label totalPriceLabel1;
+    
     @FXML
     private AnchorPane viewOrderAnchorPane;
 
