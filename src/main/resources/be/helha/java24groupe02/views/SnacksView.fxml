@@ -54,16 +54,16 @@
                     </font>
                 </Button>
                 <VBox fx:id="viewOrderVBox" prefHeight="287.0" prefWidth="200.0" spacing="8.0" style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="35.0" />
-            <Label layoutX="124.0" layoutY="358.0" text="Total:" AnchorPane.bottomAnchor="22.0">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Label fx:id="totalPriceLabel1" layoutX="166.0" layoutY="358.0" text="0.0€" AnchorPane.bottomAnchor="22.0" AnchorPane.rightAnchor="39.6">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
+                <Label layoutX="124.0" layoutY="358.0" text="Total:" AnchorPane.bottomAnchor="22.0">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Label fx:id="totalPriceLabel1" layoutX="166.0" layoutY="358.0" text="0.0€" AnchorPane.bottomAnchor="22.0" AnchorPane.rightAnchor="39.6">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
             </children>
         </AnchorPane>
     </right>
