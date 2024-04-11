@@ -22,10 +22,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * View controller for the snacks view.
+ * Contrôleur de vue pour la gestion des snacks.
  */
 public class SnackViewController {
 
+    public Label totalPriceLabel1;
     @FXML
     private AnchorPane viewOrderAnchorPane;
 
@@ -42,14 +43,14 @@ public class SnackViewController {
     private VBox viewOrderVBox;
 
 
-    // Position horizontal initial
+    // Position horizontale initiale
     private double currentXPosition = 10.0;
     private List<Product> products = new ArrayList<>();
     private Product selectedProduct;
     private List<Product> cartItems = new ArrayList<>();
 
     /**
-     * Initialise view controller. Load products from database and display them in the view.
+     * Initialise le contrôleur de vue. Charge les produits depuis la base de données et les ajoute à l'interface.
      */
     @FXML
     public void initialize() {
@@ -61,71 +62,71 @@ public class SnackViewController {
     }
 
     /**
-     * Add a snack for the view.
+     * Ajoute un snack à l'interface utilisateur.
      *
-     * @param products snack to add
+     * @param products le snack à ajouter
      */
     private void addSnackToInterface(Product products) {
-        // Create VBox to organise éléments vertical
-        VBox vbox = new VBox(5); // spacing between éléments
+        // Créer une VBox pour organiser les éléments verticalement
+        VBox vbox = new VBox(5); // espacement vertical entre les éléments
 
-        // Load product image
+        // Charger l'image du snack
         Image productImage = new Image("file:java.png");
 
-        // Create ImageView for the snack image
+        // Créer l'imageView pour le snack
         ImageView imageView = new ImageView(productImage);
-        imageView.setFitWidth(75); // width of the image
-        imageView.setFitHeight(75); // height of the image
+        imageView.setFitWidth(75); // largeur de l'image
+        imageView.setFitHeight(75); // hauteur de l'image
 
-        // Create Text for the snack name
+        // Créer le texte pour le nom du snack
         Text productNameText = new Text(products.getName());
-        productNameText.setStyle("-fx-font-weight: bold;"); // bold font
+        productNameText.setStyle("-fx-font-weight: bold;"); // style pour mettre en gras
 
-        // Create Text for the snack price
+        // Créer le texte pour le prix du snack
         Text productPriceText = new Text("Prix: " + products.getPrice() + "€");
 
-        // Create Text for the snack flavor
+        // Créer le texte pour la saveur du snack
         Text productFlavorText = null;
         if (products.getFlavor() != null && !products.getFlavor().isEmpty()) {
             productFlavorText = new Text("Saveur: " + products.getFlavor());
         }
 
-        // Create Text for the snack size
+        // Créer le texte pour la taille du snack
         Text productSizeText = new Text("Taille: " + products.getSize());
 
-        // Add éléments to the VBox
+        // Ajouter les éléments à la VBox
         vbox.getChildren().addAll(imageView, productNameText, productPriceText, productSizeText);
         if (productFlavorText != null) {
             vbox.getChildren().add(productFlavorText);
         }
 
-        // Create Button for the snack
+        // Créer le bouton pour le snack
         Button snackButton = new Button();
-        snackButton.setPrefWidth(75); // width of the button
-        snackButton.setPrefHeight(75); // height of the button
-        snackButton.setGraphic(vbox); // add VBox to the button
+        snackButton.setPrefWidth(75); // largeur du bouton
+        snackButton.setPrefHeight(75); // hauteur du bouton
+        snackButton.setGraphic(vbox); // définir la VBox comme graphique du bouton
 
-        // Click event handler for the button
+        // Définir l'action à effectuer lors du clic sur le bouton
         snackButton.setOnAction(event -> handleSnackButtonClick(products));
 
-        // Set the snack ID as the button ID
+        // Attribuer l'ID au bouton
         snackButton.setId(String.valueOf(products.getId()));
 
-        // Position the button in the AnchorPane
-        AnchorPane.setTopAnchor(snackButton, 10.0); // position vertical
-        AnchorPane.setLeftAnchor(snackButton, currentXPosition); // position horizontal
+        // Définir la position du bouton dans l'AnchorPane
+        AnchorPane.setTopAnchor(snackButton, 10.0); // position verticale
+        AnchorPane.setLeftAnchor(snackButton, currentXPosition); // position horizontale
 
-        // Add the button to the AnchorPane
+        // Ajouter le bouton à l'AnchorPane
         viewSnacksFlowPane.getChildren().add(snackButton);
 
-        // Update the horizontal position for the next button
-        currentXPosition += 100.0 + 10.0; // width of the button + spacing
+        // Mettre à jour la position horizontale pour le prochain bouton
+        currentXPosition += 100.0 + 10.0; // largeur du bouton + espacement horizontal
     }
 
     /**
-     * Click event handler for the snack button.
+     * Gère le clic sur un bouton de snack.
      *
-     * @param products the snack associated with the button
+     * @param products le snack associé au bouton cliqué
      */
     private void handleSnackButtonClick(Product products) {
         selectedProduct = products;
@@ -133,22 +134,22 @@ public class SnackViewController {
     }
 
     /**
-     * Update the appearance of the product buttons.
+     * Met à jour l'apparence des boutons de snacks.
      */
     private void updateProductButtonAppearance() {
-        // browse all buttons in the FlowPane
+        // Parcourir tous les boutons de snacks
         for (Node node : viewSnacksFlowPane.getChildren()) {
             if (node instanceof Button) {
                 Button button = (Button) node;
                 Product products = getProductIdFromButton(button);
 
-                // Check if the button is associated with the selected snack
+                // Vérifier si le snack est sélectionné
                 if (selectedProduct == products) {
-                    // Update the appearance for the selected snack
+                    // Mettre à jour l'apparence pour le snack sélectionné
                     button.setStyle("-fx-background-color: lightblue;");
                     System.out.println("Snack sélectionné : " + products.getId());
                 } else {
-                    // Reset the style to default
+                    // Mettre à jour l'apparence pour le snack non sélectionné
                     button.setStyle(""); // Reset style to default
                 }
             }
@@ -156,10 +157,10 @@ public class SnackViewController {
     }
 
     /**
-     * Get the snack associated with the button.
+     * Récupère le snack associé à un bouton.
      *
-     * @param button the button associated with the snack
-     * @return the snack associated with the button
+     * @param button le bouton associé au snack
+     * @return le snack correspondant ou null si aucun snack correspondant n'est trouvé
      */
     private Product getProductIdFromButton(Button button) {
         String buttonId = button.getId();
@@ -168,11 +169,11 @@ public class SnackViewController {
                 return products;
             }
         }
-        return null; // Return null if no snack is found
+        return null; // Si aucun snack correspondant n'est trouvé
     }
 
     /**
-     * Add the selected snack for the cart.
+     * Ajoute le snack sélectionné au panier.
      */
     private void addProductToCart() {
         if (selectedProduct != null) {
@@ -183,54 +184,56 @@ public class SnackViewController {
     }
 
     /**
-     * Update the total price of the cart.
+     * Met à jour le prix total du panier.
      */
     private void updateCartTotal() {
-        // Set the total price to 0
+        // Calculer le prix total
         double totalPrice = 0.0;
         for (Product products : cartItems) {
-            // Add the price of each snack for the total price
+            // Ajouter le prix du snack au prix total
             totalPrice += products.getPrice();
         }
-        // Update the total price label
+        // Afficher le prix total dans le label
         totalPriceLabel.setText(totalPrice + "€");
+        totalPriceLabel1.setText(totalPrice + "€");
     }
 
     /**
-     * Add the selected snack for the order summary.
+     * Ajoute le snack sélectionné au récapitulatif de la commande.
      */
     private void addProductToOrderSummary() {
-        // Create a grid pane to display the product details
+        // Créer un GridPane pour organiser les informations du produit
         GridPane productGrid = new GridPane();
         productGrid.setPadding(new Insets(5));
         productGrid.setHgap(10);
         productGrid.setVgap(5);
 
-        // Create labels for the product details
+        // Ajouter le nom, le prix, le goût et la taille du produit dans des labels
         Label nameLabel = new Label("Nom: " + selectedProduct.getName());
         Label priceLabel = new Label("Prix: " + selectedProduct.getPrice() + "€");
         Label flavorLabel = new Label("Goût: " + selectedProduct.getFlavor());
         Label sizeLabel = new Label("Taille: " + selectedProduct.getSize());
 
-        // Add the labels to the grid pane
+        // Ajouter les labels au GridPane
         productGrid.addRow(0, nameLabel);
-        productGrid.addRow(1, priceLabel);
         productGrid.addRow(2, flavorLabel);
         productGrid.addRow(3, sizeLabel);
 
-        // Set the style for the grid pane
+        // Appliquer un arrière-plan blanc au GridPane
         productGrid.setStyle("-fx-background-color: #FFFFFF;");
 
-        // Add the grid pane to the order summary
+        // Ajouter le GridPane à votre VBox
         viewOrderVBox.getChildren().add(productGrid);
+        // Ajouter le label du prix en dehors du GridPane à votre VBox
+        viewOrderVBox.getChildren().add(priceLabel);
     }
 
     /**
-     * Load products from the database.
+     * Charge les produits depuis la base de données.
      */
     private void loadProductsFromDatabase() {
         try {
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:snacks_simple.db");
+            Connection connection = DriverManager.getConnection("jdbc:sqlite:D:\\Java Q2 202\\Java24-Groupe02\\snacks_simple.db");
             PreparedStatement statement = connection.prepareStatement(
                     "SELECT * FROM Products"
             );
@@ -250,7 +253,7 @@ public class SnackViewController {
             statement.close();
             connection.close();
 
-            // Show products in console
+            // Afficher les produits dans la console
             System.out.println("Liste des produits chargés depuis la base de données :");
             for (Product product : products) {
                 System.out.println(product);

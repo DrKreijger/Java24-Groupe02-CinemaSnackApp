@@ -9,52 +9,62 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.helha.java24groupe02.views.SnackViewController">
-   <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-width: 2;" BorderPane.alignment="CENTER">
-         <children>
-            <FlowPane fx:id="viewSnacksFlowPane" hgap="5.0" layoutX="11.0" layoutY="36.0" prefHeight="284.0" prefWidth="346.0" style="-fx-background-color: lightgray;" vgap="5.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="35.0">
-               <padding>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-               </padding></FlowPane>
-            <Button fx:id="addSnackToOrderButton" layoutX="14.0" layoutY="340.0" mnemonicParsing="false" text="Ajouter dans le panier" AnchorPane.bottomAnchor="12.799999999999955" AnchorPane.leftAnchor="14.0">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
-            <Label layoutX="256.0" layoutY="346.0" text="Total:" AnchorPane.bottomAnchor="18.799999999999976">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Label fx:id="totalPriceLabel" layoutX="294.0" layoutY="346.0" text="0.0€" AnchorPane.bottomAnchor="18.799999999999976">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="161.0" layoutY="14.0" prefHeight="20.0" prefWidth="45.0" text="Snacks">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
-   </center>
-   <right>
-      <AnchorPane prefHeight="382.0" prefWidth="232.0" style="-fx-border-width: 2;" BorderPane.alignment="CENTER">
-         <children>
-            <Label layoutX="52.0" layoutY="14.0" text="Commande en cours">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Button layoutX="67.0" layoutY="333.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="97.0" text="Payer" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="67.4">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
-            <VBox fx:id="viewOrderVBox" prefHeight="287.0" prefWidth="200.0" spacing="8.0" style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="35.0" />
-         </children>
-      </AnchorPane>
-   </right>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.helha.java24groupe02.views.SnackViewController">
+    <center>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-width: 2;" BorderPane.alignment="CENTER">
+            <children>
+                <FlowPane fx:id="viewSnacksFlowPane" hgap="5.0" layoutX="11.0" layoutY="36.0" prefHeight="284.0" prefWidth="346.0" style="-fx-background-color: lightgray;" vgap="5.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="35.0">
+                    <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                    </padding></FlowPane>
+                <Button fx:id="addSnackToOrderButton" layoutX="14.0" layoutY="340.0" mnemonicParsing="false" text="Ajouter dans le panier" AnchorPane.bottomAnchor="12.799999999999955" AnchorPane.leftAnchor="14.0">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Button>
+                <Label layoutX="256.0" layoutY="346.0" text="Total:" AnchorPane.bottomAnchor="18.799999999999976">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Label fx:id="totalPriceLabel" layoutX="294.0" layoutY="346.0" text="0.0€" AnchorPane.bottomAnchor="18.799999999999976">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Label layoutX="161.0" layoutY="14.0" prefHeight="20.0" prefWidth="45.0" text="Snacks">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
+    </center>
+    <right>
+        <AnchorPane prefHeight="382.0" prefWidth="232.0" style="-fx-border-width: 2;" BorderPane.alignment="CENTER">
+            <children>
+                <Label layoutX="52.0" layoutY="14.0" text="Commande en cours">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Button layoutX="14.0" layoutY="351.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="97.0" text="Payer" AnchorPane.bottomAnchor="14.600000000000023" AnchorPane.rightAnchor="120.4">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Button>
+                <VBox fx:id="viewOrderVBox" prefHeight="287.0" prefWidth="200.0" spacing="8.0" style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="35.0" />
+                <Label layoutX="124.0" layoutY="358.0" text="Total:" AnchorPane.bottomAnchor="22.0">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Label fx:id="totalPriceLabel1" layoutX="166.0" layoutY="358.0" text="0.0€" AnchorPane.bottomAnchor="22.0" AnchorPane.rightAnchor="39.6">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
+    </right>
 </BorderPane>
