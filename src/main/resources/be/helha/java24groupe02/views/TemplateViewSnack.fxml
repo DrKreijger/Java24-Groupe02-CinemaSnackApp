@@ -10,8 +10,7 @@
       <Label layoutX="14.0" layoutY="14.0" prefHeight="22.0" prefWidth="69.0" text="Nom" />
       <Label layoutX="14.0" layoutY="48.0" prefHeight="22.0" prefWidth="69.0" text="Goût" />
       <Label layoutX="14.0" layoutY="84.0" prefHeight="22.0" prefWidth="69.0" text="Taille" />
-      <Label layoutX="14.0" layoutY="117.0" prefHeight="22.0" prefWidth="69.0" text="Saveur" />
-      <Label layoutX="14.0" layoutY="153.0" prefHeight="22.0" prefWidth="69.0" text="Prix" />
+      <Label layoutX="14.0" layoutY="123.0" prefHeight="22.0" prefWidth="69.0" text="Prix" />
       <ImageView fitHeight="157.0" fitWidth="142.0" layoutX="223.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true" />
       <Button layoutX="207.0" layoutY="11.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="32.0" text="Button" />
       <Button layoutX="287.0" layoutY="11.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="32.0" text="Button" />
@@ -20,7 +19,6 @@
       <Label fx:id="NameSnackCart" layoutX="56.0" layoutY="17.0" prefHeight="18.0" prefWidth="127.0" text="Label" />
       <Label layoutX="56.0" layoutY="50.0" prefHeight="18.0" prefWidth="127.0" text="Label" />
       <Label layoutX="56.0" layoutY="86.0" prefHeight="18.0" prefWidth="127.0" text="Label" />
-      <Label layoutX="56.0" layoutY="119.0" prefHeight="18.0" prefWidth="127.0" text="Label" />
-      <Label layoutX="57.0" layoutY="155.0" prefHeight="18.0" prefWidth="127.0" text="Label" />
+      <Label layoutX="57.0" layoutY="127.0" prefHeight="18.0" prefWidth="127.0" text="Label" />
    </children>
 </AnchorPane>
