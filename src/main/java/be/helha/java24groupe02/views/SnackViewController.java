@@ -2,17 +2,19 @@ package be.helha.java24groupe02.views;
 
 import be.helha.java24groupe02.models.Product;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.control.Label;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Connection;
@@ -28,7 +30,7 @@ public class SnackViewController {
 
     @FXML
     public Label totalPriceLabel1;
-    
+
     @FXML
     private AnchorPane viewOrderAnchorPane;
 
@@ -57,10 +59,22 @@ public class SnackViewController {
     @FXML
     public void initialize() {
         loadProductsFromDatabase();
-        for (Product products : this.products) {
-            addSnackToInterface(products);
+        for (Product product : this.products) {
+            addSnackToInterface(product);
         }
         addSnackToOrderButton.setOnAction(event -> addProductToCart());
+    }
+
+    private void loadTemplateView(String snackName) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("TemplateViewSnack.fxml"));
+            Parent root = loader.load();
+            TemplateViewSnack templateView = loader.getController();
+            templateView.getNameSnackCart().setText(snackName);
+            viewOrderVBox.getChildren().add(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -180,11 +194,10 @@ public class SnackViewController {
     private void addProductToCart() {
         if (selectedProduct != null) {
             cartItems.add(selectedProduct);
-            addProductToOrderSummary();
             updateCartTotal();
+            loadTemplateView(selectedProduct.getName());
         }
     }
-
     /**
      * Met à jour le prix total du panier.
      */
@@ -198,36 +211,6 @@ public class SnackViewController {
         // Afficher le prix total dans le label
         totalPriceLabel.setText(totalPrice + "€");
         totalPriceLabel1.setText(totalPrice + "€");
-    }
-
-    /**
-     * Ajoute le snack sélectionné au récapitulatif de la commande.
-     */
-    private void addProductToOrderSummary() {
-        // Créer un GridPane pour organiser les informations du produit
-        GridPane productGrid = new GridPane();
-        productGrid.setPadding(new Insets(5));
-        productGrid.setHgap(10);
-        productGrid.setVgap(5);
-
-        // Ajouter le nom, le prix, le goût et la taille du produit dans des labels
-        Label nameLabel = new Label("Nom: " + selectedProduct.getName());
-        Label priceLabel = new Label("Prix: " + selectedProduct.getPrice() + "€");
-        Label flavorLabel = new Label("Goût: " + selectedProduct.getFlavor());
-        Label sizeLabel = new Label("Taille: " + selectedProduct.getSize());
-
-        // Ajouter les labels au GridPane
-        productGrid.addRow(0, nameLabel);
-        productGrid.addRow(2, flavorLabel);
-        productGrid.addRow(3, sizeLabel);
-
-        // Appliquer un arrière-plan blanc au GridPane
-        productGrid.setStyle("-fx-background-color: #FFFFFF;");
-
-        // Ajouter le GridPane à votre VBox
-        viewOrderVBox.getChildren().add(productGrid);
-        // Ajouter le label du prix en dehors du GridPane à votre VBox
-        viewOrderVBox.getChildren().add(priceLabel);
     }
 
     /**
