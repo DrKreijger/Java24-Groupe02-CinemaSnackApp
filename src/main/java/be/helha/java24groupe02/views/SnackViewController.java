@@ -111,10 +111,6 @@ public class SnackViewController {
         // Attribuer l'ID au bouton
         snackButton.setId(String.valueOf(products.getId()));
 
-        // Définir la position du bouton dans l'AnchorPane
-        AnchorPane.setTopAnchor(snackButton, 10.0); // position verticale
-        AnchorPane.setLeftAnchor(snackButton, currentXPosition); // position horizontale
-
         // Ajouter le bouton à l'AnchorPane
         viewSnacksFlowPane.getChildren().add(snackButton);
 
