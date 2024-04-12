@@ -9,7 +9,7 @@
 
 <Button fx:id="ButtonSnackOrder" mnemonicParsing="false" prefHeight="75.0" prefWidth="75.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.helha.java24groupe02.views.TemplateViewButtonSnack">
    <graphic>
-      <VBox spacing="5.0">
+      <VBox fx:id="SnackOrderVbox" spacing="5.0">
          <children>
             <ImageView fx:id="ImageSnackOrder" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
                <image>

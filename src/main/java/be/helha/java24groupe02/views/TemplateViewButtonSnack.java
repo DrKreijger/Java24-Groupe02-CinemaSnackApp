@@ -6,8 +6,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 
 public class TemplateViewButtonSnack {
+    @FXML
+    private VBox SnackOrderVbox;
+
     @FXML
     private Button ButtonSnackOrder;
 
@@ -58,18 +62,16 @@ public class TemplateViewButtonSnack {
         NameSnackOrder.setText(products.getName());
         IsFlavorNull(products);
         SizeSnackOrder.setText("Taille: " + products.getSize());
+        PriceSnackOrder.setText("Prix: " + products.getPrice() + "€");
         ButtonSnackOrder.setId(String.valueOf(products.getId()));
     }
 
     private void IsFlavorNull(Product products) {
         if (products.getFlavor() != null && !products.getFlavor().isEmpty()) {
             FlavorSnackOrder.setText("Goût: " + products.getFlavor());
-            FlavorSnackOrder.setVisible(true);
-            PriceSnackOrder.setText("Prix: " + products.getPrice() + "€");
-        }else {
-            FlavorSnackOrder.setVisible(false);
-            PriceSnackOrder.setText("Prix: " + products.getPrice() + "€");
-            PriceSnackOrder.setLayoutY(FlavorSnackOrder.getLayoutY());
+        } else {
+            // Si le label de la saveur est vide, définir le texte du label de prix comme étant le seul texte de la VBox
+            SnackOrderVbox.getChildren().remove(FlavorSnackOrder);
         }
     }
 }
