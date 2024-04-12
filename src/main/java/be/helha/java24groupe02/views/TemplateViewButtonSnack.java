@@ -56,10 +56,20 @@ public class TemplateViewButtonSnack {
 
         // Configurer les autres données du produit
         NameSnackOrder.setText(products.getName());
-        PriceSnackOrder.setText(products.getPrice() + "€");
+        IsFlavorNull(products);
+        SizeSnackOrder.setText("Taille: " + products.getSize());
+        ButtonSnackOrder.setId(String.valueOf(products.getId()));
+    }
+
+    private void IsFlavorNull(Product products) {
         if (products.getFlavor() != null && !products.getFlavor().isEmpty()) {
-            FlavorSnackOrder.setText(products.getFlavor());
+            FlavorSnackOrder.setText("Goût: " + products.getFlavor());
+            FlavorSnackOrder.setVisible(true);
+            PriceSnackOrder.setText("Prix: " + products.getPrice() + "€");
+        }else {
+            FlavorSnackOrder.setVisible(false);
+            PriceSnackOrder.setText("Prix: " + products.getPrice() + "€");
+            PriceSnackOrder.setLayoutY(FlavorSnackOrder.getLayoutY());
         }
-        SizeSnackOrder.setText(products.getSize());
     }
 }

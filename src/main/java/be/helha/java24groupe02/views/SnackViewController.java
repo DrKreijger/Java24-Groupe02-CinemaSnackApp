@@ -46,9 +46,6 @@ public class SnackViewController {
     @FXML
     private VBox viewOrderVBox;
 
-
-    // Position horizontale initiale
-    private double currentXPosition = 10.0;
     private List<Product> products = new ArrayList<>();
     private Product selectedProduct;
     private List<Product> cartItems = new ArrayList<>();
@@ -63,17 +60,6 @@ public class SnackViewController {
             addSnackToInterface(products);
         }
         addSnackToOrderButton.setOnAction(event -> addProductToCart());
-    }
-
-    private void loadTemplateViewButtonSnack() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("TemplateViewButtonSnack.fxml"));
-        try {
-            Parent root = loader.load();
-            TemplateViewButtonSnack controller = loader.getController();
-            viewSnacksFlowPane.getChildren().add(root);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     /**
@@ -92,8 +78,6 @@ public class SnackViewController {
             snackButton.setOnAction(event -> handleSnackButtonClick(products));
 
             viewSnacksFlowPane.getChildren().add(snackButton);
-
-            currentXPosition += 100.0 + 10.0;
         }catch (IOException e){
             throw new RuntimeException(e);
         }
