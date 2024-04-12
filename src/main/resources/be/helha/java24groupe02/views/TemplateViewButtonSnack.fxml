@@ -10,17 +10,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<Button mnemonicParsing="false" prefHeight="75.0" prefWidth="75.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<Button fx:id="ButtonSnackOrder" mnemonicParsing="false" prefHeight="75.0" prefWidth="75.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.helha.java24groupe02.views.TemplateViewButtonSnack">
    <graphic>
       <VBox spacing="5.0">
          <children>
-            <ImageView fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="ImageSnackOrder" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../../../../java.png" />
                </image>
             </ImageView>
-            <Label text="Nom_snack">
+            <Label fx:id="NameSnackOrder" text="Nom_snack">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -37,11 +36,11 @@
               </rowConstraints>
                <children>
                   <Label prefHeight="32.0" prefWidth="30.0" text="Taille:" />
-                  <Label text="Label" GridPane.columnIndex="1" />
+                  <Label fx:id="SizeSnackOrder" text="Label" GridPane.columnIndex="1" />
                   <Label text="Goût:" GridPane.rowIndex="1" />
-                  <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="FlavorSnackOrder" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label text="Prix:" GridPane.rowIndex="2" />
-                  <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label fx:id="PriceSnackOrder" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
          </children>
