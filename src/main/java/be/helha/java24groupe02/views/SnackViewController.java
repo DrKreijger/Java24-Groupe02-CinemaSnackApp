@@ -4,7 +4,6 @@ import be.helha.java24groupe02.models.Product;
 import be.helha.java24groupe02.models.ProductDB;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -55,36 +54,15 @@ public class SnackViewController {
         addSnackToOrderButton.setOnAction(event -> addProductToCart());
     }
 
-    private void loadTemplateView(String snackName, String snackFlavor, String snackSize, double snackPrice) {
+    private void addSnackToOrder() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("TemplateViewSnack.fxml"));
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("TemplateViewSnack.fxml"));
             Parent root = loader.load();
-            TemplateViewSnack templateView = loader.getController();
-            templateViewSnack.addSnackQuantityButton.setOnAction(event -> templateViewSnack.addQuantitySnackCart());
-
-            // Vérifier que les labels sont correctement initialisés avant de les utiliser
-            if(templateView.getNameSnackCart() != null) {
-                templateView.getNameSnackCart().setText(snackName);
-            }
-            if(templateView.getFlavorSnackCart() != null) {
-                templateView.getFlavorSnackCart().setText(snackFlavor);
-            }
-            if(templateView.getSizeSnackCart() != null) {
-                templateView.getSizeSnackCart().setText(String.valueOf(snackSize)); // Convertir la taille en chaîne de caractères
-            }
-            if(templateView.getPriceSnackCart() != null) {
-                templateView.getPriceSnackCart().setText(snackPrice + "€");
-            }
-            if (templateView.getImageSnackCart() != null) {
-                templateView.getImageSnackCart().setImage(new Image("file:java.png"));
-            }
-            if (templateView.getQuantitySnackCart() != null) {
-                templateView.getQuantitySnackCart().setText("1");
-            }
-
+            TemplateViewSnack controller = loader.getController();
+            controller.getSelectedProductData(selectedProduct);
             viewOrderVBox.getChildren().add(root);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -165,7 +143,7 @@ public class SnackViewController {
         if (selectedProduct != null) {
             cartItems.add(selectedProduct);
             updateCartTotal();
-            loadTemplateView(selectedProduct.getName(), selectedProduct.getFlavor(), selectedProduct.getSize(), selectedProduct.getPrice());
+            addSnackToOrder();
         }
     }
     /**
