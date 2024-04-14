@@ -8,6 +8,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
@@ -24,13 +25,6 @@ public class SnackViewController {
     TemplateViewButtonSnack templateViewButtonSnack = new TemplateViewButtonSnack();
 
     TemplateViewSnack templateViewSnack = new TemplateViewSnack();
-
-    @FXML
-    public Label totalPriceLabel1;
-
-
-    @FXML
-    public Label totalPriceLabel1;
 
     @FXML
     private FlowPane viewSnacksFlowPane;
@@ -55,7 +49,6 @@ public class SnackViewController {
      */
     @FXML
     public void initialize() {
-        loadProductsFromDatabase();
         for (Product product : this.products) {
             addSnackToInterface(product);
         }
@@ -188,34 +181,4 @@ public class SnackViewController {
         // Afficher le prix total dans le label
         totalPriceLabel.setText(totalPrice + "€");
     }
-
-    /**
-     * Ajoute le snack sélectionné au récapitulatif de la commande.
-     */
-    private void addProductToOrderSummary() {
-        // Créer un GridPane pour organiser les informations du produit
-        GridPane productGrid = new GridPane();
-        productGrid.setPadding(new Insets(5));
-        productGrid.setHgap(10);
-        productGrid.setVgap(5);
-
-        // Ajouter le nom, le prix, le goût et la taille du produit dans des labels
-        Label nameLabel = new Label("Nom: " + selectedProduct.getName());
-        Label priceLabel = new Label("Prix: " + selectedProduct.getPrice() + "€");
-        Label flavorLabel = new Label("Goût: " + selectedProduct.getFlavor());
-        Label sizeLabel = new Label("Taille: " + selectedProduct.getSize());
-
-        // Ajouter les labels au GridPane
-        productGrid.addRow(0, nameLabel);
-        productGrid.addRow(2, flavorLabel);
-        productGrid.addRow(3, sizeLabel);
-
-        // Appliquer un arrière-plan blanc au GridPane
-        productGrid.setStyle("-fx-background-color: #FFFFFF;");
-
-        // Ajouter le GridPane à votre VBox
-        viewOrderVBox.getChildren().add(productGrid);
-        // Ajouter le label du prix en dehors du GridPane à votre VBox
-        viewOrderVBox.getChildren().add(priceLabel);
-	}
 }
