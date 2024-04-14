@@ -1,29 +1,20 @@
 package be.helha.java24groupe02.views;
 
 import be.helha.java24groupe02.models.Product;
+import be.helha.java24groupe02.models.ProductDB;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.scene.control.Label;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /**
  * Contrôleur de vue pour la gestion des snacks.
@@ -46,16 +37,17 @@ public class SnackViewController {
     @FXML
     private VBox viewOrderVBox;
 
-    private List<Product> products = new ArrayList<>();
+    ProductDB productDB = new ProductDB();
+    private List<Product> products = productDB.getAllProductsFromDatabase();
     private Product selectedProduct;
     private List<Product> cartItems = new ArrayList<>();
+
 
     /**
      * Initialise le contrôleur de vue. Charge les produits depuis la base de données et les ajoute à l'interface.
      */
     @FXML
     public void initialize() {
-        loadProductsFromDatabase();
         for (Product products : this.products) {
             addSnackToInterface(products);
         }
@@ -155,7 +147,6 @@ public class SnackViewController {
         }
         // Afficher le prix total dans le label
         totalPriceLabel.setText(totalPrice + "€");
-        totalPriceLabel1.setText(totalPrice + "€");
     }
 
     /**
@@ -186,42 +177,5 @@ public class SnackViewController {
         viewOrderVBox.getChildren().add(productGrid);
         // Ajouter le label du prix en dehors du GridPane à votre VBox
         viewOrderVBox.getChildren().add(priceLabel);
-    }
-
-    /**
-     * Charge les produits depuis la base de données.
-     */
-    private void loadProductsFromDatabase() {
-        try {
-
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:snacks_simple.db");
-            PreparedStatement statement = connection.prepareStatement(
-                    "SELECT * FROM Products"
-            );
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                Product product = new Product();
-                product.setId(resultSet.getInt("product_id"));
-                product.setName(resultSet.getString("name"));
-                product.setImagePath(resultSet.getString("image_path"));
-                product.setCategory(resultSet.getString("category"));
-                product.setFlavor(resultSet.getString("flavor"));
-                product.setSize(resultSet.getString("size"));
-                product.setPrice(resultSet.getDouble("price"));
-                products.add(product);
-            }
-            resultSet.close();
-            statement.close();
-            connection.close();
-
-            // Afficher les produits dans la console
-            System.out.println("Liste des produits chargés depuis la base de données :");
-            for (Product product : products) {
-                System.out.println(product);
-            }
-        } catch (SQLException e) {
-            System.err.println("Erreur lors de la connexion à la base de données : " + e.getMessage());
-            e.printStackTrace();
-        }
     }
 }
