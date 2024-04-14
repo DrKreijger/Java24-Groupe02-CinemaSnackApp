@@ -6,12 +6,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +20,15 @@ import java.util.List;
  */
 public class SnackViewController {
 
+
     TemplateViewButtonSnack templateViewButtonSnack = new TemplateViewButtonSnack();
+
+    TemplateViewSnack templateViewSnack = new TemplateViewSnack();
+
+    @FXML
+    public Label totalPriceLabel1;
+
+
     @FXML
     public Label totalPriceLabel1;
 
@@ -48,10 +55,44 @@ public class SnackViewController {
      */
     @FXML
     public void initialize() {
-        for (Product products : this.products) {
-            addSnackToInterface(products);
+        loadProductsFromDatabase();
+        for (Product product : this.products) {
+            addSnackToInterface(product);
         }
         addSnackToOrderButton.setOnAction(event -> addProductToCart());
+    }
+
+    private void loadTemplateView(String snackName, String snackFlavor, String snackSize, double snackPrice) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("TemplateViewSnack.fxml"));
+            Parent root = loader.load();
+            TemplateViewSnack templateView = loader.getController();
+            templateViewSnack.addSnackQuantityButton.setOnAction(event -> templateViewSnack.addQuantitySnackCart());
+
+            // Vérifier que les labels sont correctement initialisés avant de les utiliser
+            if(templateView.getNameSnackCart() != null) {
+                templateView.getNameSnackCart().setText(snackName);
+            }
+            if(templateView.getFlavorSnackCart() != null) {
+                templateView.getFlavorSnackCart().setText(snackFlavor);
+            }
+            if(templateView.getSizeSnackCart() != null) {
+                templateView.getSizeSnackCart().setText(String.valueOf(snackSize)); // Convertir la taille en chaîne de caractères
+            }
+            if(templateView.getPriceSnackCart() != null) {
+                templateView.getPriceSnackCart().setText(snackPrice + "€");
+            }
+            if (templateView.getImageSnackCart() != null) {
+                templateView.getImageSnackCart().setImage(new Image("file:java.png"));
+            }
+            if (templateView.getQuantitySnackCart() != null) {
+                templateView.getQuantitySnackCart().setText("1");
+            }
+
+            viewOrderVBox.getChildren().add(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -130,11 +171,10 @@ public class SnackViewController {
     private void addProductToCart() {
         if (selectedProduct != null) {
             cartItems.add(selectedProduct);
-            addProductToOrderSummary();
             updateCartTotal();
+            loadTemplateView(selectedProduct.getName(), selectedProduct.getFlavor(), selectedProduct.getSize(), selectedProduct.getPrice());
         }
     }
-
     /**
      * Met à jour le prix total du panier.
      */
@@ -177,5 +217,5 @@ public class SnackViewController {
         viewOrderVBox.getChildren().add(productGrid);
         // Ajouter le label du prix en dehors du GridPane à votre VBox
         viewOrderVBox.getChildren().add(priceLabel);
-    }
+	}
 }
