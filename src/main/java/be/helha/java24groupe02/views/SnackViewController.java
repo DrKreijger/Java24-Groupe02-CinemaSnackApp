@@ -2,8 +2,10 @@ package be.helha.java24groupe02.views;
 
 import be.helha.java24groupe02.models.Product;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,6 +15,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.control.Label;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Connection;
@@ -26,6 +30,7 @@ import java.sql.SQLException;
  */
 public class SnackViewController {
 
+    TemplateViewButtonSnack templateViewButtonSnack = new TemplateViewButtonSnack();
     @FXML
     public Label totalPriceLabel1;
 
@@ -41,9 +46,6 @@ public class SnackViewController {
     @FXML
     private VBox viewOrderVBox;
 
-
-    // Position horizontale initiale
-    private double currentXPosition = 10.0;
     private List<Product> products = new ArrayList<>();
     private Product selectedProduct;
     private List<Product> cartItems = new ArrayList<>();
@@ -66,56 +68,19 @@ public class SnackViewController {
      * @param products le snack à ajouter
      */
     private void addSnackToInterface(Product products) {
-        // Créer une VBox pour organiser les éléments verticalement
-        VBox vbox = new VBox(5); // espacement vertical entre les éléments
+       FXMLLoader loader = new FXMLLoader(getClass().getResource("TemplateViewButtonSnack.fxml"));
+        try{
+            Button snackButton = loader.load();
+            TemplateViewButtonSnack controller = loader.getController();
 
-        // Charger l'image du snack
-        Image productImage = new Image("file:java.png");
+            controller.setProductData(products);
 
-        // Créer l'imageView pour le snack
-        ImageView imageView = new ImageView(productImage);
-        imageView.setFitWidth(75); // largeur de l'image
-        imageView.setFitHeight(75); // hauteur de l'image
+            snackButton.setOnAction(event -> handleSnackButtonClick(products));
 
-        // Créer le texte pour le nom du snack
-        Text productNameText = new Text(products.getName());
-        productNameText.setStyle("-fx-font-weight: bold;"); // style pour mettre en gras
-
-        // Créer le texte pour le prix du snack
-        Text productPriceText = new Text("Prix: " + products.getPrice() + "€");
-
-        // Créer le texte pour la saveur du snack
-        Text productFlavorText = null;
-        if (products.getFlavor() != null && !products.getFlavor().isEmpty()) {
-            productFlavorText = new Text("Saveur: " + products.getFlavor());
+            viewSnacksFlowPane.getChildren().add(snackButton);
+        }catch (IOException e){
+            throw new RuntimeException(e);
         }
-
-        // Créer le texte pour la taille du snack
-        Text productSizeText = new Text("Taille: " + products.getSize());
-
-        // Ajouter les éléments à la VBox
-        vbox.getChildren().addAll(imageView, productNameText, productPriceText, productSizeText);
-        if (productFlavorText != null) {
-            vbox.getChildren().add(productFlavorText);
-        }
-
-        // Créer le bouton pour le snack
-        Button snackButton = new Button();
-        snackButton.setPrefWidth(75); // largeur du bouton
-        snackButton.setPrefHeight(75); // hauteur du bouton
-        snackButton.setGraphic(vbox); // définir la VBox comme graphique du bouton
-
-        // Définir l'action à effectuer lors du clic sur le bouton
-        snackButton.setOnAction(event -> handleSnackButtonClick(products));
-
-        // Attribuer l'ID au bouton
-        snackButton.setId(String.valueOf(products.getId()));
-
-        // Ajouter le bouton à l'AnchorPane
-        viewSnacksFlowPane.getChildren().add(snackButton);
-
-        // Mettre à jour la position horizontale pour le prochain bouton
-        currentXPosition += 100.0 + 10.0; // largeur du bouton + espacement horizontal
     }
 
     /**
