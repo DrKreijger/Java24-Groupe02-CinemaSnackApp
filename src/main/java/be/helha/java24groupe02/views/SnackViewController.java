@@ -1,5 +1,6 @@
 package be.helha.java24groupe02.views;
 
+import be.helha.java24groupe02.models.Cart;
 import be.helha.java24groupe02.models.Product;
 import be.helha.java24groupe02.models.ProductDB;
 import javafx.fxml.FXML;
@@ -7,12 +8,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,7 +39,7 @@ public class SnackViewController {
     ProductDB productDB = new ProductDB();
     private List<Product> products = productDB.getAllProductsFromDatabase();
     private Product selectedProduct;
-    private List<Product> cartItems = new ArrayList<>();
+    private Cart cart = new Cart();
 
 
     /**
@@ -51,10 +50,13 @@ public class SnackViewController {
         for (Product product : this.products) {
             addSnackToInterface(product);
         }
-        addSnackToOrderButton.setOnAction(event -> addProductToCart());
+        addSnackToOrderButton.setOnAction(event -> updateOrder());
     }
 
-    private void addSnackToOrder() {
+    /**
+     * Ajoute un snack à la commande au résumé de la commande.
+     */
+    private void addSnackToOrderSummary() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("TemplateViewSnack.fxml"));
         try {
             Parent root = loader.load();
@@ -137,26 +139,19 @@ public class SnackViewController {
     }
 
     /**
-     * Ajoute le snack sélectionné au panier.
+     * Met à jour la commande.
      */
-    private void addProductToCart() {
+    private void updateOrder() {
         if (selectedProduct != null) {
-            cartItems.add(selectedProduct);
+            cart.addProductToCart(selectedProduct);
             updateCartTotal();
-            addSnackToOrder();
+            addSnackToOrderSummary();
         }
     }
     /**
      * Met à jour le prix total du panier.
      */
     private void updateCartTotal() {
-        // Calculer le prix total
-        double totalPrice = 0.0;
-        for (Product products : cartItems) {
-            // Ajouter le prix du snack au prix total
-            totalPrice += products.getPrice();
-        }
-        // Afficher le prix total dans le label
-        totalPriceLabel.setText(totalPrice + "€");
+        totalPriceLabel.setText(cart.getTotalPrice() + "€");
     }
 }
