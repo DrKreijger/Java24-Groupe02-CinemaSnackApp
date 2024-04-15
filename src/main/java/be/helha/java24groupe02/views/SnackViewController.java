@@ -8,12 +8,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,10 +50,13 @@ public class SnackViewController {
         for (Product product : this.products) {
             addSnackToInterface(product);
         }
-        addSnackToOrderButton.setOnAction(event -> addProductToCart());
+        addSnackToOrderButton.setOnAction(event -> updateOrder());
     }
 
-    private void addSnackToOrder() {
+    /**
+     * Ajoute un snack à la commande au résumé de la commande.
+     */
+    private void addSnackToOrderSummary() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("TemplateViewSnack.fxml"));
         try {
             Parent root = loader.load();
@@ -138,13 +139,13 @@ public class SnackViewController {
     }
 
     /**
-     * Ajoute le snack sélectionné au panier.
+     * Met à jour la commande.
      */
-    private void addProductToCart() {
+    private void updateOrder() {
         if (selectedProduct != null) {
             cart.addProductToCart(selectedProduct);
             updateCartTotal();
-            addSnackToOrder();
+            addSnackToOrderSummary();
         }
     }
     /**
