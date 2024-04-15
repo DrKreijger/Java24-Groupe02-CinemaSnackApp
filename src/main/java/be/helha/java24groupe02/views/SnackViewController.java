@@ -1,5 +1,6 @@
 package be.helha.java24groupe02.views;
 
+import be.helha.java24groupe02.models.Cart;
 import be.helha.java24groupe02.models.Product;
 import be.helha.java24groupe02.models.ProductDB;
 import javafx.fxml.FXML;
@@ -40,7 +41,7 @@ public class SnackViewController {
     ProductDB productDB = new ProductDB();
     private List<Product> products = productDB.getAllProductsFromDatabase();
     private Product selectedProduct;
-    private List<Product> cartItems = new ArrayList<>();
+    private Cart cart = new Cart();
 
 
     /**
@@ -141,7 +142,7 @@ public class SnackViewController {
      */
     private void addProductToCart() {
         if (selectedProduct != null) {
-            cartItems.add(selectedProduct);
+            cart.addProductToCart(selectedProduct);
             updateCartTotal();
             addSnackToOrder();
         }
@@ -150,13 +151,6 @@ public class SnackViewController {
      * Met à jour le prix total du panier.
      */
     private void updateCartTotal() {
-        // Calculer le prix total
-        double totalPrice = 0.0;
-        for (Product products : cartItems) {
-            // Ajouter le prix du snack au prix total
-            totalPrice += products.getPrice();
-        }
-        // Afficher le prix total dans le label
-        totalPriceLabel.setText(totalPrice + "€");
+        totalPriceLabel.setText(cart.getTotalPrice() + "€");
     }
 }
