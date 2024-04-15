@@ -27,9 +27,5 @@ public class Cart {
         cartItems.add(product);
         this.totalPrice += product.getPrice();
     }
-
-    public void removeProductFromCart(Product product) {
-        cartItems.remove(product);
-        this.totalPrice -= product.getPrice();
-    }
+    
 }
