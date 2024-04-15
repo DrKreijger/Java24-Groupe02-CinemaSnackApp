@@ -1,6 +1,17 @@
 package be.helha.java24groupe02.models;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observer;
+
 public class Product {
+    private List<CartObserver> observers = new ArrayList<>();
+    private void notifyObservers(List<Product> cartItems) {
+        for (CartObserver observer : observers) {
+            observer.update(cartItems);
+        }
+    }
+
     private int id;
     private String name;
     private double price;

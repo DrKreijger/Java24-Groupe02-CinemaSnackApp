@@ -1,5 +1,6 @@
 package be.helha.java24groupe02.views;
 
+import be.helha.java24groupe02.models.CartObserver;
 import be.helha.java24groupe02.models.Product;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -7,7 +8,9 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class TemplateViewSnack {
+import java.util.List;
+
+public class TemplateViewSnack implements CartObserver {
     @FXML
     private Label NameSnackCart;
 
@@ -65,5 +68,11 @@ public class TemplateViewSnack {
         FlavorSnackCart.setText(selectedProduct.getFlavor());
         SizeSnackCart.setText(selectedProduct.getSize());
         PriceSnackCart.setText(String.valueOf(selectedProduct.getPrice()));
+    }
+
+    @Override
+    public void update(List<Product> cartItems) {
+        // Implémentez le comportement d'actualisation de l'interface utilisateur
+        // en fonction des changements dans le panier (cartItems).
     }
 }
