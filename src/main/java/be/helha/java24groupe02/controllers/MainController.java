@@ -58,4 +58,9 @@ public class MainController extends Application implements SnackViewListener {
     public void handleSnackButtonClick(Product products) {
         selectedProduct = products;
     }
+
+    @Override
+    public void addProductToOrder(Product selectedProduct) {
+        cart.addProductToCart(selectedProduct);
+    }
 }

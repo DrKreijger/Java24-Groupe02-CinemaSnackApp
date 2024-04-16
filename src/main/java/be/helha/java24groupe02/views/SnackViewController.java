@@ -2,6 +2,7 @@ package be.helha.java24groupe02.views;
 
 import be.helha.java24groupe02.models.Cart;
 import be.helha.java24groupe02.models.Product;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -55,7 +56,6 @@ public class SnackViewController {
         for (Product product : this.products) {
             addSnackToInterface(product);
         }
-        addSnackToOrderButton.setOnAction(event -> updateOrder());
     }
 
     /**
@@ -142,13 +142,17 @@ public class SnackViewController {
         }
         return null; // Si aucun snack correspondant n'est trouvé
     }
-
+    @FXML
+    void addProductToOrder(ActionEvent event) {
+    Product selectedProduct = getSelectedProduct();
+    listener.addProductToOrder(selectedProduct);
+    updateOrder();
+    }
     /**
      * Met à jour la commande.
      */
     private void updateOrder() {
         if (selectedProduct != null) {
-            cart.addProductToCart(selectedProduct);
             updateCartTotal();
             addSnackToOrderSummary();
         }
@@ -172,7 +176,12 @@ public class SnackViewController {
         this.cart = cart;
     }
 
+    public Product getSelectedProduct() {
+        return selectedProduct;
+    }
+
     public interface SnackViewListener {
         void handleSnackButtonClick(Product products);
+        void addProductToOrder(Product selectedProduct);
     }
 }
