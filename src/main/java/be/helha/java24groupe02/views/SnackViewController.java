@@ -19,11 +19,6 @@ import java.util.List;
  */
 public class SnackViewController {
 
-
-    TemplateViewButtonSnack templateViewButtonSnack = new TemplateViewButtonSnack();
-
-    TemplateViewSnack templateViewSnack = new TemplateViewSnack();
-
     @FXML
     private FlowPane viewSnacksFlowPane;
 
