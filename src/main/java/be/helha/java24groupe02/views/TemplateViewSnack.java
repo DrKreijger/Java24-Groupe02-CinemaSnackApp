@@ -56,6 +56,9 @@ public class TemplateViewSnack {
     public Label getQuantitySnackCart() {
         return QuantitySnackCart;
     }
+    public int setQuantitySnackCart() {
+        return 1;
+    }
 
     public void getSelectedProductData (Product selectedProduct) {
         // Charger l'image du snack
@@ -65,5 +68,6 @@ public class TemplateViewSnack {
         FlavorSnackCart.setText(selectedProduct.getFlavor());
         SizeSnackCart.setText(selectedProduct.getSize());
         PriceSnackCart.setText(String.valueOf(selectedProduct.getPrice()));
+        QuantitySnackCart.setText(String.valueOf(setQuantitySnackCart()));
     }
 }

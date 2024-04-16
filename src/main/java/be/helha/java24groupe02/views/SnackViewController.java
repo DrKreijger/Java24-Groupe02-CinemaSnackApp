@@ -36,6 +36,7 @@ public class SnackViewController {
     private Product selectedProduct;
     private Cart cart = new Cart();
 
+    TemplateViewSnack templateViewSnack = new TemplateViewSnack();
 
     /**
      * Initialise le contrôleur de vue. Charge les produits depuis la base de données et les ajoute à l'interface.
@@ -46,6 +47,8 @@ public class SnackViewController {
             addSnackToInterface(product);
         }
         addSnackToOrderButton.setOnAction(event -> updateOrder());
+        templateViewSnack.initialize();
+        templateViewSnack.addSnackQuantityButton.setOnAction(event -> AddQuantity());
     }
 
     /**

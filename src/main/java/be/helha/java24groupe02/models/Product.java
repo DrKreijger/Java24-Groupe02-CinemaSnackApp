@@ -8,6 +8,7 @@ public class Product {
     private String imagePath;
     private String flavor;
     private String size;
+    private int quantity;
 
     public int getId() {
         return id;
@@ -63,5 +64,13 @@ public class Product {
 
     public String getSize() {
         return size;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }
