@@ -24,14 +24,6 @@ import java.util.List;
 public class SnackViewController {
 
     @FXML
-    public Label totalPriceLabel1;
-
-    TemplateViewButtonSnack templateViewButtonSnack = new TemplateViewButtonSnack();
-
-    TemplateViewSnack templateViewSnack = new TemplateViewSnack();
-
-
-    @FXML
     private FlowPane viewSnacksFlowPane;
 
     @FXML
@@ -161,52 +153,8 @@ public class SnackViewController {
      * Met à jour le prix total du panier.
      */
     private void updateCartTotal() {
-        // Calculer le prix total
-        double totalPrice = 0.0;
-        for (Product products : cartItems) {
-            // Ajouter le prix du snack au prix total
-            totalPrice += products.getPrice();
-        }
-        // Afficher le prix total dans le label
-        totalPriceLabel.setText(totalPrice + "€");
-        totalPriceLabel1.setText(totalPrice + "€");
-    }
-
-    /**
-     * Charge les produits depuis la base de données.
-     */
-    private void loadProductsFromDatabase() {
-        try {
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:snacks_simple.db");
-            PreparedStatement statement = connection.prepareStatement(
-                    "SELECT * FROM Products"
-            );
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                Product product = new Product();
-                product.setId(resultSet.getInt("product_id"));
-                product.setName(resultSet.getString("name"));
-                product.setImagePath(resultSet.getString("image_path"));
-                product.setCategory(resultSet.getString("category"));
-                product.setFlavor(resultSet.getString("flavor"));
-                product.setSize(resultSet.getString("size"));
-                product.setPrice(resultSet.getDouble("price"));
-                products.add(product);
-            }
-            resultSet.close();
-            statement.close();
-            connection.close();
-
-            // Afficher les produits dans la console
-            System.out.println("Liste des produits chargés depuis la base de données :");
-            for (Product product : products) {
-                System.out.println(product);
-            }
-        } catch (SQLException e) {
-            System.err.println("Erreur lors de la connexion à la base de données : " + e.getMessage());
-            e.printStackTrace();
-        }
         totalPriceLabel.setText(cart.getTotalPrice() + "€");
-
     }
+
+
 }
