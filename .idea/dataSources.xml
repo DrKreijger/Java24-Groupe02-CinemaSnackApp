@@ -5,7 +5,6 @@
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-
       <jdbc-url>jdbc:sqlite:D:\Java Q2 202\Java24-Groupe02\snacks_simple.db</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
