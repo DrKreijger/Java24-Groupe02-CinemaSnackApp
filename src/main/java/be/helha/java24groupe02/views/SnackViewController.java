@@ -1,9 +1,7 @@
 package be.helha.java24groupe02.views;
 
-import be.helha.java24groupe02.controllers.MainController;
 import be.helha.java24groupe02.models.Cart;
 import be.helha.java24groupe02.models.Product;
-import be.helha.java24groupe02.models.ProductDB;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -32,10 +30,16 @@ public class SnackViewController {
     @FXML
     private VBox viewOrderVBox;
 
-    private MainController mainController;
+    private List<Product> products;
 
-    public void setMainController(MainController mainController) {
-        this.mainController = mainController;
+    private SnackViewListener listener;
+
+    private Product selectedProduct;
+
+    private Cart cart;
+
+    public void setListener(SnackViewListener listener) {
+        this.listener = listener;
     }
 //    ProductDB productDB = new ProductDB();
 //    private List<Product> products = productDB.getAllProductsFromDatabase();
@@ -96,7 +100,7 @@ public class SnackViewController {
      * @param products le snack associé au bouton cliqué
      */
     private void handleSnackButtonClick(Product products) {
-        //selectedProduct = products;
+        setSelectedProduct(products);
         updateProductButtonAppearance();
     }
 
@@ -144,7 +148,7 @@ public class SnackViewController {
      */
     private void updateOrder() {
         if (selectedProduct != null) {
-            //cart.addProductToCart(selectedProduct);
+            cart.addProductToCart(selectedProduct);
             updateCartTotal();
             addSnackToOrderSummary();
         }
@@ -154,5 +158,21 @@ public class SnackViewController {
      */
     private void updateCartTotal() {
         totalPriceLabel.setText(cart.getTotalPrice() + "€");
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public void setSelectedProduct(Product products) {
+        this.selectedProduct = products;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public interface SnackViewListener {
+        void handleSnackButtonClick(Product products);
     }
 }
