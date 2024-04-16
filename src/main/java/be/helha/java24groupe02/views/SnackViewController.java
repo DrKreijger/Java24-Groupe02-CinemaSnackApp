@@ -1,5 +1,6 @@
 package be.helha.java24groupe02.views;
 
+import be.helha.java24groupe02.controllers.MainController;
 import be.helha.java24groupe02.models.Cart;
 import be.helha.java24groupe02.models.Product;
 import be.helha.java24groupe02.models.ProductDB;
@@ -31,10 +32,15 @@ public class SnackViewController {
     @FXML
     private VBox viewOrderVBox;
 
-    ProductDB productDB = new ProductDB();
-    private List<Product> products = productDB.getAllProductsFromDatabase();
-    private Product selectedProduct;
-    private Cart cart = new Cart();
+    private MainController mainController;
+
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
+    }
+//    ProductDB productDB = new ProductDB();
+//    private List<Product> products = productDB.getAllProductsFromDatabase();
+//    private Product selectedProduct;
+//    private Cart cart = new Cart();
 
 
     /**
@@ -90,7 +96,7 @@ public class SnackViewController {
      * @param products le snack associé au bouton cliqué
      */
     private void handleSnackButtonClick(Product products) {
-        selectedProduct = products;
+        //selectedProduct = products;
         updateProductButtonAppearance();
     }
 
@@ -138,7 +144,7 @@ public class SnackViewController {
      */
     private void updateOrder() {
         if (selectedProduct != null) {
-            cart.addProductToCart(selectedProduct);
+            //cart.addProductToCart(selectedProduct);
             updateCartTotal();
             addSnackToOrderSummary();
         }
