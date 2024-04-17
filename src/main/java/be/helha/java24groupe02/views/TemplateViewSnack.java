@@ -1,16 +1,18 @@
 package be.helha.java24groupe02.views;
 
-import be.helha.java24groupe02.models.CartObserver;
+import be.helha.java24groupe02.models.Cart;
 import be.helha.java24groupe02.models.Product;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
-import java.util.List;
+public class TemplateViewSnack {
 
-public class TemplateViewSnack implements CartObserver {
     @FXML
     private Label NameSnackCart;
 
@@ -36,32 +38,44 @@ public class TemplateViewSnack implements CartObserver {
     public Button addSnackQuantityButton;
 
     @FXML
-    public Button DeleteSnackCart;
+    private Button DeleteSnackCart;
 
+    private SnackViewController snackViewController;
+
+    public void setSnackViewController(SnackViewController snackViewController) {
+        this.snackViewController = snackViewController;
+    }
+
+    @FXML
     public void initialize() {
+        DeleteSnackCart.setOnAction(event -> handleDeleteButtonClick(event));
     }
 
     public Label getNameSnackCart() {
         return NameSnackCart;
     }
+
     public Label getFlavorSnackCart() {
         return FlavorSnackCart;
     }
+
     public Label getSizeSnackCart() {
         return SizeSnackCart;
     }
+
     public Label getPriceSnackCart() {
         return PriceSnackCart;
     }
+
     public ImageView getImageSnackCart() {
         return ImageSnackCart;
     }
+
     public Label getQuantitySnackCart() {
         return QuantitySnackCart;
     }
 
-    public void getSelectedProductData (Product selectedProduct) {
-        // Charger l'image du snack
+    public void getSelectedProductData(Product selectedProduct) {
         Image productImage = new Image("file:" + selectedProduct.getImagePath());
         ImageSnackCart.setImage(productImage);
         NameSnackCart.setText(selectedProduct.getName());
@@ -70,9 +84,29 @@ public class TemplateViewSnack implements CartObserver {
         PriceSnackCart.setText(String.valueOf(selectedProduct.getPrice()));
     }
 
-    @Override
-    public void update(List<Product> cartItems) {
-        // Implémentez le comportement d'actualisation de l'interface utilisateur
-        // en fonction des changements dans le panier (cartItems).
+    public void handleDeleteButtonClick(ActionEvent event) {
+        // Récupérer l'AnchorPane parent du bouton DeleteSnackCart
+        AnchorPane parentPane = (AnchorPane) DeleteSnackCart.getParent();
+        if (parentPane != null) {
+            // Supprimer l'AnchorPane parent
+            parentPane.getChildren().clear(); // Supprimer tous les enfants de l'AnchorPane
+            // Mettre à jour le panier dans le contrôleur SnackViewController
+            Product product = getProductFromTemplateView();
+            snackViewController.deleteSnackFromCart(product.getId()); // Appeler la méthode deleteSnackFromCart
+        } else {
+            System.err.println("Impossible de trouver le parent de DeleteSnackCart.");
+        }
     }
+
+    public Product getProductFromTemplateView() {
+        Product product = new Product();
+        product.setId(Integer.parseInt(DeleteSnackCart.getId())); // Utiliser l'ID du bouton
+        product.setName(NameSnackCart.getText());
+        product.setFlavor(FlavorSnackCart.getText());
+        product.setSize(SizeSnackCart.getText());
+        product.setPrice(Double.parseDouble(PriceSnackCart.getText()));
+        product.setImagePath(ImageSnackCart.getImage().getUrl());
+        return product;
+    }
+
 }

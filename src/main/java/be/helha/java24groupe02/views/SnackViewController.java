@@ -12,15 +12,9 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
 import java.io.IOException;
-
-import java.sql.*;
 import java.util.ArrayList;
-
 import java.util.List;
 
-/**
- * Contrôleur de vue pour la gestion des snacks.
- */
 public class SnackViewController {
 
     @FXML
@@ -42,10 +36,6 @@ public class SnackViewController {
 
     private List<Product> cartItems = new ArrayList<>();
 
-
-    /**
-     * Initialise le contrôleur de vue. Charge les produits depuis la base de données et les ajoute à l'interface.
-     */
     @FXML
     public void initialize() {
         for (Product product : this.products) {
@@ -54,94 +44,49 @@ public class SnackViewController {
         addSnackToOrderButton.setOnAction(event -> updateOrder());
     }
 
-    /**
-     * Ajoute un snack à la commande au résumé de la commande.
-     */
-    private void addSnackToOrderSummary() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("TemplateViewSnack.fxml"));
+    private void addSnackToInterface(Product product) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("TemplateViewButtonSnack.fxml"));
         try {
-            Parent root = loader.load();
-            TemplateViewSnack controller = loader.getController();
-            controller.getSelectedProductData(selectedProduct);
-            viewOrderVBox.getChildren().add(root);
+            Button snackButton = loader.load();
+            TemplateViewButtonSnack controller = loader.getController();
+            controller.setProductData(product);
+            snackButton.setOnAction(event -> handleSnackButtonClick(product));
+            viewSnacksFlowPane.getChildren().add(snackButton);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    /**
-     * Ajoute un snack à l'interface utilisateur.
-     *
-     * @param products le snack à ajouter
-     */
-    private void addSnackToInterface(Product products) {
-       FXMLLoader loader = new FXMLLoader(getClass().getResource("TemplateViewButtonSnack.fxml"));
-        try{
-            Button snackButton = loader.load();
-            TemplateViewButtonSnack controller = loader.getController();
-
-            controller.setProductData(products);
-
-            snackButton.setOnAction(event -> handleSnackButtonClick(products));
-
-            viewSnacksFlowPane.getChildren().add(snackButton);
-        }catch (IOException e){
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Gère le clic sur un bouton de snack.
-     *
-     * @param products le snack associé au bouton cliqué
-     */
-    private void handleSnackButtonClick(Product products) {
-        selectedProduct = products;
+    private void handleSnackButtonClick(Product product) {
+        selectedProduct = product;
         updateProductButtonAppearance();
     }
 
-    /**
-     * Met à jour l'apparence des boutons de snacks.
-     */
     private void updateProductButtonAppearance() {
-        // Parcourir tous les boutons de snacks
         for (Node node : viewSnacksFlowPane.getChildren()) {
             if (node instanceof Button) {
                 Button button = (Button) node;
-                Product products = getProductIdFromButton(button);
-
-                // Vérifier si le snack est sélectionné
-                if (selectedProduct == products) {
-                    // Mettre à jour l'apparence pour le snack sélectionné
+                Product product = getProductIdFromButton(button);
+                if (selectedProduct == product) {
                     button.setStyle("-fx-background-color: lightblue;");
-                    System.out.println("Snack sélectionné : " + products.getId());
+                    System.out.println("Snack sélectionné : " + product.getId());
                 } else {
-                    // Mettre à jour l'apparence pour le snack non sélectionné
-                    button.setStyle(""); // Reset style to default
+                    button.setStyle("");
                 }
             }
         }
     }
 
-    /**
-     * Récupère le snack associé à un bouton.
-     *
-     * @param button le bouton associé au snack
-     * @return le snack correspondant ou null si aucun snack correspondant n'est trouvé
-     */
     private Product getProductIdFromButton(Button button) {
         String buttonId = button.getId();
-        for (Product products : this.products) {
-            if ((String.valueOf(products.getId()).equals(buttonId))) {
-                return products;
+        for (Product product : this.products) {
+            if (String.valueOf(product.getId()).equals(buttonId)) {
+                return product;
             }
         }
-        return null; // Si aucun snack correspondant n'est trouvé
+        return null;
     }
 
-    /**
-     * Met à jour la commande.
-     */
     private void updateOrder() {
         if (selectedProduct != null) {
             cart.addProductToCart(selectedProduct);
@@ -149,12 +94,47 @@ public class SnackViewController {
             addSnackToOrderSummary();
         }
     }
-    /**
-     * Met à jour le prix total du panier.
-     */
-    private void updateCartTotal() {
-        totalPriceLabel.setText(cart.getTotalPrice() + "€");
+
+    private void addSnackToOrderSummary() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("TemplateViewSnack.fxml"));
+        try {
+            Parent root = loader.load();
+            TemplateViewSnack controller = loader.getController();
+            controller.setSnackViewController(this);
+            controller.getSelectedProductData(selectedProduct);
+            viewOrderVBox.getChildren().add(root);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
+    protected void updateCartTotal() {
+        double totalPrice = cart.getTotalPrice(); // Accès à l'attribut totalPrice de l'objet cart
+        totalPriceLabel.setText(totalPrice + "€");
+    }
 
+    protected void deleteSnackFromCart(int productId) {
+        // Supprimer le produit correspondant du panier
+        cart.removeProductFromCart(productId);
+        // Mettre à jour l'affichage du panier
+        updateCartTotal();
+        // Mettre à jour la vue de la commande
+        updateCartView();
+    }
+
+    protected void updateCartView() {
+        viewOrderVBox.getChildren().clear();
+        for (Product product : cartItems) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("TemplateViewSnack.fxml"));
+            try {
+                Parent root = loader.load();
+                TemplateViewSnack controller = loader.getController();
+                controller.setSnackViewController(this);
+                controller.getSelectedProductData(product);
+                viewOrderVBox.getChildren().add(root);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 }
