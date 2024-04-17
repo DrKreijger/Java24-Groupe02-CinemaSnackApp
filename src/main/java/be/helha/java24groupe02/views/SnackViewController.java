@@ -71,6 +71,9 @@ public class SnackViewController {
             Parent root = loader.load();
             TemplateViewSnack controller = loader.getController();
             controller.getSelectedProductData(selectedProduct);
+
+            controller.addSnackQuantityButton.setOnAction(event -> controller.handleAddSnackQuantity(selectedProduct));
+            controller.removeSnackQuantityButton.setOnAction(event -> controller.handleRemoveSnackQuantity(selectedProduct));
             viewOrderVBox.getChildren().add(root);
         } catch (IOException e) {
             throw new RuntimeException(e);

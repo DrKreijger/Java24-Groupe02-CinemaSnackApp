@@ -35,27 +35,11 @@ public class TemplateViewSnack {
     @FXML
     public Button DeleteSnackCart;
 
+
+
     public void initialize() {
     }
 
-    public Label getNameSnackCart() {
-        return NameSnackCart;
-    }
-    public Label getFlavorSnackCart() {
-        return FlavorSnackCart;
-    }
-    public Label getSizeSnackCart() {
-        return SizeSnackCart;
-    }
-    public Label getPriceSnackCart() {
-        return PriceSnackCart;
-    }
-    public ImageView getImageSnackCart() {
-        return ImageSnackCart;
-    }
-    public Label getQuantitySnackCart() {
-        return QuantitySnackCart;
-    }
 
     public void getSelectedProductData (Product selectedProduct) {
         // Charger l'image du snack
@@ -65,5 +49,22 @@ public class TemplateViewSnack {
         FlavorSnackCart.setText(selectedProduct.getFlavor());
         SizeSnackCart.setText(selectedProduct.getSize());
         PriceSnackCart.setText(String.valueOf(selectedProduct.getPrice()));
+        QuantitySnackCart.setText(String.valueOf(selectedProduct.getQuantity()));
+    }
+
+    public void handleAddSnackQuantity(Product selectedProduct) {
+        int quantity = Integer.parseInt(QuantitySnackCart.getText());
+        quantity++;
+        selectedProduct.setQuantity(quantity);
+        QuantitySnackCart.setText(String.valueOf(quantity));
+    }
+
+    public void handleRemoveSnackQuantity(Product selectedProduct) {
+        int quantity = Integer.parseInt(QuantitySnackCart.getText());
+        if (quantity > 1) {
+            quantity--;
+            selectedProduct.setQuantity(quantity);
+            QuantitySnackCart.setText(String.valueOf(quantity));
+        }
     }
 }
