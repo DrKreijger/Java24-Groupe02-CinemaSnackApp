@@ -11,16 +11,8 @@ public class Cart {
         return cartItems;
     }
 
-    public void setCartItems(List<Product> cartItems) {
-        this.cartItems = cartItems;
-    }
-
     public double getTotalPrice() {
         return totalPrice;
-    }
-
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
     }
 
     public void addProductToCart(Product product) {
