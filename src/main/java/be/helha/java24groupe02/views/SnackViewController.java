@@ -2,7 +2,7 @@ package be.helha.java24groupe02.views;
 
 import be.helha.java24groupe02.models.Cart;
 import be.helha.java24groupe02.models.Product;
-import javafx.event.ActionEvent;
+import be.helha.java24groupe02.models.ProductDB;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -31,21 +31,10 @@ public class SnackViewController {
     @FXML
     private VBox viewOrderVBox;
 
-    private List<Product> products;
-
-    private SnackViewListener listener;
-
+    ProductDB productDB = new ProductDB();
+    private List<Product> products = productDB.getAllProductsFromDatabase();
     private Product selectedProduct;
-
-    private Cart cart;
-
-    public void setListener(SnackViewListener listener) {
-        this.listener = listener;
-    }
-//    ProductDB productDB = new ProductDB();
-//    private List<Product> products = productDB.getAllProductsFromDatabase();
-//    private Product selectedProduct;
-//    private Cart cart = new Cart();
+    private Cart cart = new Cart();
 
 
     /**
@@ -56,6 +45,7 @@ public class SnackViewController {
         for (Product product : this.products) {
             addSnackToInterface(product);
         }
+        addSnackToOrderButton.setOnAction(event -> updateOrder());
     }
 
     /**
@@ -79,7 +69,7 @@ public class SnackViewController {
      * @param products le snack à ajouter
      */
     private void addSnackToInterface(Product products) {
-       FXMLLoader loader = new FXMLLoader(getClass().getResource("TemplateViewButtonSnack.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("TemplateViewButtonSnack.fxml"));
         try{
             Button snackButton = loader.load();
             TemplateViewButtonSnack controller = loader.getController();
@@ -100,7 +90,7 @@ public class SnackViewController {
      * @param products le snack associé au bouton cliqué
      */
     private void handleSnackButtonClick(Product products) {
-        setSelectedProduct(products);
+        selectedProduct = products;
         updateProductButtonAppearance();
     }
 
@@ -142,17 +132,13 @@ public class SnackViewController {
         }
         return null; // Si aucun snack correspondant n'est trouvé
     }
-    @FXML
-    void addProductToOrder(ActionEvent event) {
-    Product selectedProduct = getSelectedProduct();
-    listener.addProductToOrder(selectedProduct);
-    updateOrder();
-    }
+
     /**
      * Met à jour la commande.
      */
     private void updateOrder() {
         if (selectedProduct != null) {
+            cart.addProductToCart(selectedProduct);
             updateCartTotal();
             addSnackToOrderSummary();
         }
@@ -162,26 +148,5 @@ public class SnackViewController {
      */
     private void updateCartTotal() {
         totalPriceLabel.setText(cart.getTotalPrice() + "€");
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
-
-    public void setSelectedProduct(Product products) {
-        this.selectedProduct = products;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
-    }
-
-    public Product getSelectedProduct() {
-        return selectedProduct;
-    }
-
-    public interface SnackViewListener {
-        void handleSnackButtonClick(Product products);
-        void addProductToOrder(Product selectedProduct);
     }
 }
