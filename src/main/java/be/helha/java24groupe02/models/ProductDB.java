@@ -20,13 +20,14 @@ public class ProductDB {
              ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
-                int id = resultSet.getInt("product_id");
-                String name = resultSet.getString("name");
-                double price = resultSet.getDouble("price");
-                String imagePath = resultSet.getString("image_path");
-                String flavor = resultSet.getString("flavor");
-                String size = resultSet.getString("size");
-                Product product = new Product(id, name, price, imagePath, flavor, size);
+                Product product = new Product();
+                product.setId(resultSet.getInt("product_id"));
+                product.setName(resultSet.getString("name"));
+                product.setImagePath(resultSet.getString("image_path"));
+                product.setCategory(resultSet.getString("category"));
+                product.setFlavor(resultSet.getString("flavor"));
+                product.setSize(resultSet.getString("size"));
+                product.setPrice(resultSet.getDouble("price"));
                 products.add(product);
             }
 

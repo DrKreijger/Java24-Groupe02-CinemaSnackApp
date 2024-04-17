@@ -1,6 +1,5 @@
 package be.helha.java24groupe02.views;
 
-import be.helha.java24groupe02.controllers.MainController;
 import be.helha.java24groupe02.models.Cart;
 import be.helha.java24groupe02.models.Product;
 import be.helha.java24groupe02.models.ProductDB;
@@ -32,38 +31,21 @@ public class SnackViewController {
     @FXML
     private VBox viewOrderVBox;
 
-    private MainController mainController;
-
-    ProductDB productDB;
-    private List<Product> products;
+    ProductDB productDB = new ProductDB();
+    private List<Product> products = productDB.getAllProductsFromDatabase();
     private Product selectedProduct;
-    private Cart cart;
-    private boolean dataInitialized = false;
+    private Cart cart = new Cart();
 
-    private CartListener cartListener;
-
-    public void setCartListener(CartListener cartListener) {
-        this.cartListener = cartListener;
-    }
-
-    public void setMainController(MainController mainController) {
-        this.mainController = mainController;
-    }
-
-    TemplateViewSnack templateViewSnack = new TemplateViewSnack();
 
     /**
      * Initialise le contrôleur de vue. Charge les produits depuis la base de données et les ajoute à l'interface.
      */
     @FXML
     public void initialize() {
-        if (!dataInitialized && productDB != null && products != null && cart != null) {
-            initializeView();
-            dataInitialized = true;
+        for (Product product : this.products) {
+            addSnackToInterface(product);
         }
         addSnackToOrderButton.setOnAction(event -> updateOrder());
-        templateViewSnack.initialize();
-        templateViewSnack.addSnackQuantityButton.setOnAction(event -> AddQuantity());
     }
 
     /**
@@ -75,9 +57,6 @@ public class SnackViewController {
             Parent root = loader.load();
             TemplateViewSnack controller = loader.getController();
             controller.getSelectedProductData(selectedProduct);
-
-            controller.addSnackQuantityButton.setOnAction(event -> controller.handleAddSnackQuantity(selectedProduct));
-            controller.removeSnackQuantityButton.setOnAction(event -> controller.handleRemoveSnackQuantity(selectedProduct));
             viewOrderVBox.getChildren().add(root);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -90,7 +69,7 @@ public class SnackViewController {
      * @param products le snack à ajouter
      */
     private void addSnackToInterface(Product products) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("TemplateViewButtonSnack.fxml"));
+       FXMLLoader loader = new FXMLLoader(getClass().getResource("TemplateViewButtonSnack.fxml"));
         try{
             Button snackButton = loader.load();
             TemplateViewButtonSnack controller = loader.getController();
@@ -158,8 +137,8 @@ public class SnackViewController {
      * Met à jour la commande.
      */
     private void updateOrder() {
-        if (selectedProduct != null && cartListener != null) {
-            cartListener.onProductAddedToCart(selectedProduct);
+        if (selectedProduct != null) {
+            cart.addProductToCart(selectedProduct);
             updateCartTotal();
             addSnackToOrderSummary();
         }
@@ -169,29 +148,5 @@ public class SnackViewController {
      */
     private void updateCartTotal() {
         totalPriceLabel.setText(cart.getTotalPrice() + "€");
-    }
-}
-
-    public void initData(ProductDB productDB, List<Product> products, Cart cart) {
-        this.productDB = productDB;
-        this.products = products;
-        this.cart = cart;
-        if (!dataInitialized && productDB != null && products != null && cart != null) {
-            initializeView();
-            dataInitialized = true;
-        }
-    }
-
-    private void initializeView() {
-        // Initialiser l'interface utilisateur avec les données
-        for (Product product : products) {
-            addSnackToInterface(product);
-        }
-        // Définir les actions des boutons
-        addSnackToOrderButton.setOnAction(event -> updateOrder());
-    }
-
-    public interface CartListener {
-        void onProductAddedToCart(Product product);
     }
 }
