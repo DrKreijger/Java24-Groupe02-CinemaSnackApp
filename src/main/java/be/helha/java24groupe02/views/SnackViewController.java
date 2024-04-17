@@ -31,10 +31,10 @@ public class SnackViewController {
     @FXML
     private VBox viewOrderVBox;
 
-    ProductDB productDB = new ProductDB();
-    private List<Product> products = productDB.getAllProductsFromDatabase();
+    ProductDB productDB;
+    private List<Product> products;
     private Product selectedProduct;
-    private Cart cart = new Cart();
+    private Cart cart;
 
 
     /**
@@ -42,9 +42,13 @@ public class SnackViewController {
      */
     @FXML
     public void initialize() {
-        for (Product product : this.products) {
-            addSnackToInterface(product);
-        }
+        if(this.products != null){
+            for (Product product : this.products) {
+                addSnackToInterface(product);
+            }
+        } else {
+            System.err.println("Aucun produit n'a été chargé depuis la base de données.");
+            }
         addSnackToOrderButton.setOnAction(event -> updateOrder());
     }
 
@@ -148,5 +152,12 @@ public class SnackViewController {
      */
     private void updateCartTotal() {
         totalPriceLabel.setText(cart.getTotalPrice() + "€");
+    }
+
+    public void initData(ProductDB productDB, List<Product> products, Cart cart) {
+        this.productDB = productDB;
+        this.products = products;
+        this.cart = cart;
+        initialize();
     }
 }
