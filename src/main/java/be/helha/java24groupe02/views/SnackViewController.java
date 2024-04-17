@@ -73,6 +73,7 @@ public class SnackViewController {
             controller.setQuantityChangeListener(quantityChangeListener);
             controller.addSnackQuantityButton.setOnAction(event -> controller.handleAddSnackQuantity(productInCart));
             controller.removeSnackQuantityButton.setOnAction(event -> controller.handleRemoveSnackQuantity(productInCart));
+            controller.DeleteSnackCart.setOnAction(event -> controller.handleDeleteSnackCart(productInCart));
             controller.setQuantityChangeListener(quantityChangeListener);
             viewOrderVBox.getChildren().add(root);
         } catch (IOException e) {

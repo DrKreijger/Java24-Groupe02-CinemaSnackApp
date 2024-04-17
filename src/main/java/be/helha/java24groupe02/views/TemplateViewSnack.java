@@ -41,6 +41,7 @@ public class TemplateViewSnack {
     }
 
     private QuantityChangeListener quantityChangeListener;
+    private TemplateViewSnack templateViewSnack;
 
 
     public void getSelectedProductData (Product selectedProduct) {
@@ -78,6 +79,10 @@ public class TemplateViewSnack {
                 quantityChangeListener.onQuantityChanged(selectedProduct, quantity);
             }
         }
+    }
+
+    public void handleDeleteSnackCart(Product productInCart) {
+
     }
 
     public interface QuantityChangeListener {
