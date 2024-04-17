@@ -35,6 +35,8 @@ public class TemplateViewSnack {
     @FXML
     public Button DeleteSnackCart;
 
+
+
     public void initialize() {
     }
 
@@ -69,5 +71,22 @@ public class TemplateViewSnack {
         SizeSnackCart.setText(selectedProduct.getSize());
         PriceSnackCart.setText(String.valueOf(selectedProduct.getPrice()));
         QuantitySnackCart.setText(String.valueOf(setQuantitySnackCart()));
+        QuantitySnackCart.setText(String.valueOf(selectedProduct.getQuantity()));
+    }
+
+    public void handleAddSnackQuantity(Product selectedProduct) {
+        int quantity = Integer.parseInt(QuantitySnackCart.getText());
+        quantity++;
+        selectedProduct.setQuantity(quantity);
+        QuantitySnackCart.setText(String.valueOf(quantity));
+    }
+
+    public void handleRemoveSnackQuantity(Product selectedProduct) {
+        int quantity = Integer.parseInt(QuantitySnackCart.getText());
+        if (quantity > 1) {
+            quantity--;
+            selectedProduct.setQuantity(quantity);
+            QuantitySnackCart.setText(String.valueOf(quantity));
+        }
     }
 }
