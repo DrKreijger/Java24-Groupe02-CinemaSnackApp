@@ -156,12 +156,12 @@ public class SnackViewController {
     private void updateOrder() {
         if (selectedProduct != null && cartListener != null) {
             cartListener.onProductAddedToCart(selectedProduct);
-            updateCartTotal();
             Product productInCart = findProductInCart(selectedProduct.getId());
             if(productInCart != null) {
                 addSnackToOrderSummary(productInCart);
             }
         }
+        updateCartTotal();
     }
 
     private Product findProductInCart(int productId) {
