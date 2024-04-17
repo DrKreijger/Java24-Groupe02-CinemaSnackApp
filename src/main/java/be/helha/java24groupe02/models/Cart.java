@@ -11,21 +11,28 @@ public class Cart {
         return cartItems;
     }
 
-    public void setCartItems(List<Product> cartItems) {
-        this.cartItems = cartItems;
-    }
-
     public double getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
     public void addProductToCart(Product product) {
         cartItems.add(product);
-        this.totalPrice += product.getPrice();
+        updateCartPrice();
     }
-    
+
+    public void updateProductQuantity(Product product, int quantity) {
+        if (cartItems.contains(product)) {
+            int index = cartItems.indexOf(product);
+            Product productToUpdate = cartItems.get(index);
+            productToUpdate.setQuantity(quantity);
+            updateCartPrice();
+        }
+    }
+
+    private void updateCartPrice() {
+        this.totalPrice = 0;
+        for (Product product : cartItems) {
+            this.totalPrice += product.getPrice() * product.getQuantity();
+        }
+    }
 }
