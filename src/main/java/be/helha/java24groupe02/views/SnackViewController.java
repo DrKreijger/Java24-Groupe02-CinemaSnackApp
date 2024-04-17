@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
 import java.io.IOException;
 import java.util.List;
+import be.helha.java24groupe02.views.TemplateViewSnack.QuantityChangeListener;
 
 /**
  * Contrôleur de vue pour la gestion des snacks.
@@ -32,24 +33,22 @@ public class SnackViewController {
     @FXML
     private VBox viewOrderVBox;
 
-    private MainController mainController;
-
     ProductDB productDB;
     private List<Product> products;
     private Product selectedProduct;
     private Cart cart;
     private boolean dataInitialized = false;
 
+    private QuantityChangeListener quantityChangeListener;
     private CartListener cartListener;
 
     public void setCartListener(CartListener cartListener) {
         this.cartListener = cartListener;
     }
 
-    public void setMainController(MainController mainController) {
-        this.mainController = mainController;
+    public void setQuantityChangeListener(TemplateViewSnack.QuantityChangeListener listener) {
+        this.quantityChangeListener = listener;
     }
-
 
     /**
      * Initialise le contrôleur de vue. Charge les produits depuis la base de données et les ajoute à l'interface.
@@ -65,15 +64,16 @@ public class SnackViewController {
     /**
      * Ajoute un snack à la commande au résumé de la commande.
      */
-    private void addSnackToOrderSummary() {
+    private void addSnackToOrderSummary(Product productInCart) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("TemplateViewSnack.fxml"));
         try {
             Parent root = loader.load();
             TemplateViewSnack controller = loader.getController();
             controller.getSelectedProductData(selectedProduct);
-
-            controller.addSnackQuantityButton.setOnAction(event -> controller.handleAddSnackQuantity(selectedProduct));
-            controller.removeSnackQuantityButton.setOnAction(event -> controller.handleRemoveSnackQuantity(selectedProduct));
+            controller.setQuantityChangeListener(quantityChangeListener);
+            controller.addSnackQuantityButton.setOnAction(event -> controller.handleAddSnackQuantity(productInCart));
+            controller.removeSnackQuantityButton.setOnAction(event -> controller.handleRemoveSnackQuantity(productInCart));
+            controller.setQuantityChangeListener(quantityChangeListener);
             viewOrderVBox.getChildren().add(root);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -157,13 +157,26 @@ public class SnackViewController {
         if (selectedProduct != null && cartListener != null) {
             cartListener.onProductAddedToCart(selectedProduct);
             updateCartTotal();
-            addSnackToOrderSummary();
+            Product productInCart = findProductInCart(selectedProduct.getId());
+            if(productInCart != null) {
+                addSnackToOrderSummary(productInCart);
+            }
         }
     }
+
+    private Product findProductInCart(int productId) {
+        for (Product product : cart.getCartItems()) {
+            if (product.getId() == productId) {
+                return product;
+            }
+        }
+        return null;
+    }
+
     /**
      * Met à jour le prix total du panier.
      */
-    private void updateCartTotal() {
+    public void updateCartTotal() {
         totalPriceLabel.setText(cart.getTotalPrice() + "€");
     }
 

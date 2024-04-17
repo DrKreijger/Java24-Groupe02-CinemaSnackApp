@@ -36,9 +36,11 @@ public class TemplateViewSnack {
     public Button DeleteSnackCart;
 
 
-
+    @FXML
     public void initialize() {
     }
+
+    private QuantityChangeListener quantityChangeListener;
 
 
     public void getSelectedProductData (Product selectedProduct) {
@@ -57,6 +59,10 @@ public class TemplateViewSnack {
         quantity++;
         selectedProduct.setQuantity(quantity);
         QuantitySnackCart.setText(String.valueOf(quantity));
+
+        if (quantityChangeListener != null) {
+            quantityChangeListener.onQuantityChanged(selectedProduct, quantity);
+        }
     }
 
     public void handleRemoveSnackQuantity(Product selectedProduct) {
@@ -65,6 +71,18 @@ public class TemplateViewSnack {
             quantity--;
             selectedProduct.setQuantity(quantity);
             QuantitySnackCart.setText(String.valueOf(quantity));
+
+            if (quantityChangeListener != null) {
+                quantityChangeListener.onQuantityChanged(selectedProduct, quantity);
+            }
         }
+    }
+
+    public interface QuantityChangeListener {
+        void onQuantityChanged(Product product, int quantity);
+    }
+
+    public void setQuantityChangeListener(QuantityChangeListener listener) {
+        this.quantityChangeListener = listener;
     }
 }
