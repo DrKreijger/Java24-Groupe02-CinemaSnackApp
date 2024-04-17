@@ -40,6 +40,12 @@ public class SnackViewController {
     private Cart cart;
     private boolean dataInitialized = false;
 
+    private CartListener cartListener;
+
+    public void setCartListener(CartListener cartListener) {
+        this.cartListener = cartListener;
+    }
+
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
@@ -145,8 +151,8 @@ public class SnackViewController {
      * Met à jour la commande.
      */
     private void updateOrder() {
-        if (selectedProduct != null) {
-            mainController.addToCart(selectedProduct);
+        if (selectedProduct != null && cartListener != null) {
+            cartListener.onProductAddedToCart(selectedProduct);
             updateCartTotal();
             addSnackToOrderSummary();
         }
@@ -175,5 +181,9 @@ public class SnackViewController {
         }
         // Définir les actions des boutons
         addSnackToOrderButton.setOnAction(event -> updateOrder());
+    }
+
+    public interface CartListener {
+        void onProductAddedToCart(Product product);
     }
 }
