@@ -59,6 +59,7 @@ public class TemplateViewSnack {
         quantity++;
         selectedProduct.setQuantity(quantity);
         QuantitySnackCart.setText(String.valueOf(quantity));
+        PriceSnackCart.setText(String.valueOf(selectedProduct.getPrice() * quantity));
 
         if (quantityChangeListener != null) {
             quantityChangeListener.onQuantityChanged(selectedProduct, quantity);
@@ -71,6 +72,7 @@ public class TemplateViewSnack {
             quantity--;
             selectedProduct.setQuantity(quantity);
             QuantitySnackCart.setText(String.valueOf(quantity));
+            PriceSnackCart.setText(String.valueOf(selectedProduct.getPrice() * quantity));
 
             if (quantityChangeListener != null) {
                 quantityChangeListener.onQuantityChanged(selectedProduct, quantity);
