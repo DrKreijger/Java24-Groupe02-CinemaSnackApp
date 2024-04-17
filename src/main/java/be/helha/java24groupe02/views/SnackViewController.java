@@ -1,5 +1,6 @@
 package be.helha.java24groupe02.views;
 
+import be.helha.java24groupe02.controllers.MainController;
 import be.helha.java24groupe02.models.Cart;
 import be.helha.java24groupe02.models.Product;
 import be.helha.java24groupe02.models.ProductDB;
@@ -31,10 +32,17 @@ public class SnackViewController {
     @FXML
     private VBox viewOrderVBox;
 
+    private MainController mainController;
+
     ProductDB productDB;
     private List<Product> products;
     private Product selectedProduct;
     private Cart cart;
+    private boolean dataInitialized = false;
+
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
+    }
 
 
     /**
@@ -42,14 +50,10 @@ public class SnackViewController {
      */
     @FXML
     public void initialize() {
-        if(this.products != null){
-            for (Product product : this.products) {
-                addSnackToInterface(product);
-            }
-        } else {
-            System.err.println("Aucun produit n'a été chargé depuis la base de données.");
-            }
-        addSnackToOrderButton.setOnAction(event -> updateOrder());
+        if (!dataInitialized && productDB != null && products != null && cart != null) {
+            initializeView();
+            dataInitialized = true;
+        }
     }
 
     /**
@@ -142,7 +146,7 @@ public class SnackViewController {
      */
     private void updateOrder() {
         if (selectedProduct != null) {
-            cart.addProductToCart(selectedProduct);
+            mainController.addToCart(selectedProduct);
             updateCartTotal();
             addSnackToOrderSummary();
         }
@@ -158,6 +162,18 @@ public class SnackViewController {
         this.productDB = productDB;
         this.products = products;
         this.cart = cart;
-        initialize();
+        if (!dataInitialized && productDB != null && products != null && cart != null) {
+            initializeView();
+            dataInitialized = true;
+        }
+    }
+
+    private void initializeView() {
+        // Initialiser l'interface utilisateur avec les données
+        for (Product product : products) {
+            addSnackToInterface(product);
+        }
+        // Définir les actions des boutons
+        addSnackToOrderButton.setOnAction(event -> updateOrder());
     }
 }

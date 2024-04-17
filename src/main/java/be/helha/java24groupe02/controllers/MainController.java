@@ -12,17 +12,21 @@ import java.io.IOException;
 import java.util.List;
 
 public class MainController extends Application {
+
+    Cart cart;
+
     @Override
     public void start(Stage stage) throws IOException {
         ProductDB productDB = new ProductDB();
         List<Product> products = productDB.getAllProductsFromDatabase();
-        Cart cart = new Cart();
+        cart = new Cart();
 
         FXMLLoader fxmlLoader = new FXMLLoader(SnackViewController.class.getResource("SnacksView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
         SnackViewController controller = fxmlLoader.getController();
         controller.initData(productDB, products, cart);
+        controller.setMainController(this);
 
         stage.setTitle("Snacks App");
         stage.setScene(scene);
@@ -31,5 +35,9 @@ public class MainController extends Application {
 
     public static void main(String[] args) {
         launch();
+    }
+
+    public void  addToCart(Product product){
+        cart.addProductToCart(product);
     }
 }
