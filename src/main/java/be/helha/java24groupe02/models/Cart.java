@@ -11,39 +11,28 @@ public class Cart {
         return cartItems;
     }
 
-    public void setCartItems(List<Product> cartItems) {
-        this.cartItems = cartItems;
-    }
-
     public double getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
     public void addProductToCart(Product product) {
         cartItems.add(product);
-        this.totalPrice += product.getPrice();
+        updateCartPrice();
     }
 
-    public void removeProductFromCart(int productId) {
-        // Recherche du produit dans le panier
-        Product removedProduct = null;
+    public void updateProductQuantity(Product product, int quantity) {
+        if (cartItems.contains(product)) {
+            int index = cartItems.indexOf(product);
+            Product productToUpdate = cartItems.get(index);
+            productToUpdate.setQuantity(quantity);
+            updateCartPrice();
+        }
+    }
+
+    private void updateCartPrice() {
+        this.totalPrice = 0;
         for (Product product : cartItems) {
-            if (product.getId() == productId) {
-                removedProduct = product;
-                break;
-            }
-        }
-        // Si le produit est trouvé, on le supprime du panier et on soustrait son prix du prix total
-        if (removedProduct != null) {
-            cartItems.remove(removedProduct);
-            totalPrice -= removedProduct.getPrice();
+            this.totalPrice += product.getPrice() * product.getQuantity();
         }
     }
-
-
-
 }
