@@ -78,6 +78,10 @@ public class TemplateViewSnack {
         }
     }
 
+    public void handleDeleteSnackCart(Product selectedProduct) {
+            quantityChangeListener.onQuantityChanged(selectedProduct, 0);
+    }
+
     public interface QuantityChangeListener {
         void onQuantityChanged(Product product, int quantity);
     }
