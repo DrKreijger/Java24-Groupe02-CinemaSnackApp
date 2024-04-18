@@ -34,6 +34,7 @@ public class TemplateViewSnack {
 
     @FXML
     public Button DeleteSnackCart;
+    private SnackViewController snackViewController;
 
 
     @FXML
@@ -80,6 +81,14 @@ public class TemplateViewSnack {
 
     public void handleDeleteSnackCart(Product selectedProduct) {
             quantityChangeListener.onQuantityChanged(selectedProduct, 0);
+    }
+
+    public void setSnackViewController(SnackViewController snackViewController) {
+        this.snackViewController = snackViewController;
+    }
+
+    public SnackViewController getSnackViewController() {
+        return snackViewController;
     }
 
     public interface QuantityChangeListener {

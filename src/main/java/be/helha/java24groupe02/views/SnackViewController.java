@@ -69,6 +69,7 @@ public class SnackViewController {
         try {
             Parent root = loader.load();
             TemplateViewSnack controller = loader.getController();
+            controller.setSnackViewController(this);
             controller.getSelectedProductData(selectedProduct);
             controller.setQuantityChangeListener(quantityChangeListener);
             controller.addSnackQuantityButton.setOnAction(event -> controller.handleAddSnackQuantity(productInCart));
@@ -194,7 +195,6 @@ public class SnackViewController {
             dataInitialized = true;
         }
     }
-
 
     private void initializeView() {
         // Initialiser l'interface utilisateur avec les données
