@@ -69,6 +69,7 @@ public class SnackViewController {
                 Product product = getProductIdFromButton(button);
                 if (selectedProduct == product) {
                     button.setStyle("-fx-background-color: lightblue;");
+                    assert product != null;
                     System.out.println("Snack sélectionné : " + product.getId());
                 } else {
                     button.setStyle("");

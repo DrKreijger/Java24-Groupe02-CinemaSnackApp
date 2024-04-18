@@ -48,27 +48,7 @@ public class TemplateViewSnack {
 
     @FXML
     public void initialize() {
-        DeleteSnackCart.setOnAction(event -> handleDeleteButtonClick(event));
-    }
-
-    public Label getNameSnackCart() {
-        return NameSnackCart;
-    }
-
-    public Label getFlavorSnackCart() {
-        return FlavorSnackCart;
-    }
-
-    public Label getSizeSnackCart() {
-        return SizeSnackCart;
-    }
-
-    public Label getPriceSnackCart() {
-        return PriceSnackCart;
-    }
-
-    public ImageView getImageSnackCart() {
-        return ImageSnackCart;
+        DeleteSnackCart.setOnAction(this::handleDeleteButtonClick);
     }
 
     public Label getQuantitySnackCart() {
