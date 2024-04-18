@@ -59,11 +59,23 @@ public class MainController extends Application implements SnackViewController.C
 
     @Override
     public void onQuantityChanged(Product product, int quantity) {
-        cart.updateProductQuantity(product, quantity);
+       int productId = product.getId();
+        if(quantity != 0) {
+            cart.updateProductQuantity(product, quantity);
+            System.out.println("Quantity changed to " + quantity);
+        } else {
+            cart.updateProductQuantity(product, quantity);
+            removeProductFromCart(productId);
+            System.out.println("Product removed from cart");
+        }
         updateCartTotal();
     }
 
     private void updateCartTotal() {
         snackViewController.updateCartTotal();
+    }
+
+    private void  removeProductFromCart(int productId) {
+        snackViewController.removeProductFromOrderSummary(productId);
     }
 }

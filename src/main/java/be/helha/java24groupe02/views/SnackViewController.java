@@ -182,7 +182,7 @@ public class SnackViewController {
     }
 
     public void removeProductFromOrderSummary(int productId) {
-
+        viewOrderVBox.getChildren().remove(productId);
     }
 
     public void initData(ProductDB productDB, List<Product> products, Cart cart) {
@@ -194,6 +194,7 @@ public class SnackViewController {
             dataInitialized = true;
         }
     }
+
 
     private void initializeView() {
         // Initialiser l'interface utilisateur avec les données
