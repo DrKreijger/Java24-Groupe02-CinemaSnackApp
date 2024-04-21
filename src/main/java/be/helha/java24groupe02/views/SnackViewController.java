@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import java.io.IOException;
 import java.util.List;
 import be.helha.java24groupe02.views.TemplateViewSnack.QuantityChangeListener;
+import javafx.util.Pair;
 
 /**
  * Contrôleur de vue pour la gestion des snacks.
@@ -42,6 +43,12 @@ public class SnackViewController {
     private QuantityChangeListener quantityChangeListener;
     private CartListener cartListener;
 
+    private TemplateViewSnack templateViewSnack;
+
+    public void setTemplateViewSnack(TemplateViewSnack templateViewSnack) {
+        this.templateViewSnack = templateViewSnack;
+    }
+
     public void setCartListener(CartListener cartListener) {
         this.cartListener = cartListener;
     }
@@ -61,15 +68,26 @@ public class SnackViewController {
         }
     }
 
+    private Pair<Parent, TemplateViewSnack> loadTemplateViewSnackController() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("TemplateViewSnack.fxml"));
+            Parent root = loader.load();
+            TemplateViewSnack controller = loader.getController();
+            controller.setSnackViewController(this);
+            return new Pair<>(root, controller);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     /**
      * Ajoute un snack à la commande au résumé de la commande.
      */
     private void addSnackToOrderSummary(Product productInCart) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("TemplateViewSnack.fxml"));
-        try {
-            Parent root = loader.load();
-            TemplateViewSnack controller = loader.getController();
-            controller.setSnackViewController(this);
+            Pair<Parent, TemplateViewSnack> pair = loadTemplateViewSnackController();
+            Parent root = pair.getKey();
+            TemplateViewSnack controller = pair.getValue();
+            setTemplateViewSnack(controller);
             controller.getSelectedProductData(selectedProduct);
             controller.setQuantityChangeListener(quantityChangeListener);
             controller.addSnackQuantityButton.setOnAction(event -> controller.handleAddSnackQuantity(productInCart));
@@ -77,22 +95,7 @@ public class SnackViewController {
             controller.DeleteSnackCart.setOnAction(event -> controller.handleDeleteSnackCart(productInCart));
             controller.setQuantityChangeListener(quantityChangeListener);
 
-            String id = root.getId();
-            boolean idAlreadyExists = false;
-            for (Node node : viewOrderVBox.getChildren()) {
-                if (node instanceof Parent && ((Parent) node).getId() != null && ((Parent) node).getId().equals(id)) {
-                    idAlreadyExists = true;
-                    break;
-                }
-            }
-
-            // Ajouter le nouvel élément uniquement s'il n'existe pas déjà un élément avec le même ID
-            if (!idAlreadyExists) {
-                viewOrderVBox.getChildren().add(root);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+            viewOrderVBox.getChildren().add(root);
     }
 
     /**
@@ -169,11 +172,14 @@ public class SnackViewController {
      */
     private void updateOrder() {
         if (selectedProduct != null && cartListener != null) {
+            int selectedProductQuantity = selectedProduct.getQuantity();
+            selectedProductQuantity++;
             // Ajouter le produit au panier
             Product productInCart = findProductInCart(selectedProduct.getId());
             if (productInCart != null) {
                 // Le produit est déjà dans le panier, aucune action supplémentaire requise
-                cartListener.onQuantityChanged(selectedProduct, productInCart.getQuantity() + 1);
+                cartListener.onQuantityChanged(selectedProduct, selectedProductQuantity);
+                templateViewSnack.snackQuantityVisual(selectedProductQuantity);
                 return;
             } else {
                 cartListener.onProductAddedToCart(selectedProduct);
