@@ -19,14 +19,9 @@ public class MainController extends Application implements SnackViewController.C
 
     Cart cart;
     private SnackViewController snackViewController;
-    private TemplateViewSnack templateViewSnack;
 
     public void setSnackViewController(SnackViewController snackViewController) {
         this.snackViewController = snackViewController;
-    }
-
-    public void setTemplateViewSnack(TemplateViewSnack templateViewSnack) {
-        this.templateViewSnack = templateViewSnack;
     }
 
     @Override
