@@ -77,6 +77,7 @@ public class SnackViewController {
             controller.DeleteSnackCart.setOnAction(event -> controller.handleDeleteSnackCart(productInCart));
             controller.setQuantityChangeListener(quantityChangeListener);
             viewOrderVBox.getChildren().add(root);
+            String id = root.getId();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -127,7 +128,6 @@ public class SnackViewController {
                 if (selectedProduct == products) {
                     // Mettre à jour l'apparence pour le snack sélectionné
                     button.setStyle("-fx-background-color: lightblue;");
-                    System.out.println("Snack sélectionné : " + products.getId());
                 } else {
                     // Mettre à jour l'apparence pour le snack non sélectionné
                     button.setStyle(""); // Reset style to default
@@ -183,7 +183,16 @@ public class SnackViewController {
     }
 
     public void removeProductFromOrderSummary(int productId) {
-        viewOrderVBox.getChildren().remove(productId);
+        for (Node node : viewOrderVBox.getChildren()) {
+            if (node instanceof Parent) {
+                Parent parent = (Parent) node;
+                String id = parent.getId();
+                if (id.equals(String.valueOf(productId))) {
+                    viewOrderVBox.getChildren().remove(parent);
+                    break;
+                }
+            }
+        }
     }
 
     public void initData(ProductDB productDB, List<Product> products, Cart cart) {

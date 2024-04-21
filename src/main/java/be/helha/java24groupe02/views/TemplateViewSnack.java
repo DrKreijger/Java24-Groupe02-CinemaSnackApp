@@ -6,8 +6,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
 public class TemplateViewSnack {
+    @FXML
+    private AnchorPane AnchorPaneSnackOrderSummary;
+
     @FXML
     private Label NameSnackCart;
 
@@ -53,6 +57,7 @@ public class TemplateViewSnack {
         SizeSnackCart.setText(selectedProduct.getSize());
         PriceSnackCart.setText(String.valueOf(selectedProduct.getPrice()));
         QuantitySnackCart.setText(String.valueOf(selectedProduct.getQuantity()));
+        AnchorPaneSnackOrderSummary.setId(String.valueOf(selectedProduct.getId()));
     }
 
     public void handleAddSnackQuantity(Product selectedProduct) {

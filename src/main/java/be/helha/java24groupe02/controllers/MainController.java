@@ -62,12 +62,9 @@ public class MainController extends Application implements SnackViewController.C
        int productId = product.getId();
         if(quantity != 0) {
             cart.updateProductQuantity(product, quantity);
-            System.out.println("Quantity changed to " + quantity);
         } else {
-            cart.updateProductQuantity(product, quantity);
-            System.out.println("Product removed from cart");
             removeProductFromCart(productId);
-            System.out.println("Product removed from Order Summary");
+            cart.updateProductQuantity(product, quantity);
         }
         updateCartTotal();
     }
