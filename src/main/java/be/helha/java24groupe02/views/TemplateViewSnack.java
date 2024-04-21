@@ -73,7 +73,6 @@ public class TemplateViewSnack {
 
     public void handleRemoveSnackQuantity(Product selectedProduct) {
         int quantity = Integer.parseInt(QuantitySnackCart.getText());
-        if (quantity > 1) {
             quantity--;
             selectedProduct.setQuantity(quantity);
             QuantitySnackCart.setText(String.valueOf(quantity));
@@ -81,7 +80,6 @@ public class TemplateViewSnack {
             if (quantityChangeListener != null) {
                 quantityChangeListener.onQuantityChanged(selectedProduct, quantity);
             }
-        }
     }
 
     public void handleDeleteSnackCart(Product selectedProduct) {
