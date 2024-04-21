@@ -24,7 +24,11 @@ public class Cart {
         if (cartItems.contains(product)) {
             int index = cartItems.indexOf(product);
             Product productToUpdate = cartItems.get(index);
-            productToUpdate.setQuantity(quantity);
+            if(quantity != 0) {
+                productToUpdate.setQuantity(quantity);
+            } else {
+                cartItems.remove(product);
+            }
             updateCartPrice();
         }
     }

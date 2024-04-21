@@ -6,8 +6,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
 public class TemplateViewSnack {
+    @FXML
+    private AnchorPane AnchorPaneSnackOrderSummary;
+
     @FXML
     private Label NameSnackCart;
 
@@ -34,6 +38,7 @@ public class TemplateViewSnack {
 
     @FXML
     public Button DeleteSnackCart;
+    private SnackViewController snackViewController;
 
 
     @FXML
@@ -52,30 +57,43 @@ public class TemplateViewSnack {
         SizeSnackCart.setText(selectedProduct.getSize());
         PriceSnackCart.setText(String.valueOf(selectedProduct.getPrice()));
         QuantitySnackCart.setText(String.valueOf(selectedProduct.getQuantity()));
+        AnchorPaneSnackOrderSummary.setId(String.valueOf(selectedProduct.getId()));
     }
 
     public void handleAddSnackQuantity(Product selectedProduct) {
         int quantity = Integer.parseInt(QuantitySnackCart.getText());
         quantity++;
-        selectedProduct.setQuantity(quantity);
-        QuantitySnackCart.setText(String.valueOf(quantity));
-
+        snackQuantityVisual(quantity);
         if (quantityChangeListener != null) {
             quantityChangeListener.onQuantityChanged(selectedProduct, quantity);
         }
     }
 
+
     public void handleRemoveSnackQuantity(Product selectedProduct) {
         int quantity = Integer.parseInt(QuantitySnackCart.getText());
-        if (quantity > 1) {
             quantity--;
-            selectedProduct.setQuantity(quantity);
-            QuantitySnackCart.setText(String.valueOf(quantity));
+            snackQuantityVisual(quantity);
 
-            if (quantityChangeListener != null) {
+        if (quantityChangeListener != null) {
                 quantityChangeListener.onQuantityChanged(selectedProduct, quantity);
             }
-        }
+    }
+
+    public void snackQuantityVisual(int quantity) {
+        QuantitySnackCart.setText(String.valueOf(quantity));
+    }
+
+    public void handleDeleteSnackCart(Product selectedProduct) {
+        quantityChangeListener.onQuantityChanged(selectedProduct, 0);
+    }
+
+    public void setSnackViewController(SnackViewController snackViewController) {
+        this.snackViewController = snackViewController;
+    }
+
+    public SnackViewController getSnackViewController() {
+        return snackViewController;
     }
 
     public interface QuantityChangeListener {
@@ -85,4 +103,5 @@ public class TemplateViewSnack {
     public void setQuantityChangeListener(QuantityChangeListener listener) {
         this.quantityChangeListener = listener;
     }
+
 }
