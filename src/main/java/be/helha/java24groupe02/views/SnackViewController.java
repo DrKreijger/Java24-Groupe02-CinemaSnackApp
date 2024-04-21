@@ -76,7 +76,7 @@ public class SnackViewController {
             controller.removeSnackQuantityButton.setOnAction(event -> controller.handleRemoveSnackQuantity(productInCart));
             controller.DeleteSnackCart.setOnAction(event -> controller.handleDeleteSnackCart(productInCart));
             controller.setQuantityChangeListener(quantityChangeListener);
-            
+
             String id = root.getId();
             boolean idAlreadyExists = false;
             for (Node node : viewOrderVBox.getChildren()) {
@@ -169,14 +169,20 @@ public class SnackViewController {
      */
     private void updateOrder() {
         if (selectedProduct != null && cartListener != null) {
-            cartListener.onProductAddedToCart(selectedProduct);
+            // Ajouter le produit au panier
             Product productInCart = findProductInCart(selectedProduct.getId());
-            if(productInCart != null) {
-                addSnackToOrderSummary(productInCart);
-            }
+            if (productInCart != null) {
+                // Le produit est déjà dans le panier, aucune action supplémentaire requise
+                cartListener.onQuantityChanged(selectedProduct, productInCart.getQuantity() + 1);
+                return;
+            } else {
+                cartListener.onProductAddedToCart(selectedProduct);
+                addSnackToOrderSummary(selectedProduct);
+                }
         }
         updateCartTotal();
     }
+
 
     private Product findProductInCart(int productId) {
         for (Product product : cart.getCartItems()) {
@@ -228,5 +234,6 @@ public class SnackViewController {
 
     public interface CartListener {
         void onProductAddedToCart(Product product);
+        void onQuantityChanged(Product product, int quantity);
     }
 }

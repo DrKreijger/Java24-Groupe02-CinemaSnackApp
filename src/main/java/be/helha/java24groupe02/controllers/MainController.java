@@ -53,10 +53,6 @@ public class MainController extends Application implements SnackViewController.C
         cart.addProductToCart(product);
     }
 
-    public void setQuantityChangeListener(TemplateViewSnack.QuantityChangeListener listener) {
-        this.quantityChangeListener = listener;
-    }
-
     @Override
     public void onQuantityChanged(Product product, int quantity) {
        int productId = product.getId();

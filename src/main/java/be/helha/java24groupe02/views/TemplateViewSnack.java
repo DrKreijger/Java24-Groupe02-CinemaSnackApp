@@ -63,23 +63,25 @@ public class TemplateViewSnack {
     public void handleAddSnackQuantity(Product selectedProduct) {
         int quantity = Integer.parseInt(QuantitySnackCart.getText());
         quantity++;
-        selectedProduct.setQuantity(quantity);
-        QuantitySnackCart.setText(String.valueOf(quantity));
-
+        addSnackQuantityVisual(quantity);
         if (quantityChangeListener != null) {
             quantityChangeListener.onQuantityChanged(selectedProduct, quantity);
         }
     }
 
+
     public void handleRemoveSnackQuantity(Product selectedProduct) {
         int quantity = Integer.parseInt(QuantitySnackCart.getText());
             quantity--;
-            selectedProduct.setQuantity(quantity);
-            QuantitySnackCart.setText(String.valueOf(quantity));
+            addSnackQuantityVisual(quantity);
 
-            if (quantityChangeListener != null) {
+        if (quantityChangeListener != null) {
                 quantityChangeListener.onQuantityChanged(selectedProduct, quantity);
             }
+    }
+
+    private void addSnackQuantityVisual(int quantity) {
+        QuantitySnackCart.setText(String.valueOf(quantity));
     }
 
     public void handleDeleteSnackCart(Product selectedProduct) {
