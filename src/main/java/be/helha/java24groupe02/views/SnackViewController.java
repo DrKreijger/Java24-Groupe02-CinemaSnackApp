@@ -76,8 +76,20 @@ public class SnackViewController {
             controller.removeSnackQuantityButton.setOnAction(event -> controller.handleRemoveSnackQuantity(productInCart));
             controller.DeleteSnackCart.setOnAction(event -> controller.handleDeleteSnackCart(productInCart));
             controller.setQuantityChangeListener(quantityChangeListener);
-            viewOrderVBox.getChildren().add(root);
+            
             String id = root.getId();
+            boolean idAlreadyExists = false;
+            for (Node node : viewOrderVBox.getChildren()) {
+                if (node instanceof Parent && ((Parent) node).getId() != null && ((Parent) node).getId().equals(id)) {
+                    idAlreadyExists = true;
+                    break;
+                }
+            }
+
+            // Ajouter le nouvel élément uniquement s'il n'existe pas déjà un élément avec le même ID
+            if (!idAlreadyExists) {
+                viewOrderVBox.getChildren().add(root);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
