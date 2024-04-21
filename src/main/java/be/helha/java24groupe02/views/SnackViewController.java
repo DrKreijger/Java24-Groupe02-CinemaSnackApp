@@ -1,9 +1,9 @@
 package be.helha.java24groupe02.views;
 
-import be.helha.java24groupe02.controllers.MainController;
 import be.helha.java24groupe02.models.Cart;
 import be.helha.java24groupe02.models.Product;
 import be.helha.java24groupe02.models.ProductDB;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import java.io.IOException;
 import java.util.List;
 import be.helha.java24groupe02.views.TemplateViewSnack.QuantityChangeListener;
+import javafx.util.Pair;
 
 /**
  * Contrôleur de vue pour la gestion des snacks.
@@ -42,6 +43,12 @@ public class SnackViewController {
     private QuantityChangeListener quantityChangeListener;
     private CartListener cartListener;
 
+    private TemplateViewSnack templateViewSnack;
+
+    public void setTemplateViewSnack(TemplateViewSnack templateViewSnack) {
+        this.templateViewSnack = templateViewSnack;
+    }
+
     public void setCartListener(CartListener cartListener) {
         this.cartListener = cartListener;
     }
@@ -61,23 +68,35 @@ public class SnackViewController {
         }
     }
 
+    private Pair<Parent, TemplateViewSnack> loadTemplateViewSnackController(Product productInCart) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("TemplateViewSnack.fxml"));
+            Parent root = loader.load();
+            TemplateViewSnack controller = loader.getController();
+            controller.setSnackViewController(this);
+            controller.setUniqueId(productInCart.getId());
+            return new Pair<>(root, controller);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     /**
      * Ajoute un snack à la commande au résumé de la commande.
      */
     private void addSnackToOrderSummary(Product productInCart) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("TemplateViewSnack.fxml"));
-        try {
-            Parent root = loader.load();
-            TemplateViewSnack controller = loader.getController();
-            controller.getSelectedProductData(selectedProduct);
-            controller.setQuantityChangeListener(quantityChangeListener);
-            controller.addSnackQuantityButton.setOnAction(event -> controller.handleAddSnackQuantity(productInCart));
-            controller.removeSnackQuantityButton.setOnAction(event -> controller.handleRemoveSnackQuantity(productInCart));
-            controller.setQuantityChangeListener(quantityChangeListener);
-            viewOrderVBox.getChildren().add(root);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        Pair<Parent, TemplateViewSnack> pair = loadTemplateViewSnackController(productInCart);
+        Parent root = pair.getKey();
+        TemplateViewSnack controller = pair.getValue();
+        setTemplateViewSnack(controller);
+        controller.getSelectedProductData(selectedProduct);
+        controller.setQuantityChangeListener(quantityChangeListener);
+        controller.addSnackQuantityButton.setOnAction(event -> controller.handleAddSnackQuantity(productInCart));
+        controller.removeSnackQuantityButton.setOnAction(event -> controller.handleRemoveSnackQuantity(productInCart));
+        controller.DeleteSnackCart.setOnAction(event -> controller.handleDeleteSnackCart(productInCart));
+        controller.setQuantityChangeListener(quantityChangeListener);
+
+        viewOrderVBox.getChildren().add(root);
     }
 
     /**
@@ -117,15 +136,13 @@ public class SnackViewController {
     private void updateProductButtonAppearance() {
         // Parcourir tous les boutons de snacks
         for (Node node : viewSnacksFlowPane.getChildren()) {
-            if (node instanceof Button) {
-                Button button = (Button) node;
+            if (node instanceof Button button) {
                 Product products = getProductIdFromButton(button);
 
                 // Vérifier si le snack est sélectionné
                 if (selectedProduct == products) {
                     // Mettre à jour l'apparence pour le snack sélectionné
                     button.setStyle("-fx-background-color: lightblue;");
-                    System.out.println("Snack sélectionné : " + products.getId());
                 } else {
                     // Mettre à jour l'apparence pour le snack non sélectionné
                     button.setStyle(""); // Reset style to default
@@ -155,14 +172,22 @@ public class SnackViewController {
      */
     private void updateOrder() {
         if (selectedProduct != null && cartListener != null) {
-            cartListener.onProductAddedToCart(selectedProduct);
+            int selectedProductQuantity = selectedProduct.getQuantity();
+            selectedProductQuantity++;
+            // Ajouter le produit au panier
             Product productInCart = findProductInCart(selectedProduct.getId());
-            if(productInCart != null) {
-                addSnackToOrderSummary(productInCart);
+            if (productInCart != null) {
+                // Le produit est déjà dans le panier, aucune action supplémentaire requise
+                cartListener.onQuantityChanged(selectedProduct, selectedProductQuantity);
+                templateViewSnack.snackQuantityVisual(Integer.toString(selectedProduct.getId()) ,selectedProductQuantity);
+            } else {
+                cartListener.onProductAddedToCart(selectedProduct);
+                addSnackToOrderSummary(selectedProduct);
             }
         }
         updateCartTotal();
     }
+
 
     private Product findProductInCart(int productId) {
         for (Product product : cart.getCartItems()) {
@@ -178,6 +203,15 @@ public class SnackViewController {
      */
     public void updateCartTotal() {
         totalPriceLabel.setText(cart.getTotalPrice() + "€");
+    }
+
+    public void removeProductFromOrderSummary(int productId) {
+        for (Node node : viewOrderVBox.getChildren()) {
+            if (node instanceof Parent parent && parent.getId() != null && parent.getId().equals(String.valueOf(productId))) {
+                viewOrderVBox.getChildren().remove(parent);
+                break;
+            }
+        }
     }
 
     public void initData(ProductDB productDB, List<Product> products, Cart cart) {
@@ -201,5 +235,11 @@ public class SnackViewController {
 
     public interface CartListener {
         void onProductAddedToCart(Product product);
+        void onQuantityChanged(Product product, int quantity);
     }
+
+    public ObservableList<Node> getViewOrderVBoxChildren() {
+        return viewOrderVBox.getChildren();
+    }
+
 }

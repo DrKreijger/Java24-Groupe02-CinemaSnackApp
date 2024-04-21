@@ -1,6 +1,7 @@
 package be.helha.java24groupe02.controllers;
 
 import be.helha.java24groupe02.models.Cart;
+import be.helha.java24groupe02.models.CartObserver;
 import be.helha.java24groupe02.models.Product;
 import be.helha.java24groupe02.models.ProductDB;
 import be.helha.java24groupe02.views.SnackViewController;
@@ -12,12 +13,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.List;
-import be.helha.java24groupe02.views.TemplateViewSnack.QuantityChangeListener;
 
-public class MainController extends Application implements SnackViewController.CartListener, TemplateViewSnack.QuantityChangeListener{
+
+public class MainController extends Application implements SnackViewController.CartListener, TemplateViewSnack.QuantityChangeListener, CartObserver{
 
     Cart cart;
-    private QuantityChangeListener quantityChangeListener;
     private SnackViewController snackViewController;
 
     public void setSnackViewController(SnackViewController snackViewController) {
@@ -29,6 +29,7 @@ public class MainController extends Application implements SnackViewController.C
         ProductDB productDB = new ProductDB();
         List<Product> products = productDB.getAllProductsFromDatabase();
         cart = new Cart();
+        cart.addCartObserver((CartObserver) this); // Ajoute MainController comme observateur du panier
 
         FXMLLoader fxmlLoader = new FXMLLoader(SnackViewController.class.getResource("SnacksView.fxml"));
         Parent root = fxmlLoader.load();
@@ -50,20 +51,57 @@ public class MainController extends Application implements SnackViewController.C
 
     @Override
     public void onProductAddedToCart(Product product) {
-        cart.addProductToCart(product);
-    }
-
-    public void setQuantityChangeListener(TemplateViewSnack.QuantityChangeListener listener) {
-        this.quantityChangeListener = listener;
+        cart.addProduct(product);// Ajoute le produit au panier et notifie les observateurs
     }
 
     @Override
     public void onQuantityChanged(Product product, int quantity) {
-        cart.updateProductQuantity(product, quantity);
+        if (quantity != 0) {
+            cart.updateProductQuantity(product, quantity);
+        } else {
+            removeProductFromCart(product.getId()); // Supprimer le produit du panier
+            snackViewController.removeProductFromOrderSummary(product.getId()); // Supprimer le produit de la vue du résumé de commande
+        }
         updateCartTotal();
     }
 
     private void updateCartTotal() {
         snackViewController.updateCartTotal();
+    }
+
+    private void removeProductFromCart(int productId) {
+        Product productToRemove = getProductById(productId);
+        if (productToRemove != null) {
+            cart.removeProduct(productToRemove);
+        }
+    }
+
+    private Product getProductById(int productId) {
+        for (Product product : cart.getCartItems()) {
+            if (product.getId() == productId) {
+                return product;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void update(List<Product> cartItems) {
+
+    }
+
+    @Override
+    public void onTotalPriceUpdated(double totalPrice) {
+
+    }
+
+    @Override
+    public void onProductAdded(Product product) {
+
+    }
+
+    @Override
+    public void onProductRemoved(Product product) {
+
     }
 }
