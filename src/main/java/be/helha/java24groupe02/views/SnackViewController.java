@@ -1,6 +1,5 @@
 package be.helha.java24groupe02.views;
 
-import be.helha.java24groupe02.controllers.MainController;
 import be.helha.java24groupe02.models.Cart;
 import be.helha.java24groupe02.models.Product;
 import be.helha.java24groupe02.models.ProductDB;
@@ -137,8 +136,7 @@ public class SnackViewController {
     private void updateProductButtonAppearance() {
         // Parcourir tous les boutons de snacks
         for (Node node : viewSnacksFlowPane.getChildren()) {
-            if (node instanceof Button) {
-                Button button = (Button) node;
+            if (node instanceof Button button) {
                 Product products = getProductIdFromButton(button);
 
                 // Vérifier si le snack est sélectionné
@@ -209,8 +207,7 @@ public class SnackViewController {
 
     public void removeProductFromOrderSummary(int productId) {
         for (Node node : viewOrderVBox.getChildren()) {
-            if (node instanceof Parent) {
-                Parent parent = (Parent) node;
+            if (node instanceof Parent parent) {
                 String id = parent.getId();
                 if (id.equals(String.valueOf(productId))) {
                     viewOrderVBox.getChildren().remove(parent);

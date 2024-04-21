@@ -1,7 +1,6 @@
 package be.helha.java24groupe02.views;
 
 import be.helha.java24groupe02.models.Product;
-import javafx.beans.Observable;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -95,9 +94,8 @@ public class TemplateViewSnack {
         if (children != null && !children.isEmpty()) {
             // Parcourir les enfants pour trouver le TemplateViewSnack avec l'identifiant unique
             for (Node node : children) {
-                if (node instanceof Parent && ((Parent) node).getId() != null && ((Parent) node).getId().equals(uniqueId)) {
+                if (node instanceof Parent root && ((Parent) node).getId() != null && ((Parent) node).getId().equals(uniqueId)) {
                     // Identifier le nœud racine du TemplateViewSnack
-                    Parent root = (Parent) node;
                     // Accéder au label à l'intérieur du TemplateViewSnack en utilisant un sélecteur CSS
                     Label quantityLabel = (Label) root.lookup("#QuantitySnackCart");
                     if (quantityLabel != null) {
@@ -122,14 +120,6 @@ public class TemplateViewSnack {
 
     public void setSnackViewController(SnackViewController snackViewController) {
         this.snackViewController = snackViewController;
-    }
-
-    public SnackViewController getSnackViewController() {
-        return snackViewController;
-    }
-
-    public int getUniqueId() {
-        return uniqueId;
     }
 
     public void setUniqueId(int uniqueId) {
