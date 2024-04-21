@@ -4,6 +4,7 @@ import be.helha.java24groupe02.controllers.MainController;
 import be.helha.java24groupe02.models.Cart;
 import be.helha.java24groupe02.models.Product;
 import be.helha.java24groupe02.models.ProductDB;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -68,12 +69,13 @@ public class SnackViewController {
         }
     }
 
-    private Pair<Parent, TemplateViewSnack> loadTemplateViewSnackController() {
+    private Pair<Parent, TemplateViewSnack> loadTemplateViewSnackController(Product productInCart) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("TemplateViewSnack.fxml"));
             Parent root = loader.load();
             TemplateViewSnack controller = loader.getController();
             controller.setSnackViewController(this);
+            controller.setUniqueId(productInCart.getId());
             return new Pair<>(root, controller);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -84,7 +86,7 @@ public class SnackViewController {
      * Ajoute un snack à la commande au résumé de la commande.
      */
     private void addSnackToOrderSummary(Product productInCart) {
-            Pair<Parent, TemplateViewSnack> pair = loadTemplateViewSnackController();
+            Pair<Parent, TemplateViewSnack> pair = loadTemplateViewSnackController(productInCart);
             Parent root = pair.getKey();
             TemplateViewSnack controller = pair.getValue();
             setTemplateViewSnack(controller);
@@ -179,8 +181,7 @@ public class SnackViewController {
             if (productInCart != null) {
                 // Le produit est déjà dans le panier, aucune action supplémentaire requise
                 cartListener.onQuantityChanged(selectedProduct, selectedProductQuantity);
-                templateViewSnack.snackQuantityVisual(selectedProductQuantity);
-                return;
+                templateViewSnack.snackQuantityVisual(Integer.toString(selectedProduct.getId()) ,selectedProductQuantity);
             } else {
                 cartListener.onProductAddedToCart(selectedProduct);
                 addSnackToOrderSummary(selectedProduct);
@@ -242,4 +243,9 @@ public class SnackViewController {
         void onProductAddedToCart(Product product);
         void onQuantityChanged(Product product, int quantity);
     }
+
+    public ObservableList<Node> getViewOrderVBoxChildren() {
+        return viewOrderVBox.getChildren();
+    }
+
 }

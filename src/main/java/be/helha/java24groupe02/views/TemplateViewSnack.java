@@ -1,7 +1,11 @@
 package be.helha.java24groupe02.views;
 
 import be.helha.java24groupe02.models.Product;
+import javafx.beans.Observable;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -39,6 +43,8 @@ public class TemplateViewSnack {
     @FXML
     public Button DeleteSnackCart;
     private SnackViewController snackViewController;
+
+    private int uniqueId;
 
 
     @FXML
@@ -80,6 +86,32 @@ public class TemplateViewSnack {
             }
     }
 
+    
+    public void snackQuantityVisual(String uniqueId, int quantity) {
+        // Obtenir les enfants de viewOrderVBox depuis SnackViewController
+        ObservableList<Node> children = snackViewController.getViewOrderVBoxChildren();
+
+        // Vérifier si la liste des enfants n'est pas vide
+        if (children != null && !children.isEmpty()) {
+            // Parcourir les enfants pour trouver le TemplateViewSnack avec l'identifiant unique
+            for (Node node : children) {
+                if (node instanceof Parent && ((Parent) node).getId() != null && ((Parent) node).getId().equals(uniqueId)) {
+                    // Identifier le nœud racine du TemplateViewSnack
+                    Parent root = (Parent) node;
+                    // Accéder au label à l'intérieur du TemplateViewSnack en utilisant un sélecteur CSS
+                    Label quantityLabel = (Label) root.lookup("#QuantitySnackCart");
+                    if (quantityLabel != null) {
+                        // Modifier le texte du label avec la nouvelle quantité
+                        quantityLabel.setText(String.valueOf(quantity));
+                    }
+                    // Sortir de la boucle une fois que le TemplateViewSnack approprié est trouvé
+                    break;
+                }
+            }
+        }
+    }
+
+
     public void snackQuantityVisual(int quantity) {
         QuantitySnackCart.setText(String.valueOf(quantity));
     }
@@ -94,6 +126,14 @@ public class TemplateViewSnack {
 
     public SnackViewController getSnackViewController() {
         return snackViewController;
+    }
+
+    public int getUniqueId() {
+        return uniqueId;
+    }
+
+    public void setUniqueId(int uniqueId) {
+        this.uniqueId = uniqueId;
     }
 
     public interface QuantityChangeListener {
