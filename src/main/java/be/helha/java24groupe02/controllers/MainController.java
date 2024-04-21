@@ -6,14 +6,13 @@ import be.helha.java24groupe02.models.ProductDB;
 import be.helha.java24groupe02.views.SnackViewController;
 import be.helha.java24groupe02.views.TemplateViewSnack;
 import javafx.application.Application;
-import javafx.css.converter.PaintConverter;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.List;
-import be.helha.java24groupe02.views.TemplateViewSnack.QuantityChangeListener;
+
 
 public class MainController extends Application implements SnackViewController.CartListener, TemplateViewSnack.QuantityChangeListener{
 
