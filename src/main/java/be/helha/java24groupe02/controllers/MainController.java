@@ -12,12 +12,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.List;
-import be.helha.java24groupe02.views.TemplateViewSnack.QuantityChangeListener;
+
 
 public class MainController extends Application implements SnackViewController.CartListener, TemplateViewSnack.QuantityChangeListener{
 
     Cart cart;
-    private QuantityChangeListener quantityChangeListener;
     private SnackViewController snackViewController;
 
     public void setSnackViewController(SnackViewController snackViewController) {
@@ -53,17 +52,23 @@ public class MainController extends Application implements SnackViewController.C
         cart.addProductToCart(product);
     }
 
-    public void setQuantityChangeListener(TemplateViewSnack.QuantityChangeListener listener) {
-        this.quantityChangeListener = listener;
-    }
-
     @Override
     public void onQuantityChanged(Product product, int quantity) {
-        cart.updateProductQuantity(product, quantity);
+       int productId = product.getId();
+        if(quantity != 0) {
+            cart.updateProductQuantity(product, quantity);
+        } else {
+            removeProductFromCart(productId);
+            cart.updateProductQuantity(product, quantity);
+        }
         updateCartTotal();
     }
 
     private void updateCartTotal() {
         snackViewController.updateCartTotal();
+    }
+
+    private void  removeProductFromCart(int productId) {
+        snackViewController.removeProductFromOrderSummary(productId);
     }
 }
