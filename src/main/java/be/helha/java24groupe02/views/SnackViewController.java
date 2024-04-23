@@ -90,7 +90,6 @@ public class SnackViewController {
             TemplateViewSnack controller = pair.getValue();
             setTemplateViewSnack(controller);
             controller.getSelectedProductData(selectedProduct);
-        System.out.println("selectedProduct quantity: " + selectedProduct.getQuantity());
             controller.setQuantityChangeListener(quantityChangeListener);
             controller.addSnackQuantityButton.setOnAction(event -> controller.handleAddSnackQuantity(productInCart));
             controller.removeSnackQuantityButton.setOnAction(event -> controller.handleRemoveSnackQuantity(productInCart));
@@ -180,11 +179,11 @@ public class SnackViewController {
             if (productInCart != null) {
                 // Le produit est déjà dans le panier, aucune action supplémentaire requise
                 cartListener.onQuantityChanged(selectedProduct, selectedProductQuantity);
-                templateViewSnack.snackQuantityVisual(Integer.toString(selectedProduct.getId()) ,selectedProductQuantity);
+                templateViewSnack.snackQuantityVisual(Integer.toString(selectedProduct.getId()) ,selectedProductQuantity, selectedProduct);
             } else {
                 cartListener.onProductAddedToCart(selectedProduct);
                 addSnackToOrderSummary(selectedProduct);
-                }
+            }
         }
         updateCartTotal();
     }
