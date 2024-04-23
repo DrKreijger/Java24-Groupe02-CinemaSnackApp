@@ -49,6 +49,7 @@ public class MainController extends Application implements SnackViewController.C
 
     @Override
     public void onProductAddedToCart(Product product) {
+        product.setQuantity(1);
         cart.addProductToCart(product);
     }
 

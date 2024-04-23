@@ -41,6 +41,7 @@ public class TemplateViewSnack {
 
     @FXML
     public Button DeleteSnackCart;
+
     private SnackViewController snackViewController;
 
     private int uniqueId;
@@ -66,7 +67,7 @@ public class TemplateViewSnack {
     }
 
     public void handleAddSnackQuantity(Product selectedProduct) {
-        int quantity = Integer.parseInt(QuantitySnackCart.getText());
+        int quantity = selectedProduct.getQuantity();
         quantity++;
         snackQuantityVisual(quantity);
         if (quantityChangeListener != null) {
@@ -76,7 +77,7 @@ public class TemplateViewSnack {
 
 
     public void handleRemoveSnackQuantity(Product selectedProduct) {
-        int quantity = Integer.parseInt(QuantitySnackCart.getText());
+        int quantity = selectedProduct.getQuantity();
             quantity--;
             snackQuantityVisual(quantity);
 
