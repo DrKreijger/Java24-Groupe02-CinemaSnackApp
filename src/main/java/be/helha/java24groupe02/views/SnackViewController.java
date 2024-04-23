@@ -185,7 +185,7 @@ public class SnackViewController {
                 addSnackToOrderSummary(selectedProduct);
             }
         }
-        updateCartTotal();
+        updateCartTotal(cart.getTotalPrice());
     }
 
 
@@ -201,8 +201,8 @@ public class SnackViewController {
     /**
      * Met à jour le prix total du panier.
      */
-    public void updateCartTotal() {
-        totalPriceLabel.setText(cart.getTotalPrice() + "€");
+    public void updateCartTotal(Double totalPrice) {
+        totalPriceLabel.setText(totalPrice + "€");
     }
 
     public void removeProductFromOrderSummary(int productId) {

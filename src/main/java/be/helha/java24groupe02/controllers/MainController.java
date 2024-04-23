@@ -1,10 +1,12 @@
 package be.helha.java24groupe02.controllers;
 
 import be.helha.java24groupe02.models.Cart;
+import be.helha.java24groupe02.models.CartObserver;
 import be.helha.java24groupe02.models.Product;
 import be.helha.java24groupe02.models.ProductDB;
 import be.helha.java24groupe02.views.SnackViewController;
-import be.helha.java24groupe02.views.TemplateViewSnack;
+import be.helha.java24groupe02.views.TemplateViewSnack.QuantityChangeListener;
+import be.helha.java24groupe02.views.SnackViewController.CartListener;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,7 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 
-public class MainController extends Application implements SnackViewController.CartListener, TemplateViewSnack.QuantityChangeListener{
+public class MainController extends Application implements CartListener, QuantityChangeListener, CartObserver {
 
     Cart cart;
     private SnackViewController snackViewController;
@@ -28,6 +30,7 @@ public class MainController extends Application implements SnackViewController.C
         ProductDB productDB = new ProductDB();
         List<Product> products = productDB.getAllProductsFromDatabase();
         cart = new Cart();
+        cart.addObserver(this);
 
         FXMLLoader fxmlLoader = new FXMLLoader(SnackViewController.class.getResource("SnacksView.fxml"));
         Parent root = fxmlLoader.load();
@@ -62,14 +65,16 @@ public class MainController extends Application implements SnackViewController.C
             removeProductFromCart(productId);
             cart.updateProductQuantity(product, quantity);
         }
-        updateCartTotal();
     }
 
-    private void updateCartTotal() {
-        snackViewController.updateCartTotal();
-    }
 
     private void  removeProductFromCart(int productId) {
         snackViewController.removeProductFromOrderSummary(productId);
     }
+
+    @Override
+    public void cartUpdated() {
+        snackViewController.updateCartTotal(cart.getTotalPrice());
+    }
+
 }
