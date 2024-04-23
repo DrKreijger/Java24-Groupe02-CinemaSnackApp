@@ -69,7 +69,8 @@ public class TemplateViewSnack {
     public void handleAddSnackQuantity(Product selectedProduct) {
         int quantity = selectedProduct.getQuantity();
         quantity++;
-        snackQuantityVisual(quantity);
+        snackQuantityVisual(quantity, selectedProduct);
+
         if (quantityChangeListener != null) {
             quantityChangeListener.onQuantityChanged(selectedProduct, quantity);
         }
@@ -78,16 +79,16 @@ public class TemplateViewSnack {
 
     public void handleRemoveSnackQuantity(Product selectedProduct) {
         int quantity = selectedProduct.getQuantity();
-            quantity--;
-            snackQuantityVisual(quantity);
+        quantity--;
+        snackQuantityVisual(quantity, selectedProduct);
 
         if (quantityChangeListener != null) {
                 quantityChangeListener.onQuantityChanged(selectedProduct, quantity);
-            }
+        }
     }
 
     
-    public void snackQuantityVisual(String uniqueId, int quantity) {
+    public void snackQuantityVisual(String uniqueId, int quantity, Product selectedProduct) {
         // Obtenir les enfants de viewOrderVBox depuis SnackViewController
         ObservableList<Node> children = snackViewController.getViewOrderVBoxChildren();
 
@@ -99,9 +100,11 @@ public class TemplateViewSnack {
                     // Identifier le nœud racine du TemplateViewSnack
                     // Accéder au label à l'intérieur du TemplateViewSnack en utilisant un sélecteur CSS
                     Label quantityLabel = (Label) root.lookup("#QuantitySnackCart");
+                    Label priceLabel = (Label) root.lookup("#PriceSnackCart");
                     if (quantityLabel != null) {
                         // Modifier le texte du label avec la nouvelle quantité
                         quantityLabel.setText(String.valueOf(quantity));
+                        priceLabel.setText(String.valueOf(quantity * selectedProduct.getPrice()));
                     }
                     // Sortir de la boucle une fois que le TemplateViewSnack approprié est trouvé
                     break;
@@ -111,8 +114,9 @@ public class TemplateViewSnack {
     }
 
 
-    public void snackQuantityVisual(int quantity) {
+    public void snackQuantityVisual(int quantity, Product selectedProduct) {
         QuantitySnackCart.setText(String.valueOf(quantity));
+        PriceSnackCart.setText(String.valueOf(selectedProduct.getPrice() * quantity));
     }
 
     public void handleDeleteSnackCart(Product selectedProduct) {
