@@ -4,8 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cart {
-    private List<Product> cartItems = new ArrayList<>();
+    private List<Product> cartItems;
+    private List<CartObserver> observerList;
     private double totalPrice;
+
+    public Cart() {
+        this.observerList = new ArrayList<>();
+        this.cartItems = new ArrayList<>();
+        this.totalPrice = 0.0;
+    }
+
+    public void addObserver(CartObserver observer) {
+        observerList.add(observer);
+    }
 
     public List<Product> getCartItems() {
         return cartItems;
@@ -17,6 +28,11 @@ public class Cart {
 
     public void addProductToCart(Product product) {
         cartItems.add(product);
+        updateCartPrice();
+    }
+
+    public void removeProductFromCart(Product product) {
+        cartItems.remove(product);
         updateCartPrice();
     }
 
@@ -37,6 +53,13 @@ public class Cart {
         this.totalPrice = 0;
         for (Product product : cartItems) {
             this.totalPrice += product.getPrice() * product.getQuantity();
+        }
+        notifyCartObservers();
+    }
+
+    private void notifyCartObservers() {
+        for (CartObserver observer : observerList) {
+            observer.cartUpdated();
         }
     }
 }
