@@ -1,10 +1,10 @@
 package be.helha.java24groupe02.views;
 
-import be.helha.java24groupe02.models.Cart;
 import be.helha.java24groupe02.models.Product;
-import javafx.event.ActionEvent;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -12,6 +12,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 public class TemplateViewSnack {
+    @FXML
+    private AnchorPane AnchorPaneSnackOrderSummary;
 
     @FXML
     private Label NameSnackCart;
@@ -38,75 +40,103 @@ public class TemplateViewSnack {
     public Button addSnackQuantityButton;
 
     @FXML
-    private Button DeleteSnackCart;
+    public Button DeleteSnackCart;
 
     private SnackViewController snackViewController;
 
-    public void setSnackViewController(SnackViewController snackViewController) {
-        this.snackViewController = snackViewController;
-    }
+    private int uniqueId;
+
 
     @FXML
     public void initialize() {
-        DeleteSnackCart.setOnAction(event -> handleDeleteButtonClick(event));
     }
 
-    public Label getNameSnackCart() {
-        return NameSnackCart;
-    }
+    private QuantityChangeListener quantityChangeListener;
 
-    public Label getFlavorSnackCart() {
-        return FlavorSnackCart;
-    }
 
-    public Label getSizeSnackCart() {
-        return SizeSnackCart;
-    }
-
-    public Label getPriceSnackCart() {
-        return PriceSnackCart;
-    }
-
-    public ImageView getImageSnackCart() {
-        return ImageSnackCart;
-    }
-
-    public Label getQuantitySnackCart() {
-        return QuantitySnackCart;
-    }
-
-    public void getSelectedProductData(Product selectedProduct) {
+    public void getSelectedProductData (Product selectedProduct) {
+        // Charger l'image du snack
         Image productImage = new Image("file:" + selectedProduct.getImagePath());
         ImageSnackCart.setImage(productImage);
         NameSnackCart.setText(selectedProduct.getName());
         FlavorSnackCart.setText(selectedProduct.getFlavor());
         SizeSnackCart.setText(selectedProduct.getSize());
         PriceSnackCart.setText(String.valueOf(selectedProduct.getPrice()));
+        QuantitySnackCart.setText(String.valueOf(selectedProduct.getQuantity()));
+        AnchorPaneSnackOrderSummary.setId(String.valueOf(selectedProduct.getId()));
     }
 
-    public void handleDeleteButtonClick(ActionEvent event) {
-        // Récupérer l'AnchorPane parent du bouton DeleteSnackCart
-        AnchorPane parentPane = (AnchorPane) DeleteSnackCart.getParent();
-        if (parentPane != null) {
-            // Supprimer l'AnchorPane parent
-            parentPane.getChildren().clear(); // Supprimer tous les enfants de l'AnchorPane
-            // Mettre à jour le panier dans le contrôleur SnackViewController
-            Product product = getProductFromTemplateView();
-            snackViewController.deleteSnackFromCart(product.getId()); // Appeler la méthode deleteSnackFromCart
-        } else {
-            System.err.println("Impossible de trouver le parent de DeleteSnackCart.");
+    public void handleAddSnackQuantity(Product selectedProduct) {
+        int quantity = selectedProduct.getQuantity();
+        quantity++;
+        snackQuantityVisual(quantity, selectedProduct);
+
+        if (quantityChangeListener != null) {
+            quantityChangeListener.onQuantityChanged(selectedProduct, quantity);
         }
     }
 
-    public Product getProductFromTemplateView() {
-        Product product = new Product();
-        product.setId(Integer.parseInt(DeleteSnackCart.getId())); // Utiliser l'ID du bouton
-        product.setName(NameSnackCart.getText());
-        product.setFlavor(FlavorSnackCart.getText());
-        product.setSize(SizeSnackCart.getText());
-        product.setPrice(Double.parseDouble(PriceSnackCart.getText()));
-        product.setImagePath(ImageSnackCart.getImage().getUrl());
-        return product;
+
+    public void handleRemoveSnackQuantity(Product selectedProduct) {
+        int quantity = selectedProduct.getQuantity();
+        quantity--;
+        snackQuantityVisual(quantity, selectedProduct);
+
+        if (quantityChangeListener != null) {
+            quantityChangeListener.onQuantityChanged(selectedProduct, quantity);
+        }
+    }
+
+
+    public void snackQuantityVisual(String uniqueId, int quantity, Product selectedProduct) {
+        // Obtenir les enfants de viewOrderVBox depuis SnackViewController
+        ObservableList<Node> children = snackViewController.getViewOrderVBoxChildren();
+
+        // Vérifier si la liste des enfants n'est pas vide
+        if (children != null && !children.isEmpty()) {
+            // Parcourir les enfants pour trouver le TemplateViewSnack avec l'identifiant unique
+            for (Node node : children) {
+                if (node instanceof Parent root && ((Parent) node).getId() != null && ((Parent) node).getId().equals(uniqueId)) {
+                    // Identifier le nœud racine du TemplateViewSnack
+                    // Accéder au label à l'intérieur du TemplateViewSnack en utilisant un sélecteur CSS
+                    Label quantityLabel = (Label) root.lookup("#QuantitySnackCart");
+                    Label priceLabel = (Label) root.lookup("#PriceSnackCart");
+                    if (quantityLabel != null) {
+                        // Modifier le texte du label avec la nouvelle quantité
+                        quantityLabel.setText(String.valueOf(quantity));
+                        priceLabel.setText(String.valueOf(quantity * selectedProduct.getPrice()));
+                    }
+                    // Sortir de la boucle une fois que le TemplateViewSnack approprié est trouvé
+                    break;
+                }
+            }
+        }
+    }
+
+
+    public void snackQuantityVisual(int quantity, Product selectedProduct) {
+        QuantitySnackCart.setText(String.valueOf(quantity));
+        PriceSnackCart.setText(String.valueOf(selectedProduct.getPrice() * quantity));
+    }
+
+    public void handleDeleteSnackCart(Product selectedProduct) {
+        quantityChangeListener.onQuantityChanged(selectedProduct, 0);
+    }
+
+    public void setSnackViewController(SnackViewController snackViewController) {
+        this.snackViewController = snackViewController;
+    }
+
+    public void setUniqueId(int uniqueId) {
+        this.uniqueId = uniqueId;
+    }
+
+    public interface QuantityChangeListener {
+        void onQuantityChanged(Product product, int quantity);
+    }
+
+    public void setQuantityChangeListener(QuantityChangeListener listener) {
+        this.quantityChangeListener = listener;
     }
 
 }
