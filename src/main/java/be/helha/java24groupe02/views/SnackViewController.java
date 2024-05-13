@@ -74,7 +74,7 @@ public class SnackViewController {
             Parent root = loader.load();
             TemplateViewSnack controller = loader.getController();
             controller.setSnackViewController(this);
-            controller.setUniqueId(productInCart.getId());
+            controller.setUniqueId(productInCart.getProductId());
             return new Pair<>(root, controller);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -160,7 +160,7 @@ public class SnackViewController {
     private Product getProductIdFromButton(Button button) {
         String buttonId = button.getId();
         for (Product products : this.products) {
-            if ((String.valueOf(products.getId()).equals(buttonId))) {
+            if ((String.valueOf(products.getProductId()).equals(buttonId))) {
                 return products;
             }
         }
@@ -175,11 +175,11 @@ public class SnackViewController {
             int selectedProductQuantity = selectedProduct.getQuantity();
             selectedProductQuantity++;
             // Ajouter le produit au panier
-            Product productInCart = findProductInCart(selectedProduct.getId());
+            Product productInCart = findProductInCart(selectedProduct.getProductId());
             if (productInCart != null) {
                 // Le produit est déjà dans le panier, aucune action supplémentaire requise
-                cartListener.onQuantityChanged(selectedProduct, selectedProductQuantity);
-                templateViewSnack.snackQuantityVisual(Integer.toString(selectedProduct.getId()) ,selectedProductQuantity, selectedProduct);
+                cartListener.addSnackQuantity(selectedProduct);
+                templateViewSnack.snackQuantityVisual(Integer.toString(selectedProduct.getProductId()) ,selectedProductQuantity, selectedProduct);
             } else {
                 cartListener.onProductAddedToCart(selectedProduct);
                 addSnackToOrderSummary(selectedProduct);
@@ -191,7 +191,7 @@ public class SnackViewController {
 
     private Product findProductInCart(int productId) {
         for (Product product : cart.getCartItems()) {
-            if (product.getId() == productId) {
+            if (product.getProductId() == productId) {
                 return product;
             }
         }
@@ -238,7 +238,7 @@ public class SnackViewController {
 
     public interface CartListener {
         void onProductAddedToCart(Product product);
-        void onQuantityChanged(Product product, int quantity);
+        void addSnackQuantity(Product product);
     }
 
     public ObservableList<Node> getViewOrderVBoxChildren() {

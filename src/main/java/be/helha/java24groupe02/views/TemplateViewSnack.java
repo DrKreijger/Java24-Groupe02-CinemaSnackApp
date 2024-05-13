@@ -63,7 +63,7 @@ public class TemplateViewSnack {
         SizeSnackCart.setText(selectedProduct.getSize());
         PriceSnackCart.setText(String.valueOf(selectedProduct.getPrice()));
         QuantitySnackCart.setText(String.valueOf(selectedProduct.getQuantity()));
-        AnchorPaneSnackOrderSummary.setId(String.valueOf(selectedProduct.getId()));
+        AnchorPaneSnackOrderSummary.setId(String.valueOf(selectedProduct.getProductId()));
     }
 
     public void handleAddSnackQuantity(Product selectedProduct) {
@@ -72,7 +72,7 @@ public class TemplateViewSnack {
         snackQuantityVisual(quantity, selectedProduct);
 
         if (quantityChangeListener != null) {
-            quantityChangeListener.onQuantityChanged(selectedProduct, quantity);
+            quantityChangeListener.addSnackQuantity(selectedProduct);
         }
     }
 
@@ -83,7 +83,7 @@ public class TemplateViewSnack {
         snackQuantityVisual(quantity, selectedProduct);
 
         if (quantityChangeListener != null) {
-                quantityChangeListener.onQuantityChanged(selectedProduct, quantity);
+            quantityChangeListener.removeSnackQuantity(selectedProduct);
         }
     }
 
@@ -120,7 +120,7 @@ public class TemplateViewSnack {
     }
 
     public void handleDeleteSnackCart(Product selectedProduct) {
-        quantityChangeListener.onQuantityChanged(selectedProduct, 0);
+        quantityChangeListener.deleteSnack(selectedProduct);
     }
 
     public void setSnackViewController(SnackViewController snackViewController) {
@@ -132,7 +132,9 @@ public class TemplateViewSnack {
     }
 
     public interface QuantityChangeListener {
-        void onQuantityChanged(Product product, int quantity);
+        void deleteSnack(Product product);
+        void addSnackQuantity(Product product);
+        void removeSnackQuantity(Product product);
     }
 
     public void setQuantityChangeListener(QuantityChangeListener listener) {
