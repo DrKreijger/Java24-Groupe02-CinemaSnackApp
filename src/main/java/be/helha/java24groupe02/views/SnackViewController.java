@@ -3,6 +3,7 @@ package be.helha.java24groupe02.views;
 import be.helha.java24groupe02.models.Cart;
 import be.helha.java24groupe02.models.Product;
 import be.helha.java24groupe02.models.ProductDB;
+import be.helha.java24groupe02.models.exceptions.NoMoreStockException;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -91,7 +92,13 @@ public class SnackViewController {
             setTemplateViewSnack(controller);
             controller.getSelectedProductData(selectedProduct);
             controller.setQuantityChangeListener(quantityChangeListener);
-            controller.addSnackQuantityButton.setOnAction(event -> controller.handleAddSnackQuantity(productInCart));
+            controller.addSnackQuantityButton.setOnAction(event -> {
+                try {
+                    controller.handleAddSnackQuantity(productInCart);
+                } catch (NoMoreStockException e) {
+                    throw new RuntimeException(e);
+                }
+            });
             controller.removeSnackQuantityButton.setOnAction(event -> controller.handleRemoveSnackQuantity(productInCart));
             controller.DeleteSnackCart.setOnAction(event -> controller.handleDeleteSnackCart(productInCart));
             controller.setQuantityChangeListener(quantityChangeListener);
@@ -177,9 +184,13 @@ public class SnackViewController {
             // Ajouter le produit au panier
             Product productInCart = findProductInCart(selectedProduct.getProductId());
             if (productInCart != null) {
+                try {
                 // Le produit est déjà dans le panier, aucune action supplémentaire requise
                 cartListener.addSnackQuantity(selectedProduct);
                 templateViewSnack.snackQuantityVisual(Integer.toString(selectedProduct.getProductId()) ,selectedProductQuantity, selectedProduct);
+                } catch (NoMoreStockException e) {
+                    e.showError();
+                }
             } else {
                 cartListener.onProductAddedToCart(selectedProduct);
                 addSnackToOrderSummary(selectedProduct);
@@ -238,7 +249,7 @@ public class SnackViewController {
 
     public interface CartListener {
         void onProductAddedToCart(Product product);
-        void addSnackQuantity(Product product);
+        void addSnackQuantity(Product product) throws NoMoreStockException;
     }
 
     public ObservableList<Node> getViewOrderVBoxChildren() {

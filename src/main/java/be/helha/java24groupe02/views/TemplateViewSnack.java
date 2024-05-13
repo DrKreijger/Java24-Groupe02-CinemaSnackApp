@@ -1,6 +1,7 @@
 package be.helha.java24groupe02.views;
 
 import be.helha.java24groupe02.models.Product;
+import be.helha.java24groupe02.models.exceptions.NoMoreStockException;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -66,13 +67,16 @@ public class TemplateViewSnack {
         AnchorPaneSnackOrderSummary.setId(String.valueOf(selectedProduct.getProductId()));
     }
 
-    public void handleAddSnackQuantity(Product selectedProduct) {
-        int quantity = selectedProduct.getQuantity();
-        quantity++;
-        snackQuantityVisual(quantity, selectedProduct);
-
-        if (quantityChangeListener != null) {
-            quantityChangeListener.addSnackQuantity(selectedProduct);
+    public void handleAddSnackQuantity(Product selectedProduct) throws NoMoreStockException {
+        try {
+            if (quantityChangeListener != null) {
+                quantityChangeListener.addSnackQuantity(selectedProduct);
+            }
+            int quantity = selectedProduct.getQuantity();
+            quantity++;
+            snackQuantityVisual(quantity, selectedProduct);
+        } catch (NoMoreStockException e) {
+            e.showError();
         }
     }
 
@@ -133,7 +137,7 @@ public class TemplateViewSnack {
 
     public interface QuantityChangeListener {
         void deleteSnack(Product product);
-        void addSnackQuantity(Product product);
+        void addSnackQuantity(Product product) throws NoMoreStockException;
         void removeSnackQuantity(Product product);
     }
 

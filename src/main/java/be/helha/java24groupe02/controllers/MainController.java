@@ -68,18 +68,14 @@ public class MainController extends Application implements CartListener, Quantit
     }
 
     @Override
-    public void addSnackQuantity(Product product) {
+    public void addSnackQuantity(Product product) throws NoMoreStockException {
         int currentQuantity = product.getQuantity();
         int newQuantity = currentQuantity + 1;
         if (product.getQuantityInStock() > 0) {
             removeStock(product);
             cart.updateProductQuantity(product, newQuantity);
         } else {
-            try {
-                throw new NoMoreStockException();
-            } catch (NoMoreStockException e) {
-                    e.showError();
-            }
+            throw new NoMoreStockException();
         }
     }
 
