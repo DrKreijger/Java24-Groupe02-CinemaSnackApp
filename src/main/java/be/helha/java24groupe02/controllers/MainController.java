@@ -52,7 +52,6 @@ public class MainController extends Application implements CartListener, Quantit
 
     @Override
     public void onProductAddedToCart(Product product) {
-        product.setQuantity(1);
         cart.addProductToCart(product);
     }
 

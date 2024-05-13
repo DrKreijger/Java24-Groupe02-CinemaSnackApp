@@ -23,44 +23,20 @@ public class Product {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
     public String getImagePath() {
         return imagePath;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
-
-    public void setFlavor(String flavor) {
-        this.flavor = flavor;
-    }
-
     public String getFlavor() {
         return flavor;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
     }
 
     public String getSize() {

@@ -22,27 +22,16 @@ public class Cart {
         return cartItems;
     }
 
-    public void setCartItems(List<Product> cartItems) {
-        this.cartItems = cartItems;
-    }
-
     public double getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
     public void addProductToCart(Product product) {
+        product.setQuantity(1);
         cartItems.add(product);
         updateCartPrice();
     }
 
-    public void removeProductFromCart(Product product) {
-        cartItems.remove(product);
-        updateCartPrice();
-    }
 
     public void updateProductQuantity(Product product, int quantity) {
         if (cartItems.contains(product)) {
