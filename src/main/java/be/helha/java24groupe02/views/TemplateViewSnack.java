@@ -1,6 +1,7 @@
 package be.helha.java24groupe02.views;
 
 import be.helha.java24groupe02.models.Product;
+import be.helha.java24groupe02.models.exceptions.NoMoreStockException;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -63,16 +64,19 @@ public class TemplateViewSnack {
         SizeSnackCart.setText(selectedProduct.getSize());
         PriceSnackCart.setText(String.valueOf(selectedProduct.getPrice()));
         QuantitySnackCart.setText(String.valueOf(selectedProduct.getQuantity()));
-        AnchorPaneSnackOrderSummary.setId(String.valueOf(selectedProduct.getId()));
+        AnchorPaneSnackOrderSummary.setId(String.valueOf(selectedProduct.getProductId()));
     }
 
-    public void handleAddSnackQuantity(Product selectedProduct) {
-        int quantity = selectedProduct.getQuantity();
-        quantity++;
-        snackQuantityVisual(quantity, selectedProduct);
-
-        if (quantityChangeListener != null) {
-            quantityChangeListener.onQuantityChanged(selectedProduct, quantity);
+    public void handleAddSnackQuantity(Product selectedProduct) throws NoMoreStockException {
+        try {
+            if (quantityChangeListener != null) {
+                quantityChangeListener.addSnackQuantity(selectedProduct);
+            }
+            int quantity = selectedProduct.getQuantity();
+            quantity++;
+            snackQuantityVisual(quantity, selectedProduct);
+        } catch (NoMoreStockException e) {
+            e.showError();
         }
     }
 
@@ -83,7 +87,7 @@ public class TemplateViewSnack {
         snackQuantityVisual(quantity, selectedProduct);
 
         if (quantityChangeListener != null) {
-                quantityChangeListener.onQuantityChanged(selectedProduct, quantity);
+            quantityChangeListener.removeSnackQuantity(selectedProduct);
         }
     }
 
@@ -120,7 +124,7 @@ public class TemplateViewSnack {
     }
 
     public void handleDeleteSnackCart(Product selectedProduct) {
-        quantityChangeListener.onQuantityChanged(selectedProduct, 0);
+        quantityChangeListener.deleteSnack(selectedProduct);
     }
 
     public void setSnackViewController(SnackViewController snackViewController) {
@@ -132,7 +136,9 @@ public class TemplateViewSnack {
     }
 
     public interface QuantityChangeListener {
-        void onQuantityChanged(Product product, int quantity);
+        void deleteSnack(Product product);
+        void addSnackQuantity(Product product) throws NoMoreStockException;
+        void removeSnackQuantity(Product product);
     }
 
     public void setQuantityChangeListener(QuantityChangeListener listener) {

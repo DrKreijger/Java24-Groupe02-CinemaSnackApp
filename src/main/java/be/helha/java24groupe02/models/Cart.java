@@ -27,14 +27,11 @@ public class Cart {
     }
 
     public void addProductToCart(Product product) {
+        product.setQuantity(1);
         cartItems.add(product);
         updateCartPrice();
     }
 
-    public void removeProductFromCart(Product product) {
-        cartItems.remove(product);
-        updateCartPrice();
-    }
 
     public void updateProductQuantity(Product product, int quantity) {
         if (cartItems.contains(product)) {
