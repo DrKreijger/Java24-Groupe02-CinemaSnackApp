@@ -116,6 +116,7 @@ public class MainController extends Application implements CartListener, Quantit
         int productId = product.getProductId();
         int currentQuantityInStock = product.getQuantityInStock();
         int newQuantityInStock = currentQuantityInStock + quantity;
+        product.setQuantityInStock(newQuantityInStock);
         productDB.updateProductQuantityInStock(productId, newQuantityInStock);
     }
 
