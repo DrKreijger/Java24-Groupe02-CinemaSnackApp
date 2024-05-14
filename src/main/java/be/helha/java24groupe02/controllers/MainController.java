@@ -83,8 +83,12 @@ public class MainController extends Application implements CartListener, Quantit
     public void removeSnackQuantity(Product product) {
         int currentQuantity = product.getQuantity();
         int newQuantity = currentQuantity - 1;
-        addStock(product);
-        cart.updateProductQuantity(product, newQuantity);
+        if(newQuantity !=0) {
+            addStock(product);
+            cart.updateProductQuantity(product, newQuantity);
+        } else {
+            deleteSnack(product);
+        }
     }
 
     private void  removeProductFromCart(int productId) {
