@@ -29,23 +29,43 @@ public class MainController extends Application implements CartListener, Quantit
 
     @Override
     public void start(Stage stage) throws IOException {
-        productDB = new ProductDB();
-        List<Product> products = productDB.getAllProductsFromDatabase();
-        cart = new Cart();
-        cart.addObserver(this);
+        List<Product> products = getProductsFromDB();
+        initializeCart();
+        initializeView(stage, products);
+    }
 
+    private void initializeView(Stage stage, List<Product> products) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(SnackViewController.class.getResource("SnacksView.fxml"));
         Parent root = fxmlLoader.load();
+        initializeController(products, fxmlLoader);
+        initializeStage(stage, root);
+    }
+
+    private static void initializeStage(Stage stage, Parent root) {
+        Scene scene = new Scene(root);
+        stage.setTitle("Snacks App");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private void initializeController(List<Product> products, FXMLLoader fxmlLoader) {
         SnackViewController controller = fxmlLoader.getController();
         controller.initData(productDB, products, cart);
         controller.setCartListener(this);
         controller.setQuantityChangeListener(this);
         setSnackViewController(controller);
+    }
 
-        Scene scene = new Scene(root);
-        stage.setTitle("Snacks App");
-        stage.setScene(scene);
-        stage.show();
+    private void initializeCart() {
+        cart = new Cart();
+        cart.addObserver(this);
+    }
+
+    private List<Product> getProductsFromDB() {
+        productDB = new ProductDB();
+        initializeStock();
+        List<Product> products = productDB.getAllProductsFromDatabase();
+        return products;
     }
 
     public static void main(String[] args) {
@@ -120,10 +140,17 @@ public class MainController extends Application implements CartListener, Quantit
         productDB.updateProductQuantityInStock(productId, newQuantityInStock);
     }
 
+    private void initializeStock() {
+        ProductDB productDB = new ProductDB();
+        productDB.initializeStockToDefault();
+        System.out.println("Quantité en stock initialisée à 10 pour tous les produits.");
+    }
 
     @Override
     public void cartUpdated() {
         snackViewController.updateCartTotal(cart.getTotalPrice());
     }
+
+
 
 }

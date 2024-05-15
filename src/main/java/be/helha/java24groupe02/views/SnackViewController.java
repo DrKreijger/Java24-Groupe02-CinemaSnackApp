@@ -35,6 +35,9 @@ public class SnackViewController {
     @FXML
     private VBox viewOrderVBox;
 
+    @FXML
+    private Button confirmOrderButton;
+
     ProductDB productDB;
     private List<Product> products;
     private Product selectedProduct;
@@ -238,6 +241,10 @@ public class SnackViewController {
         }
     }
 
+    private void confirmOrder() {
+        cart.generateOrderSummary();
+    }
+
     private void initializeView() {
         // Initialiser l'interface utilisateur avec les données
         for (Product product : products) {
@@ -245,6 +252,7 @@ public class SnackViewController {
         }
         // Définir les actions des boutons
         addSnackToOrderButton.setOnAction(event -> updateOrder());
+        confirmOrderButton.setOnAction(event -> confirmOrder());
     }
 
     public interface CartListener {

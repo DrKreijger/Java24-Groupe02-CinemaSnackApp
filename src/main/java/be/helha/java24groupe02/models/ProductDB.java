@@ -27,7 +27,7 @@ public class ProductDB {
                 String flavor = resultSet.getString("flavor");
                 String size = resultSet.getString("size");
                 int quantityInStock = resultSet.getInt("quantity_in_stock");
-                Product product = new Product(productId, name, price, imagePath, flavor, size, quantityInStock);
+                Product product = new Product(productId, name, imagePath, flavor, size, price, quantityInStock);
                 products.add(product);
             }
 
@@ -50,4 +50,15 @@ public class ProductDB {
             e.printStackTrace();
         }
     }
+
+    public void initializeStockToDefault() {
+        try (Connection connection = DriverManager.getConnection(DATABASE_URL);
+             PreparedStatement statement = connection.prepareStatement("UPDATE Products SET quantity_in_stock = 10")) {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Erreur lors de l'initialisation du stock par défaut : " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
 }

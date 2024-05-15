@@ -1,22 +1,25 @@
 package be.helha.java24groupe02.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Product {
+
     private int productId;
     private String name;
-    private double price;
     private String imagePath;
     private String flavor;
     private String size;
+    private double price;
     private int quantity;
     private int quantityInStock;
 
-    public Product(int productId, String name, double price, String imagePath, String flavor, String size, int quantityInStock) {
+    public Product(int productId, String name, String imagePath, String flavor, String size,double price, int quantityInStock) {
         this.productId = productId;
         this.name = name;
-        this.price = price;
         this.imagePath = imagePath;
         this.flavor = flavor;
         this.size = size;
+        this.price = price;
         this.quantity = 1;
         this.quantityInStock = quantityInStock;
     }
@@ -70,6 +73,10 @@ public class Product {
         if (this.quantityInStock > 0){
             this.quantityInStock--;
         }
+    }
+
+    public String getSummary() {
+        return "Nom: " + name + ", Taille: " + size + ", Goût: " + flavor + ", Quantité: " + quantity + ", Prix: " + price + "€";
     }
 
 }
