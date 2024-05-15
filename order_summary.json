@@ -1,0 +1,7 @@
+{
+  "products": [
+    "Nom: Popcorn, Prix: 2.0, Goût: Salé, Taille: Petit",
+    "Nom: Chips, Prix: 1.0, Goût: Salé, Taille: Petit"
+  ],
+  "totalPrice": 3.0
+}

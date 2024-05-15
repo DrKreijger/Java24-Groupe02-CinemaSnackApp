@@ -72,4 +72,8 @@ public class Product {
         }
     }
 
+    public String getSummary() {
+        return "Nom: " + name + ", Prix: " + price + ", Goût: " + flavor + ", Taille: " + size;
+    }
+
 }
