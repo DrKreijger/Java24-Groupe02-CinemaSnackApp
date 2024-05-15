@@ -6,24 +6,28 @@ public class OrderSummaryProduct {
     @SerializedName("name")
     private String name;
 
-    @SerializedName("price")
-    private double price;
-
     @SerializedName("flavor")
     private String flavor;
 
     @SerializedName("size")
     private String size;
 
+    @SerializedName("price")
+    private double pricePerItem;
+
     @SerializedName("quantity")
     private int quantity;
 
-    public OrderSummaryProduct(String name, String flavor, String size, double price, int quantity) {
+    @SerializedName("totalPrice")
+    private double totalPrice;
+
+    public OrderSummaryProduct(String name, String flavor, String size, double pricePerItem, int quantity, double totalPrice) {
         this.name = name;
         this.flavor = flavor;
         this.size = size;
         this.quantity = quantity;
-        this.price = price;
+        this.pricePerItem = pricePerItem;
+        this.totalPrice = totalPrice;
     }
 
     // Getters and setters if necessary

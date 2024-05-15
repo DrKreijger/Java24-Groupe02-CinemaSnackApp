@@ -27,7 +27,7 @@ public class ProductDB {
                 String flavor = resultSet.getString("flavor");
                 String size = resultSet.getString("size");
                 int quantityInStock = resultSet.getInt("quantity_in_stock");
-                Product product = new Product(productId, name, price, imagePath, flavor, size, quantityInStock);
+                Product product = new Product(productId, name, imagePath, flavor, size, price, quantityInStock);
                 products.add(product);
             }
 

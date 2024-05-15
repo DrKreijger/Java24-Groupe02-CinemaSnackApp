@@ -3,27 +3,23 @@ package be.helha.java24groupe02.models;
 import com.google.gson.annotations.SerializedName;
 
 public class Product {
+
     private int productId;
-    @SerializedName("name")
     private String name;
-    @SerializedName("price")
-    private double price;
     private String imagePath;
-    @SerializedName("flavor")
     private String flavor;
-    @SerializedName("size")
     private String size;
-    @SerializedName("quantity")
+    private double price;
     private int quantity;
     private int quantityInStock;
 
-    public Product(int productId, String name, double price, String imagePath, String flavor, String size, int quantityInStock) {
+    public Product(int productId, String name, String imagePath, String flavor, String size,double price, int quantityInStock) {
         this.productId = productId;
         this.name = name;
-        this.price = price;
         this.imagePath = imagePath;
         this.flavor = flavor;
         this.size = size;
+        this.price = price;
         this.quantity = 1;
         this.quantityInStock = quantityInStock;
     }
