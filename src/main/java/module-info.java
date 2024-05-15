@@ -9,10 +9,11 @@ module be.helha.java24groupe02 {
     requires eu.hansolo.tilesfx;
     requires java.sql;
     requires org.xerial.sqlitejdbc;
+    requires com.google.gson;
 
     exports be.helha.java24groupe02.views;
     opens be.helha.java24groupe02.views to javafx.fxml;
     exports be.helha.java24groupe02.controllers;
     exports be.helha.java24groupe02.models;
-    opens be.helha.java24groupe02.models to javafx.fxml;
+    opens be.helha.java24groupe02.models to javafx.fxml, com.google.gson;
 }
