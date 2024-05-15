@@ -73,7 +73,6 @@ public class TemplateViewSnack {
                 quantityChangeListener.addSnackQuantity(selectedProduct);
             }
             int quantity = selectedProduct.getQuantity();
-            quantity++;
             snackQuantityVisual(quantity, selectedProduct);
         } catch (NoMoreStockException e) {
             e.showError();
