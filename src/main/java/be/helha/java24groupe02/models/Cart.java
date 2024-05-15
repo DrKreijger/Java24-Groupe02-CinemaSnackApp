@@ -80,6 +80,13 @@ public class Cart {
 
         Gson gson = new Gson();
         var json = gson.toJson(orderSummary);
-        System.out.println(json);
+        
+        // Write JSON to file
+        try (FileWriter fileWriter = new FileWriter("OrderSummary.json")) {
+            fileWriter.write(json);
+            System.out.println("Order summary written");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

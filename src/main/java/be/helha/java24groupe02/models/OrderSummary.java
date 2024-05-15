@@ -5,14 +5,14 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class OrderSummary {
-    @SerializedName("products")
+    @SerializedName("Products")
     private List<OrderSummaryProduct> products;
 
-    @SerializedName("totalPrice")
-    private double totalPrice;
+    @SerializedName("Total order price")
+    private double totalOrderPrice;
 
-    public OrderSummary(List<OrderSummaryProduct> products, double totalPrice) {
+    public OrderSummary(List<OrderSummaryProduct> products, double totalOrderPrice) {
         this.products = products;
-        this.totalPrice = totalPrice;
+        this.totalOrderPrice = totalOrderPrice;
     }
 }

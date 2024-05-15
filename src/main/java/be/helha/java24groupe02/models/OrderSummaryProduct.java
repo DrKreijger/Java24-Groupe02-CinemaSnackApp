@@ -3,22 +3,22 @@ package be.helha.java24groupe02.models;
 import com.google.gson.annotations.SerializedName;
 
 public class OrderSummaryProduct {
-    @SerializedName("name")
+    @SerializedName("Name")
     private String name;
 
-    @SerializedName("flavor")
+    @SerializedName("Flavor")
     private String flavor;
 
-    @SerializedName("size")
+    @SerializedName("Size")
     private String size;
 
-    @SerializedName("price")
+    @SerializedName("Price per item")
     private double pricePerItem;
 
-    @SerializedName("quantity")
+    @SerializedName("Quantity")
     private int quantity;
 
-    @SerializedName("totalPrice")
+    @SerializedName("Total price per item")
     private double totalPrice;
 
     public OrderSummaryProduct(String name, String flavor, String size, double pricePerItem, int quantity, double totalPrice) {
