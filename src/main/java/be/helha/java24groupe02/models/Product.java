@@ -1,12 +1,19 @@
 package be.helha.java24groupe02.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Product {
     private int productId;
+    @SerializedName("name")
     private String name;
+    @SerializedName("price")
     private double price;
     private String imagePath;
+    @SerializedName("flavor")
     private String flavor;
+    @SerializedName("size")
     private String size;
+    @SerializedName("quantity")
     private int quantity;
     private int quantityInStock;
 
@@ -73,7 +80,7 @@ public class Product {
     }
 
     public String getSummary() {
-        return "Nom: " + name + ", Prix: " + price + ", Goût: " + flavor + ", Taille: " + size;
+        return "Nom: " + name + ", Taille: " + size + ", Goût: " + flavor + ", Quantité: " + quantity + ", Prix: " + price + "€";
     }
 
 }

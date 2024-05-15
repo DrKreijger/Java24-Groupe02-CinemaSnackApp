@@ -1,7 +1,6 @@
 {
   "products": [
-    "Nom: Popcorn, Prix: 2.0, Goût: Salé, Taille: Petit",
-    "Nom: Chips, Prix: 1.0, Goût: Salé, Taille: Petit"
+    "Nom: Popcorn, Taille: Petit, Goût: Salé, Quantité: 1, Prix: 2.0€"
   ],
-  "totalPrice": 3.0
+  "totalPrice": 2.0
 }
