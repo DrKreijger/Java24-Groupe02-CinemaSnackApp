@@ -185,7 +185,7 @@ public class SnackViewController {
                 addSnackToOrderSummary(selectedProduct);
             }
         }
-        updateCartTotal(cart.getTotalPrice());
+        updateCartTotal();
     }
 
 
