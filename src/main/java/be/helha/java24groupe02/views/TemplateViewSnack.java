@@ -1,6 +1,7 @@
 package be.helha.java24groupe02.views;
 
 import be.helha.java24groupe02.models.Product;
+import be.helha.java24groupe02.models.exceptions.NoMoreStockException;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -41,6 +42,7 @@ public class TemplateViewSnack {
 
     @FXML
     public Button DeleteSnackCart;
+
     private SnackViewController snackViewController;
 
     private int uniqueId;
@@ -62,32 +64,34 @@ public class TemplateViewSnack {
         SizeSnackCart.setText(selectedProduct.getSize());
         PriceSnackCart.setText(String.valueOf(selectedProduct.getPrice()));
         QuantitySnackCart.setText(String.valueOf(selectedProduct.getQuantity()));
-        AnchorPaneSnackOrderSummary.setId(String.valueOf(selectedProduct.getId()));
+        AnchorPaneSnackOrderSummary.setId(String.valueOf(selectedProduct.getProductId()));
     }
 
-    public void handleAddSnackQuantity(Product selectedProduct) {
-        int quantity = Integer.parseInt(QuantitySnackCart.getText());
-        quantity++;
-        snackQuantityVisual(quantity);
-        PriceSnackCart.setText(String.valueOf(selectedProduct.getPrice() * quantity));
-        if (quantityChangeListener != null) {
-            quantityChangeListener.onQuantityChanged(selectedProduct, quantity);
+    public void handleAddSnackQuantity(Product selectedProduct) throws NoMoreStockException {
+        try {
+            if (quantityChangeListener != null) {
+                quantityChangeListener.addSnackQuantity(selectedProduct);
+            }
+            int quantity = selectedProduct.getQuantity();
+            snackQuantityVisual(quantity, selectedProduct);
+        } catch (NoMoreStockException e) {
+            e.showError();
         }
     }
 
 
     public void handleRemoveSnackQuantity(Product selectedProduct) {
-        int quantity = Integer.parseInt(QuantitySnackCart.getText());
+        int quantity = selectedProduct.getQuantity();
         quantity--;
-        snackQuantityVisual(quantity);
-        PriceSnackCart.setText(String.valueOf(selectedProduct.getPrice() * quantity));
+        snackQuantityVisual(quantity, selectedProduct);
+
         if (quantityChangeListener != null) {
-            quantityChangeListener.onQuantityChanged(selectedProduct, quantity);
+            quantityChangeListener.removeSnackQuantity(selectedProduct);
         }
     }
 
 
-    public void snackQuantityVisual(String uniqueId, int quantity) {
+    public void snackQuantityVisual(String uniqueId, int quantity, Product selectedProduct) {
         // Obtenir les enfants de viewOrderVBox depuis SnackViewController
         ObservableList<Node> children = snackViewController.getViewOrderVBoxChildren();
 
@@ -99,9 +103,11 @@ public class TemplateViewSnack {
                     // Identifier le nœud racine du TemplateViewSnack
                     // Accéder au label à l'intérieur du TemplateViewSnack en utilisant un sélecteur CSS
                     Label quantityLabel = (Label) root.lookup("#QuantitySnackCart");
+                    Label priceLabel = (Label) root.lookup("#PriceSnackCart");
                     if (quantityLabel != null) {
                         // Modifier le texte du label avec la nouvelle quantité
                         quantityLabel.setText(String.valueOf(quantity));
+                        priceLabel.setText(String.valueOf(quantity * selectedProduct.getPrice()));
                     }
                     // Sortir de la boucle une fois que le TemplateViewSnack approprié est trouvé
                     break;
@@ -111,12 +117,13 @@ public class TemplateViewSnack {
     }
 
 
-    public void snackQuantityVisual(int quantity) {
+    public void snackQuantityVisual(int quantity, Product selectedProduct) {
         QuantitySnackCart.setText(String.valueOf(quantity));
+        PriceSnackCart.setText(String.valueOf(selectedProduct.getPrice() * quantity));
     }
 
     public void handleDeleteSnackCart(Product selectedProduct) {
-        quantityChangeListener.onQuantityChanged(selectedProduct, 0);
+        quantityChangeListener.deleteSnack(selectedProduct);
     }
 
     public void setSnackViewController(SnackViewController snackViewController) {
@@ -128,7 +135,9 @@ public class TemplateViewSnack {
     }
 
     public interface QuantityChangeListener {
-        void onQuantityChanged(Product product, int quantity);
+        void deleteSnack(Product product);
+        void addSnackQuantity(Product product) throws NoMoreStockException;
+        void removeSnackQuantity(Product product);
     }
 
     public void setQuantityChangeListener(QuantityChangeListener listener) {
