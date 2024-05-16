@@ -55,7 +55,7 @@ public class TemplateViewButtonSnack {
 
     public void setProductData(Product products) {
         // Charger l'image du snack
-        Image productImage = new Image("file:" + products.getImagePath());
+        Image productImage = new Image(products.getImagePath());
         ImageSnackOrder.setImage(productImage);
 
         // Configurer les autres données du produit

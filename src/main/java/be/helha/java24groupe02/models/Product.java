@@ -1,14 +1,11 @@
 package be.helha.java24groupe02.models;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.io.InputStream;
 
 public class Product {
 
     private int productId;
     private String name;
-    //private String imagePath;
     private InputStream imagePath;
     private String flavor;
     private String size;
@@ -16,7 +13,7 @@ public class Product {
     private int quantity;
     private int quantityInStock;
 
-    public Product(int productId, String name, InputStream imagePath, String flavor, String size,double price, int quantityInStock) {
+    public Product(int productId, String name, InputStream imagePath, String flavor, String size, double price, int quantityInStock) {
         this.productId = productId;
         this.name = name;
         this.imagePath = imagePath;

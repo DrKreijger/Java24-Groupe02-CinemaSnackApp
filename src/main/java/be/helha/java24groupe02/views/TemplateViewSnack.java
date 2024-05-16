@@ -57,8 +57,7 @@ public class TemplateViewSnack {
 
     public void getSelectedProductData (Product selectedProduct) {
         // Charger l'image du snack
-        Image productImage = new Image("file:" + selectedProduct.getImagePath());
-        System.out.println("file:" + selectedProduct.getImagePath());
+        Image productImage = new Image(selectedProduct.getImagePath());
         ImageSnackCart.setImage(productImage);
         NameSnackCart.setText(selectedProduct.getName());
         FlavorSnackCart.setText(selectedProduct.getFlavor());
