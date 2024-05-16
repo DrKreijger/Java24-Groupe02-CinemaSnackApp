@@ -3,6 +3,7 @@ package be.helha.java24groupe02.models;
 import javafx.scene.image.Image;
 
 import java.io.InputStream;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -26,7 +27,7 @@ public class ProductDB {
                 int productId = resultSet.getInt("product_id");
                 String name = resultSet.getString("name");
                 double price = resultSet.getDouble("price");
-                InputStream imagePath = getClass().getResourceAsStream(resultSet.getString("image_path"));
+                URL imagePath = getClass().getResource(resultSet.getString("image_path"));
                 String flavor = resultSet.getString("flavor");
                 String size = resultSet.getString("size");
                 int quantityInStock = resultSet.getInt("quantity_in_stock");

@@ -1,19 +1,21 @@
 package be.helha.java24groupe02.models;
 
 import java.io.InputStream;
+import java.net.URL;
 
 public class Product {
 
     private int productId;
     private String name;
-    private InputStream imagePath;
+    private URL imagePath;
     private String flavor;
     private String size;
     private double price;
     private int quantity;
     private int quantityInStock;
 
-    public Product(int productId, String name, InputStream imagePath, String flavor, String size, double price, int quantityInStock) {
+
+    public Product(int productId, String name, URL imagePath, String flavor, String size, double price, int quantityInStock) {
         this.productId = productId;
         this.name = name;
         this.imagePath = imagePath;
@@ -37,7 +39,7 @@ public class Product {
         return price;
     }
 
-    public InputStream getImagePath() {
+    public URL getImagePath() {
         return imagePath;
     }
 
