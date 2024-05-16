@@ -19,8 +19,8 @@ import java.util.List;
 
 public class MainController extends Application implements CartListener, QuantityChangeListener, CartObserver {
 
-    Cart cart;
-    ProductDB productDB;
+    private Cart cart;
+    private ProductDB productDB;
     private SnackViewController snackViewController;
 
     public void setSnackViewController(SnackViewController snackViewController) {
