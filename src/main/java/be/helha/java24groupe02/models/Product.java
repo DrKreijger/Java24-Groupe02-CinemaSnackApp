@@ -1,77 +1,49 @@
+
 package be.helha.java24groupe02.models;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observer;
+import com.google.gson.annotations.SerializedName;
 
 public class Product {
-    private List<CartObserver> observers = new ArrayList<>();
-    private void notifyObservers(List<Product> cartItems) {
-        for (CartObserver observer : observers) {
-            observer.update(cartItems);
-        }
-    }
 
-    private int id;
+    private int productId;
     private String name;
-    private double price;
     private String imagePath;
     private String flavor;
     private String size;
+    private double price;
     private int quantity;
+    private int quantityInStock;
 
-    public Product(int id, String name, double price, String imagePath, String flavor, String size) {
-        this.id = id;
+    public Product(int productId, String name, String imagePath, String flavor, String size,double price, int quantityInStock) {
+        this.productId = productId;
         this.name = name;
-        this.price = price;
         this.imagePath = imagePath;
         this.flavor = flavor;
         this.size = size;
+        this.price = price;
         this.quantity = 1;
+        this.quantityInStock = quantityInStock;
     }
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getProductId() {
+        return productId;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public double getPrice() {
         return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     public String getImagePath() {
         return imagePath;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
-
-    public void setFlavor(String flavor) {
-        this.flavor = flavor;
-    }
-
     public String getFlavor() {
         return flavor;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
     }
 
     public String getSize() {
@@ -85,4 +57,27 @@ public class Product {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    public int getQuantityInStock() {
+        return quantityInStock;
+    }
+
+    public void setQuantityInStock(int quantityInStock) {
+        this.quantityInStock = quantityInStock;
+    }
+
+    public void addStock(){
+        this.quantityInStock++;
+    }
+
+    public void removeStock(){
+        if (this.quantityInStock > 0){
+            this.quantityInStock--;
+        }
+    }
+
+    public String getSummary() {
+        return "Nom: " + name + ", Taille: " + size + ", Goût: " + flavor + ", Quantité: " + quantity + ", Prix: " + price + "€";
+    }
+
 }

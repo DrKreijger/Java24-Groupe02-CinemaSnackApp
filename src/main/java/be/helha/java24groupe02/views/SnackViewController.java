@@ -1,8 +1,10 @@
+
 package be.helha.java24groupe02.views;
 
 import be.helha.java24groupe02.models.Cart;
 import be.helha.java24groupe02.models.Product;
 import be.helha.java24groupe02.models.ProductDB;
+import be.helha.java24groupe02.models.exceptions.NoMoreStockException;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,6 +35,9 @@ public class SnackViewController {
 
     @FXML
     private VBox viewOrderVBox;
+
+    @FXML
+    private Button confirmOrderButton;
 
     ProductDB productDB;
     private List<Product> products;
@@ -74,7 +79,7 @@ public class SnackViewController {
             Parent root = loader.load();
             TemplateViewSnack controller = loader.getController();
             controller.setSnackViewController(this);
-            controller.setUniqueId(productInCart.getId());
+            controller.setUniqueId(productInCart.getProductId());
             return new Pair<>(root, controller);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -91,7 +96,13 @@ public class SnackViewController {
         setTemplateViewSnack(controller);
         controller.getSelectedProductData(selectedProduct);
         controller.setQuantityChangeListener(quantityChangeListener);
-        controller.addSnackQuantityButton.setOnAction(event -> controller.handleAddSnackQuantity(productInCart));
+        controller.addSnackQuantityButton.setOnAction(event -> {
+            try {
+                controller.handleAddSnackQuantity(productInCart);
+            } catch (NoMoreStockException e) {
+                throw new RuntimeException(e);
+            }
+        });
         controller.removeSnackQuantityButton.setOnAction(event -> controller.handleRemoveSnackQuantity(productInCart));
         controller.DeleteSnackCart.setOnAction(event -> controller.handleDeleteSnackCart(productInCart));
         controller.setQuantityChangeListener(quantityChangeListener);
@@ -160,7 +171,7 @@ public class SnackViewController {
     private Product getProductIdFromButton(Button button) {
         String buttonId = button.getId();
         for (Product products : this.products) {
-            if ((String.valueOf(products.getId()).equals(buttonId))) {
+            if ((String.valueOf(products.getProductId()).equals(buttonId))) {
                 return products;
             }
         }
@@ -175,23 +186,27 @@ public class SnackViewController {
             int selectedProductQuantity = selectedProduct.getQuantity();
             selectedProductQuantity++;
             // Ajouter le produit au panier
-            Product productInCart = findProductInCart(selectedProduct.getId());
+            Product productInCart = findProductInCart(selectedProduct.getProductId());
             if (productInCart != null) {
-                // Le produit est déjà dans le panier, aucune action supplémentaire requise
-                cartListener.onQuantityChanged(selectedProduct, selectedProductQuantity);
-                templateViewSnack.snackQuantityVisual(Integer.toString(selectedProduct.getId()) ,selectedProductQuantity, selectedProduct);
+                try {
+                    // Le produit est déjà dans le panier, aucune action supplémentaire requise
+                    cartListener.addSnackQuantity(selectedProduct);
+                    templateViewSnack.snackQuantityVisual(Integer.toString(selectedProduct.getProductId()) ,selectedProductQuantity, selectedProduct);
+                } catch (NoMoreStockException e) {
+                    e.showError();
+                }
             } else {
                 cartListener.onProductAddedToCart(selectedProduct);
                 addSnackToOrderSummary(selectedProduct);
             }
         }
-        updateCartTotal();
+        updateCartTotal(cart.getTotalPrice());
     }
 
 
     private Product findProductInCart(int productId) {
         for (Product product : cart.getCartItems()) {
-            if (product.getId() == productId) {
+            if (product.getProductId() == productId) {
                 return product;
             }
         }
@@ -201,8 +216,8 @@ public class SnackViewController {
     /**
      * Met à jour le prix total du panier.
      */
-    public void updateCartTotal() {
-        totalPriceLabel.setText(cart.getTotalPrice() + "€");
+    public void updateCartTotal(Double totalPrice) {
+        totalPriceLabel.setText(totalPrice + "€");
     }
 
     public void removeProductFromOrderSummary(int productId) {
@@ -227,6 +242,10 @@ public class SnackViewController {
         }
     }
 
+    private void confirmOrder() {
+        cart.generateOrderSummary();
+    }
+
     private void initializeView() {
         // Initialiser l'interface utilisateur avec les données
         for (Product product : products) {
@@ -234,11 +253,12 @@ public class SnackViewController {
         }
         // Définir les actions des boutons
         addSnackToOrderButton.setOnAction(event -> updateOrder());
+        confirmOrderButton.setOnAction(event -> confirmOrder());
     }
 
     public interface CartListener {
         void onProductAddedToCart(Product product);
-        void onQuantityChanged(Product product, int quantity);
+        void addSnackQuantity(Product product) throws NoMoreStockException;
     }
 
     public ObservableList<Node> getViewOrderVBoxChildren() {

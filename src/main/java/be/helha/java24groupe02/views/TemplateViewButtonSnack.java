@@ -63,7 +63,7 @@ public class TemplateViewButtonSnack {
         IsFlavorNull(products);
         SizeSnackOrder.setText("Taille: " + products.getSize());
         PriceSnackOrder.setText("Prix: " + products.getPrice() + "€");
-        ButtonSnackOrder.setId(String.valueOf(products.getId()));
+        ButtonSnackOrder.setId(String.valueOf(products.getProductId()));
     }
 
     private void IsFlavorNull(Product products) {
