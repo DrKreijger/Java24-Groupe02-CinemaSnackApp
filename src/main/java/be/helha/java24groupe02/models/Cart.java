@@ -90,19 +90,4 @@ public class Cart {
         }
     }
 
-    public void removeProductFromCart(int productId) {
-        // Recherche du produit dans le panier
-        Product removedProduct = null;
-        for (Product product : cartItems) {
-            if (product.getId() == productId) {
-                removedProduct = product;
-                break;
-            }
-        }
-        // Si le produit est trouvé, on le supprime du panier et on soustrait son prix du prix total
-        if (removedProduct != null) {
-            cartItems.remove(removedProduct);
-            totalPrice -= removedProduct.getPrice();
-        }
-    }
 }
