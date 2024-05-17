@@ -105,7 +105,6 @@ public class SnackViewController {
             controller.removeSnackQuantityButton.setOnAction(event -> controller.handleRemoveSnackQuantity(productInCart));
             controller.DeleteSnackCart.setOnAction(event -> controller.handleDeleteSnackCart(productInCart));
             controller.setQuantityChangeListener(quantityChangeListener);
-
             viewOrderVBox.getChildren().add(root);
     }
 

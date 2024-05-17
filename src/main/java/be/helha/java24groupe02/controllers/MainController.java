@@ -160,6 +160,4 @@ public class MainController extends Application implements CartListener, Quantit
         snackViewController.updateCartTotal(cart.getTotalPrice());
     }
 
-
-
 }
