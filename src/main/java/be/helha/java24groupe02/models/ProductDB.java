@@ -1,5 +1,6 @@
 package be.helha.java24groupe02.models;
 
+import be.helha.java24groupe02.models.exceptions.ProductLoadingException;
 import javafx.scene.image.Image;
 
 import java.io.InputStream;
@@ -16,7 +17,7 @@ public class ProductDB {
 
     private static final String DATABASE_URL = "jdbc:sqlite:snacks_simple.db";
 
-    public List<Product> getAllProductsFromDatabase() {
+    public List<Product> getAllProductsFromDatabase() throws ProductLoadingException {
         List<Product> products = new ArrayList<>();
 
         try (Connection connection = DriverManager.getConnection(DATABASE_URL);
@@ -34,10 +35,8 @@ public class ProductDB {
                 Product product = new Product(productId, name, imagePath, flavor, size, price, quantityInStock);
                 products.add(product);
             }
-
         } catch (SQLException e) {
-            System.err.println("Erreur lors de la récupération des produits depuis la base de données : " + e.getMessage());
-            e.printStackTrace();
+            throw new ProductLoadingException();
         }
         return products;
     }
@@ -48,7 +47,6 @@ public class ProductDB {
             statement.setInt(1, newStock);
             statement.setInt(2, productId);
             statement.executeUpdate();
-
         } catch (SQLException e) {
             System.err.println("Erreur lors de la mise à jour du stock du produit : " + e.getMessage());
             e.printStackTrace();

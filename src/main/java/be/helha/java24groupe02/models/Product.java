@@ -76,9 +76,4 @@ public class Product {
             this.quantityInStock--;
         }
     }
-
-    public String getSummary() {
-        return "Nom: " + name + ", Taille: " + size + ", Goût: " + flavor + ", Quantité: " + quantity + ", Prix: " + price + "€";
-    }
-
 }
