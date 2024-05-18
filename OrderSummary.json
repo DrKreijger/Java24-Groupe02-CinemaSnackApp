@@ -1,1 +1,1 @@
-{"Products":[{"Name":"Popcorn","Flavor":"Salé","Size":"Petit","Price per item":2.0,"Quantity":10,"Total price per item":20.0}],"Total order price":20.0}
+{"Products":[{"Name":"Test Product","Flavor":"Vanilla","Size":"Large","Price per item":10.0,"Quantity":1,"Total price per item":10.0}],"Total order price":10.0}
