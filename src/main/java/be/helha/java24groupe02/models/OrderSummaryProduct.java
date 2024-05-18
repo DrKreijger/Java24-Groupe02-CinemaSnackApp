@@ -29,6 +29,4 @@ public class OrderSummaryProduct {
         this.pricePerItem = pricePerItem;
         this.totalPrice = totalPrice;
     }
-
-    // Getters and setters if necessary
 }
