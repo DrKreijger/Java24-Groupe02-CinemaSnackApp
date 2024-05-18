@@ -12,6 +12,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
+import java.net.URL;
+
 public class TemplateViewSnack {
     @FXML
     private AnchorPane AnchorPaneSnackOrderSummary;
@@ -57,7 +59,8 @@ public class TemplateViewSnack {
 
     public void getSelectedProductData (Product selectedProduct) {
         // Charger l'image du snack
-        Image productImage = new Image("file:" + selectedProduct.getImagePath());
+        URL selectedProductImageURL = (selectedProduct.getImagePath());
+        Image productImage = new Image(selectedProductImageURL.toExternalForm());
         ImageSnackCart.setImage(productImage);
         NameSnackCart.setText(selectedProduct.getName());
         FlavorSnackCart.setText(selectedProduct.getFlavor());

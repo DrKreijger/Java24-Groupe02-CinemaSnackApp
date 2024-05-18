@@ -1,13 +1,7 @@
 package be.helha.java24groupe02.models.exceptions;
 
-import javafx.scene.control.Alert;
-
-public class NoMoreStockException extends Throwable {
-    public void showError() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur de stock insuffisant");
-        alert.setHeaderText("Le stock actuel est insuffisant.");
-        alert.setContentText("Veuillez réduire la quantité de snacks commandée.");
-        alert.showAndWait();
+public class NoMoreStockException extends ExceptionsWithAlertTemplate {
+    public NoMoreStockException() {
+        super("Erreur de stock insuffisant", "Le stock actuel est insuffisant", "Veuillez réduire la quantité de snacks commandés.");
     }
 }

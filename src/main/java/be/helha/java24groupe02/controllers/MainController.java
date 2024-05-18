@@ -5,6 +5,7 @@ import be.helha.java24groupe02.models.CartObserver;
 import be.helha.java24groupe02.models.Product;
 import be.helha.java24groupe02.models.ProductDB;
 import be.helha.java24groupe02.models.exceptions.NoMoreStockException;
+import be.helha.java24groupe02.models.exceptions.ProductLoadingException;
 import be.helha.java24groupe02.views.SnackViewController;
 import be.helha.java24groupe02.views.TemplateViewSnack.QuantityChangeListener;
 import be.helha.java24groupe02.views.SnackViewController.CartListener;
@@ -19,8 +20,8 @@ import java.util.List;
 
 public class MainController extends Application implements CartListener, QuantityChangeListener, CartObserver {
 
-    Cart cart;
-    ProductDB productDB;
+    private Cart cart;
+    private ProductDB productDB;
     private SnackViewController snackViewController;
 
     public void setSnackViewController(SnackViewController snackViewController) {
@@ -29,9 +30,13 @@ public class MainController extends Application implements CartListener, Quantit
 
     @Override
     public void start(Stage stage) throws IOException {
-        List<Product> products = getProductsFromDB();
-        initializeCart();
-        initializeView(stage, products);
+        try {
+            List<Product> products = getProductsFromDB();
+            initializeCart();
+            initializeView(stage, products);
+        } catch (ProductLoadingException e) {
+            e.showError();
+        }
     }
 
     private void initializeView(Stage stage, List<Product> products) throws IOException {
@@ -61,11 +66,15 @@ public class MainController extends Application implements CartListener, Quantit
         cart.addObserver(this);
     }
 
-    private List<Product> getProductsFromDB() {
-        productDB = new ProductDB();
-        initializeStock();
-        List<Product> products = productDB.getAllProductsFromDatabase();
-        return products;
+    private List<Product> getProductsFromDB() throws ProductLoadingException {
+        try{
+            productDB = new ProductDB();
+            initializeStock();
+            List<Product> products = productDB.getAllProductsFromDatabase();
+            return products;
+        } catch (ProductLoadingException e) {
+            throw new ProductLoadingException();
+        }
     }
 
     public static void main(String[] args) {

@@ -8,6 +8,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
+import java.net.URL;
+
 public class TemplateViewButtonSnack {
     @FXML
     private VBox SnackOrderVbox;
@@ -55,9 +57,9 @@ public class TemplateViewButtonSnack {
 
     public void setProductData(Product products) {
         // Charger l'image du snack
-        Image productImage = new Image("file:" + products.getImagePath());
+        URL productImageURL = (products.getImagePath());
+        Image productImage = new Image(productImageURL.toExternalForm());
         ImageSnackOrder.setImage(productImage);
-
         // Configurer les autres données du produit
         NameSnackOrder.setText(products.getName());
         IsFlavorNull(products);
