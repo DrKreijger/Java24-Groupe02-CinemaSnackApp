@@ -1,26 +1,21 @@
 package be.helha.java24groupe02.server;
 
-import be.helha.java24groupe02.common.network.ObjectSocket;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Scanner;
+import java.net.SocketException;
 
-public class Client extends Thread{
-    private final Server server;
-    ObjectSocket objectSocket;
-
-    public Client(ObjectSocket objectSocket, Server server) {
-        this.objectSocket = objectSocket;
-        this.server = server;
-    }
-
-    @Override
-    public void run() {
+public class Client {
+    public static void main(String[] args) {
+        System.out.println("Démarrage du client");
         try {
-            while (true) {
-                Object object = this.objectSocket.read();
-                System.out.println("Received object : " + object);
-            }
-        } catch (Exception e) {
-            System.err.println("Error while reading object");
-            e.printStackTrace();
+            Socket socket = new Socket("localhost", 8000);
+            System.out.println("Connexion établie avec le serveur");
+            socket.close();
+        } catch (IOException e) {
+            System.out.println("Erreur lors de la connexion au serveur");
+            throw new RuntimeException(e);
         }
     }
 }

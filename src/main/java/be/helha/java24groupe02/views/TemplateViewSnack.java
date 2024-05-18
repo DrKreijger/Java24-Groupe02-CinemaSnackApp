@@ -1,3 +1,4 @@
+
 package be.helha.java24groupe02.views;
 
 import be.helha.java24groupe02.models.Product;
@@ -11,8 +12,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-
-import java.net.URL;
 
 public class TemplateViewSnack {
     @FXML
@@ -59,8 +58,7 @@ public class TemplateViewSnack {
 
     public void getSelectedProductData (Product selectedProduct) {
         // Charger l'image du snack
-        URL selectedProductImageURL = (selectedProduct.getImagePath());
-        Image productImage = new Image(selectedProductImageURL.toExternalForm());
+        Image productImage = new Image("file:" + selectedProduct.getImagePath());
         ImageSnackCart.setImage(productImage);
         NameSnackCart.setText(selectedProduct.getName());
         FlavorSnackCart.setText(selectedProduct.getFlavor());

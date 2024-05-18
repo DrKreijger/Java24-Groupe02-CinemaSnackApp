@@ -1,3 +1,4 @@
+
 package be.helha.java24groupe02.views;
 
 import be.helha.java24groupe02.models.Cart;
@@ -89,24 +90,24 @@ public class SnackViewController {
      * Ajoute un snack à la commande au résumé de la commande.
      */
     private void addSnackToOrderSummary(Product productInCart) {
-            Pair<Parent, TemplateViewSnack> pair = loadTemplateViewSnackController(productInCart);
-            Parent root = pair.getKey();
-            TemplateViewSnack controller = pair.getValue();
-            setTemplateViewSnack(controller);
-            controller.getSelectedProductData(selectedProduct);
-            controller.setQuantityChangeListener(quantityChangeListener);
-            controller.addSnackQuantityButton.setOnAction(event -> {
-                try {
-                    controller.handleAddSnackQuantity(productInCart);
-                } catch (NoMoreStockException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-            controller.removeSnackQuantityButton.setOnAction(event -> controller.handleRemoveSnackQuantity(productInCart));
-            controller.DeleteSnackCart.setOnAction(event -> controller.handleDeleteSnackCart(productInCart));
-            controller.setQuantityChangeListener(quantityChangeListener);
+        Pair<Parent, TemplateViewSnack> pair = loadTemplateViewSnackController(productInCart);
+        Parent root = pair.getKey();
+        TemplateViewSnack controller = pair.getValue();
+        setTemplateViewSnack(controller);
+        controller.getSelectedProductData(selectedProduct);
+        controller.setQuantityChangeListener(quantityChangeListener);
+        controller.addSnackQuantityButton.setOnAction(event -> {
+            try {
+                controller.handleAddSnackQuantity(productInCart);
+            } catch (NoMoreStockException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        controller.removeSnackQuantityButton.setOnAction(event -> controller.handleRemoveSnackQuantity(productInCart));
+        controller.DeleteSnackCart.setOnAction(event -> controller.handleDeleteSnackCart(productInCart));
+        controller.setQuantityChangeListener(quantityChangeListener);
 
-            viewOrderVBox.getChildren().add(root);
+        viewOrderVBox.getChildren().add(root);
     }
 
     /**
@@ -188,9 +189,9 @@ public class SnackViewController {
             Product productInCart = findProductInCart(selectedProduct.getProductId());
             if (productInCart != null) {
                 try {
-                // Le produit est déjà dans le panier, aucune action supplémentaire requise
-                cartListener.addSnackQuantity(selectedProduct);
-                templateViewSnack.snackQuantityVisual(Integer.toString(selectedProduct.getProductId()) ,selectedProductQuantity, selectedProduct);
+                    // Le produit est déjà dans le panier, aucune action supplémentaire requise
+                    cartListener.addSnackQuantity(selectedProduct);
+                    templateViewSnack.snackQuantityVisual(Integer.toString(selectedProduct.getProductId()) ,selectedProductQuantity, selectedProduct);
                 } catch (NoMoreStockException e) {
                     e.showError();
                 }
