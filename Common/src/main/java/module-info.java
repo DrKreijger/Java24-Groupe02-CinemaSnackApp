@@ -1,7 +1,7 @@
 module Common {
     requires java.sql;
-    requires org.xerial.sqlitejdbc;
     requires com.google.gson;
+    requires org.mockito;
     requires javafx.controls;
 
     exports be.helha.java24groupe02.models;

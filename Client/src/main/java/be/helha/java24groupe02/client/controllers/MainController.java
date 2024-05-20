@@ -7,7 +7,6 @@ import be.helha.java24groupe02.models.Product;
 import be.helha.java24groupe02.models.ProductDB;
 import be.helha.java24groupe02.models.exceptions.NoMoreStockException;
 import be.helha.java24groupe02.models.exceptions.ProductLoadingException;
-import be.helha.java24groupe02.client.views.*;
 import be.helha.java24groupe02.client.views.TemplateViewSnack.QuantityChangeListener;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
