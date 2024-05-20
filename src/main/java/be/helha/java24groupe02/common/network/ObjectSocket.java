@@ -29,8 +29,5 @@ public class ObjectSocket implements AutoCloseable {
 
     @Override
     public void close() throws Exception {
-        objectOutputStream.close();
-        objectInputStream.close();
-        socket.close();
     }
 }

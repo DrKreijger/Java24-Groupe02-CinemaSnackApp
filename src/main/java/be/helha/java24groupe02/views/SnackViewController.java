@@ -1,5 +1,7 @@
 package be.helha.java24groupe02.views;
 
+import be.helha.java24groupe02.common.network.ObjectSocket;
+import be.helha.java24groupe02.common.network.ServerConstants;
 import be.helha.java24groupe02.models.Cart;
 import be.helha.java24groupe02.models.Product;
 import be.helha.java24groupe02.models.ProductDB;
@@ -14,6 +16,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.List;
 import be.helha.java24groupe02.views.TemplateViewSnack.QuantityChangeListener;
 import javafx.util.Pair;
@@ -180,7 +183,7 @@ public class SnackViewController {
     /**
      * Met à jour la commande.
      */
-    private void updateOrder() {
+    private void updateOrder() throws IOException {
         if (selectedProduct != null && cartListener != null) {
             int selectedProductQuantity = selectedProduct.getQuantity();
             selectedProductQuantity++;
@@ -198,6 +201,17 @@ public class SnackViewController {
                 cartListener.onProductAddedToCart(selectedProduct);
                 addSnackToOrderSummary(selectedProduct);
             }
+        }
+        try (Socket socket = new Socket("localhost", ServerConstants.PORT);
+                ObjectSocket objectSocket = new ObjectSocket(socket)) {
+                String message = selectedProduct.getName();
+                objectSocket.write(message);
+
+                String response = (String) objectSocket.read();
+                System.out.println("Response at server: " + response);
+            } catch (Exception e) {
+                System.err.println("Error during communication with the client: " + e.getMessage());
+                e.printStackTrace();
         }
         updateCartTotal(cart.getTotalPrice());
     }
@@ -251,7 +265,13 @@ public class SnackViewController {
             addSnackToInterface(product);
         }
         // Définir les actions des boutons
-        addSnackToOrderButton.setOnAction(event -> updateOrder());
+        addSnackToOrderButton.setOnAction(event -> {
+            try {
+                updateOrder();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
         confirmOrderButton.setOnAction(event -> confirmOrder());
     }
 
