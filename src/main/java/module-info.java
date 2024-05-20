@@ -16,4 +16,5 @@ module be.helha.java24groupe02 {
     exports be.helha.java24groupe02.controllers;
     exports be.helha.java24groupe02.models;
     opens be.helha.java24groupe02.models to javafx.fxml, com.google.gson;
+    exports be.helha.java24groupe02.common.network;
 }

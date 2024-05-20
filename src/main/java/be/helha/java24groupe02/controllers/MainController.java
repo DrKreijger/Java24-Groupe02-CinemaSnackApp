@@ -1,5 +1,7 @@
 package be.helha.java24groupe02.controllers;
 
+import be.helha.java24groupe02.common.network.ObjectSocket;
+import be.helha.java24groupe02.common.network.ServerConstants;
 import be.helha.java24groupe02.models.Cart;
 import be.helha.java24groupe02.models.CartObserver;
 import be.helha.java24groupe02.models.Product;
@@ -15,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.List;
 
 
@@ -34,8 +37,23 @@ public class MainController extends Application implements CartListener, Quantit
             List<Product> products = getProductsFromDB();
             initializeCart();
             initializeView(stage, products);
+            try {
+                Socket socket = new Socket("localhost", ServerConstants.PORT);
+                try (ObjectSocket objectSocket = new ObjectSocket(socket)) {
+                    System.out.println("Client connected to server");
+                } catch (ClassNotFoundException e) {
+                    System.err.println("Class not found during communication with the server: " + e.getMessage());
+                } catch (IOException e) {
+                    System.err.println("I/O error during communication with the server: " + e.getMessage());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            } catch (IOException e) {
+                System.err.println("Failed to connect to the server: " + e.getMessage());
+            }
+
         } catch (ProductLoadingException e) {
-            e.showError();
+            System.err.println("Erreur lors du chargement des produits");
         }
     }
 

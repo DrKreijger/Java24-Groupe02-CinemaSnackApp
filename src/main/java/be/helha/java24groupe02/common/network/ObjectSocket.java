@@ -1,37 +1,36 @@
 package be.helha.java24groupe02.common.network;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 
-public class ObjectSocket {
-    private final ObjectOutputStream out;
-    private final ObjectInputStream in;
+public class ObjectSocket implements AutoCloseable {
+    private final ObjectOutputStream objectOutputStream;
+    private final Socket socket;
+    private final ObjectInputStream objectInputStream;
 
     public ObjectSocket(Socket socket) throws IOException {
-        this.out = new ObjectOutputStream(socket.getOutputStream());
-        this.in = new ObjectInputStream(socket.getInputStream());
+        this.socket = socket;
+        OutputStream out = socket.getOutputStream();
+        InputStream in = socket.getInputStream();
+
+        this.objectOutputStream = new ObjectOutputStream(out);
+        this.objectInputStream = new ObjectInputStream(in);
     }
 
-    /**
-     * Write an object to the socket
-     * @param object The object to write
-     * @throws IOException If the object cannot be written
-     */
     public void write(Object object) throws IOException {
-        out.reset();
-        out.writeObject(object);
+        objectOutputStream.reset();
+        objectOutputStream.writeObject(object);
+        objectOutputStream.flush();
     }
 
-    /**
-     * Read an object from the socket
-     * @return The object read
-     * @param <T> The type of the object to read (deduced from the context of the method call)
-     * @throws IOException If the object cannot be read
-     * @throws ClassNotFoundException If the object class cannot be found
-     */
-    public <T> T read() throws IOException, ClassNotFoundException {
-        return (T) in.readObject();
+    public Object read() throws IOException, ClassNotFoundException {
+        return objectInputStream.readObject();
+    }
+
+    @Override
+    public void close() throws Exception {
+        objectOutputStream.close();
+        objectInputStream.close();
+        socket.close();
     }
 }
