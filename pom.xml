@@ -146,8 +146,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>org.example.java24groupe02/be.helha.java24groupe02.controllers.MainController
-                            </mainClass>
+                            <mainClass>be.helha.java24groupe02.client.controllers.Launcher</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

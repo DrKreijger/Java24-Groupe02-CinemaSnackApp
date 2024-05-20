@@ -1,1 +1,1 @@
-{"Products":[{"Name":"Test Product","Flavor":"Vanilla","Size":"Large","Price per item":10.0,"Quantity":1,"Total price per item":10.0}],"Total order price":10.0}
+{"Products":[{"Name":"Chips","Flavor":"Salé","Size":"Petit","Price per item":1.0,"Quantity":1,"Total price per item":1.0},{"Name":"Chips","Flavor":"Ketchup","Size":"Grand","Price per item":1.5,"Quantity":1,"Total price per item":1.5},{"Name":"Coca-Cola","Size":"Grand","Price per item":1.5,"Quantity":1,"Total price per item":1.5}],"Total order price":4.0}
