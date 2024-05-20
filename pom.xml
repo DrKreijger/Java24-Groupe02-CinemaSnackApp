@@ -7,7 +7,11 @@
     <groupId>org.example</groupId>
     <artifactId>Java24-Groupe02</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <name>Java24-Groupe02</name>
+    <modules>
+        <module>Client</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
