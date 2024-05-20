@@ -4,13 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
+    <groupId>be.helha.java24groupe02</groupId>
     <artifactId>Java24-Groupe02</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Java24-Groupe02</name>
     <modules>
         <module>Client</module>
+        <module>Common</module>
     </modules>
 
     <properties>
@@ -121,7 +122,7 @@
 
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>be.helha.java24groupe02.controllers.Launcher</mainClass>
+                                    <mainClass>be.helha.java24groupe02.client.controllers.Launcher</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
