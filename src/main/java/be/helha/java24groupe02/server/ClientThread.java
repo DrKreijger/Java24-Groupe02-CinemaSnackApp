@@ -2,6 +2,7 @@ package be.helha.java24groupe02.server;
 
 import be.helha.java24groupe02.common.network.ObjectSocket;
 
+import java.io.IOException;
 import java.net.Socket;
 
 public class ClientThread extends Thread{
@@ -11,15 +12,15 @@ public class ClientThread extends Thread{
         this.socket = socket;
     }
 
-
     @Override
     public void run() {
         try (ObjectSocket objectSocket = new ObjectSocket(socket)) {
-            String string = (String) objectSocket.read();
-            System.out.println("Received string : " + string);
-            objectSocket.write(string.toUpperCase());
+            String message = (String) objectSocket.read();
+            System.out.println("Received from client: " + message);
+            objectSocket.write(message.toUpperCase());
         } catch (Exception e) {
-            System.err.println("Erreur de communication avec le client");
+            System.err.println("Error during communication with the client: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }
