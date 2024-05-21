@@ -41,13 +41,6 @@ public class MainController extends Application implements CartListener, Quantit
                 Socket socket = new Socket("localhost", ServerConstants.PORT);
                 try (ObjectSocket objectSocket = new ObjectSocket(socket)) {
                     System.out.println("Client connected to server");
-                    objectSocket.write("Im a client");
-
-                    String response = (String) objectSocket.read();
-                    System.out.println("Response at server: " + response);
-                } catch (ClassNotFoundException e) {
-                    System.err.println("Class not found during communication with the server: " + e.getMessage());
-                    e.printStackTrace();
                 } catch (IOException e) {
                     System.err.println("I/O error during communication with the server: " + e.getMessage());
                     e.printStackTrace();

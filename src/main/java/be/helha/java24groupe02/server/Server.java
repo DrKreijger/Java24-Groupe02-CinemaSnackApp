@@ -1,6 +1,8 @@
 package be.helha.java24groupe02.server;
 
 import be.helha.java24groupe02.common.network.ServerConstants;
+import be.helha.java24groupe02.models.Product;
+import be.helha.java24groupe02.models.ProductDB;
 
 import java.io.IOException;
 import java.net.ServerSocket;

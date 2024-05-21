@@ -191,9 +191,9 @@ public class SnackViewController {
             Product productInCart = findProductInCart(selectedProduct.getProductId());
             if (productInCart != null) {
                 try {
-                // Le produit est déjà dans le panier, aucune action supplémentaire requise
-                cartListener.addSnackQuantity(selectedProduct);
-                templateViewSnack.snackQuantityVisual(Integer.toString(selectedProduct.getProductId()) ,selectedProductQuantity, selectedProduct);
+                    // Le produit est déjà dans le panier, aucune action supplémentaire requise
+                    cartListener.addSnackQuantity(selectedProduct);
+                    templateViewSnack.snackQuantityVisual(Integer.toString(selectedProduct.getProductId()), selectedProductQuantity, selectedProduct);
                 } catch (NoMoreStockException e) {
                     e.showError();
                 }
@@ -203,19 +203,18 @@ public class SnackViewController {
             }
         }
         try (Socket socket = new Socket("localhost", ServerConstants.PORT);
-                ObjectSocket objectSocket = new ObjectSocket(socket)) {
-                String message = selectedProduct.getName();
-                objectSocket.write(message);
+             ObjectSocket objectSocket = new ObjectSocket(socket)) {
+            String message = selectedProduct.getName();
+            objectSocket.write(message);
 
-                String response = (String) objectSocket.read();
-                System.out.println("Response at server: " + response);
-            } catch (Exception e) {
-                System.err.println("Error during communication with the client: " + e.getMessage());
-                e.printStackTrace();
+            String response = (String) objectSocket.read();
+            System.out.println("Response from server: " + response);
+        } catch (Exception e) {
+            System.err.println("Error during communication with the server: " + e.getMessage());
+            e.printStackTrace();
         }
         updateCartTotal(cart.getTotalPrice());
     }
-
 
     private Product findProductInCart(int productId) {
         for (Product product : cart.getCartItems()) {

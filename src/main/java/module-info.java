@@ -11,6 +11,7 @@ module be.helha.java24groupe02 {
     requires org.xerial.sqlitejdbc;
     requires com.google.gson;
     requires java.desktop;
+    requires jdk.compiler;
 
     exports be.helha.java24groupe02.views;
     opens be.helha.java24groupe02.views to javafx.fxml;
