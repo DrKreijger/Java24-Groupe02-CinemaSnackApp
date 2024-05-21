@@ -1,4 +1,4 @@
-package be.helha.java24groupe02.models;
+package be.helha.java24groupe02.server.models;
 
 import com.google.gson.annotations.SerializedName;
 

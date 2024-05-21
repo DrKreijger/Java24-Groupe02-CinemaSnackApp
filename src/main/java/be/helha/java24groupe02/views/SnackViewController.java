@@ -1,10 +1,10 @@
 
 package be.helha.java24groupe02.views;
 
-import be.helha.java24groupe02.models.Cart;
-import be.helha.java24groupe02.models.Product;
-import be.helha.java24groupe02.models.ProductDB;
-import be.helha.java24groupe02.models.exceptions.NoMoreStockException;
+import be.helha.java24groupe02.server.models.Cart;
+import be.helha.java24groupe02.server.models.Product;
+import be.helha.java24groupe02.server.models.ProductDB;
+import be.helha.java24groupe02.server.models.exceptions.NoMoreStockException;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

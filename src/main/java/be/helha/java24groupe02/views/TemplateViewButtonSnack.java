@@ -1,6 +1,6 @@
 package be.helha.java24groupe02.views;
 
-import be.helha.java24groupe02.models.Product;
+import be.helha.java24groupe02.server.models.Product;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
