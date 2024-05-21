@@ -1,5 +1,6 @@
 package be.helha.java24groupe02.client.controllers;
 
+import be.helha.java24groupe02.client.network.SnackClient;
 import be.helha.java24groupe02.client.views.SnackViewController;
 import be.helha.java24groupe02.models.Cart;
 import be.helha.java24groupe02.models.CartObserver;
@@ -9,6 +10,7 @@ import be.helha.java24groupe02.models.exceptions.NoMoreStockException;
 import be.helha.java24groupe02.models.exceptions.ProductLoadingException;
 import be.helha.java24groupe02.client.views.TemplateViewSnack.QuantityChangeListener;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -22,6 +24,7 @@ public class MainController extends Application implements SnackViewController.C
     private Cart cart;
     private ProductDB productDB;
     private SnackViewController snackViewController;
+    private SnackClient snackClient;
 
     public void setSnackViewController(SnackViewController snackViewController) {
         this.snackViewController = snackViewController;
@@ -29,23 +32,43 @@ public class MainController extends Application implements SnackViewController.C
 
     @Override
     public void start(Stage stage) throws IOException {
-        try {
-            List<Product> products = getProductsFromDB();
             initializeCart();
-            initializeView(stage, products);
-        } catch (ProductLoadingException e) {
-            e.showError();
-        }
+            initializeNetworkClient();
     }
 
-    private void initializeView(Stage stage, List<Product> products) throws IOException {
+    public static void main(String[] args) {
+        launch();
+    }
+
+    private void initializeNetworkClient() {
+        snackClient = new SnackClient();
+        snackClient.setProductsUpdateListener(this::updateProductsFromServer);
+        new Thread(snackClient::start).start();
+    }
+
+    private void updateProductsFromServer(List<Product> updatedProducts) {
+        Platform.runLater(() -> {
+            if (snackViewController == null) {
+                try {
+                    initializeView(updatedProducts);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                snackViewController.updateProducts(updatedProducts);
+            }
+        });
+    }
+
+    private void initializeView(List<Product> products) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(SnackViewController.class.getResource("SnacksView.fxml"));
         Parent root = fxmlLoader.load();
         initializeController(products, fxmlLoader);
-        initializeStage(stage, root);
+        initializeStage(root);
     }
 
-    private static void initializeStage(Stage stage, Parent root) {
+    private static void initializeStage(Parent root) {
+        Stage stage = new Stage();
         Scene scene = new Scene(root);
         stage.setTitle("Snacks App");
         stage.setScene(scene);
@@ -54,7 +77,7 @@ public class MainController extends Application implements SnackViewController.C
 
     private void initializeController(List<Product> products, FXMLLoader fxmlLoader) {
         SnackViewController controller = fxmlLoader.getController();
-        controller.initData(productDB, products, cart);
+        controller.initData(products, cart);
         controller.setCartListener(this);
         controller.setQuantityChangeListener(this);
         setSnackViewController(controller);
@@ -76,32 +99,38 @@ public class MainController extends Application implements SnackViewController.C
         }
     }
 
-    public static void main(String[] args) {
-        launch();
-    }
-
     @Override
     public void onProductAddedToCart(Product product) {
-            removeStock(product);
+            product.removeStock();
+            int productId = product.getProductId();
+            int clientStock = product.getQuantityInStock();
+            snackClient.addToCart(productId, clientStock);
             cart.addProductToCart(product);
+            System.out.println("Product quantity in stock: " + product.getQuantityInStock());
     }
 
     @Override
     public void deleteSnack(Product product) {
-       int productId = product.getProductId();
-       int currentQuantityIncart = product.getQuantity();
-       updateStock(product, currentQuantityIncart);
-       removeProductFromCart(productId);
-       cart.updateProductQuantity(product, 0);
+        int productId = product.getProductId();
+        int currentQuantityInStock = product.getQuantityInStock();
+        int quantityRemoved = product.getQuantity();
+        int newQuantityInStock = currentQuantityInStock + quantityRemoved;
+        product.setQuantityInStock(newQuantityInStock);
+        snackClient.deleteSnackFromCart(productId, newQuantityInStock);
+        cart.updateProductQuantity(product, 0);
+        removeProductFromOrderSummary(product.getProductId());
+        System.out.println("Product quantity in stock: " + product.getQuantityInStock());
     }
 
     @Override
     public void addSnackQuantity(Product product) throws NoMoreStockException {
-        int currentQuantity = product.getQuantity();
-        int newQuantity = currentQuantity + 1;
         if (product.getQuantityInStock() > 0) {
-            removeStock(product);
-            cart.updateProductQuantity(product, newQuantity);
+            product.removeStock();
+            int productId = product.getProductId();
+            int clientStock = product.getQuantityInStock();
+            snackClient.addSnackQuantity(productId, clientStock);
+            cart.updateProductQuantity(product, product.getQuantity() + 1);
+            System.out.println("Product quantity in stock: " + product.getQuantityInStock());
         } else {
             throw new NoMoreStockException();
         }
@@ -109,17 +138,20 @@ public class MainController extends Application implements SnackViewController.C
 
     @Override
     public void removeSnackQuantity(Product product) {
-        int currentQuantity = product.getQuantity();
-        int newQuantity = currentQuantity - 1;
-        if(newQuantity !=0) {
-            addStock(product);
-            cart.updateProductQuantity(product, newQuantity);
+        int productCurrentQuantity = product.getQuantity();
+        int productNewQuantity = productCurrentQuantity - 1;
+        if(productNewQuantity > 0) {
+            product.addStock();
+            int productId = product.getProductId();
+            int clientStock = product.getQuantityInStock();
+            snackClient.removeSnackQuantity(productId, clientStock);
+            cart.updateProductQuantity(product, 0);
         } else {
             deleteSnack(product);
         }
     }
 
-    private void  removeProductFromCart(int productId) {
+    private void removeProductFromOrderSummary(int productId) {
         snackViewController.removeProductFromOrderSummary(productId);
     }
 

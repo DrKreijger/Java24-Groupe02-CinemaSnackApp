@@ -5,6 +5,7 @@ import be.helha.java24groupe02.models.Product;
 import be.helha.java24groupe02.models.ProductDB;
 import be.helha.java24groupe02.models.exceptions.NoMoreStockException;
 import be.helha.java24groupe02.client.views.TemplateViewSnack.QuantityChangeListener;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -231,11 +232,10 @@ public class SnackViewController {
         }
     }
 
-    public void initData(ProductDB productDB, List<Product> products, Cart cart) {
-        this.productDB = productDB;
+    public void initData(List<Product> products, Cart cart) {
         this.products = products;
         this.cart = cart;
-        if (!dataInitialized && productDB != null && products != null && cart != null) {
+        if (!dataInitialized && products != null && cart != null) {
             initializeView();
             dataInitialized = true;
         }
@@ -254,6 +254,34 @@ public class SnackViewController {
         addSnackToOrderButton.setOnAction(event -> updateOrder());
         confirmOrderButton.setOnAction(event -> confirmOrder());
     }
+
+    public void updateProducts(List<Product> updatedProducts) {
+        products.clear();
+        products.addAll(updatedProducts);
+        viewSnacksFlowPane.getChildren().clear();
+        for (Product product : products) {
+            addSnackToInterface(product);
+        }
+    }
+
+
+    private void refreshProductDisplay() {
+        viewSnacksFlowPane.getChildren().clear();
+        for (Product product : products) {
+            addSnackToInterface(product);
+        }
+        updateOrderSummary();
+    }
+
+    private void updateOrderSummary() {
+        viewOrderVBox.getChildren().clear();
+        for (Product product : cart.getCartItems()) {
+            addSnackToOrderSummary(product);
+        }
+        updateCartTotal(cart.getTotalPrice());
+    }
+
+
 
     public interface CartListener {
         void onProductAddedToCart(Product product);
