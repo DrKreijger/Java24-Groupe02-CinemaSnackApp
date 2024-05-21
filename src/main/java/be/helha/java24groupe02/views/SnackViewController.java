@@ -207,8 +207,8 @@ public class SnackViewController {
             String message = selectedProduct.getName();
             objectSocket.write(message);
 
-            String response = (String) objectSocket.read();
-            System.out.println("Response from server: " + response);
+            int response = (int) objectSocket.read();
+            System.out.println("Response from server: Il reste " + response + " " + message + " en stock");
         } catch (Exception e) {
             System.err.println("Error during communication with the server: " + e.getMessage());
             e.printStackTrace();

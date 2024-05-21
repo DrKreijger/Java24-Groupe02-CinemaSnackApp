@@ -1,6 +1,5 @@
 package be.helha.java24groupe02.models;
 
-import java.io.InputStream;
 import java.net.URL;
 
 public class Product {
@@ -12,7 +11,7 @@ public class Product {
     private String size;
     private double price;
     private int quantity;
-    private int quantityInStock;
+    public int quantityInStock;
 
 
     public Product(int productId, String name, URL imagePath, String flavor, String size, double price, int quantityInStock) {
@@ -24,6 +23,10 @@ public class Product {
         this.price = price;
         this.quantity = 1;
         this.quantityInStock = quantityInStock;
+    }
+
+    public Product() {
+
     }
 
     public int getProductId() {
