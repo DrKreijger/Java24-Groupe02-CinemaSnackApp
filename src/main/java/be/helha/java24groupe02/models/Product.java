@@ -23,7 +23,6 @@ public class Product {
         this.quantityInStock = quantityInStock;
     }
 
-
     public int getProductId() {
         return productId;
     }

@@ -1,10 +1,13 @@
 package be.helha.java24groupe02.controllers;
 
-import be.helha.java24groupe02.server.models.Cart;
-import be.helha.java24groupe02.server.models.CartObserver;
-import be.helha.java24groupe02.server.models.Product;
-import be.helha.java24groupe02.server.models.ProductDB;
-import be.helha.java24groupe02.server.models.exceptions.NoMoreStockException;
+import be.helha.java24groupe02.common.network.ObjectSocket;
+import be.helha.java24groupe02.common.network.ServerConstants;
+import be.helha.java24groupe02.models.Cart;
+import be.helha.java24groupe02.models.CartObserver;
+import be.helha.java24groupe02.models.Product;
+import be.helha.java24groupe02.models.ProductDB;
+import be.helha.java24groupe02.models.exceptions.NoMoreStockException;
+import be.helha.java24groupe02.models.exceptions.ProductLoadingException;
 import be.helha.java24groupe02.views.SnackViewController;
 import be.helha.java24groupe02.views.TemplateViewSnack.QuantityChangeListener;
 import be.helha.java24groupe02.views.SnackViewController.CartListener;
@@ -14,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.List;
 
 
@@ -29,9 +33,27 @@ public class MainController extends Application implements CartListener, Quantit
 
     @Override
     public void start(Stage stage) throws IOException {
-        List<Product> products = getProductsFromDB();
-        initializeCart();
-        initializeView(stage, products);
+        try {
+            List<Product> products = getProductsFromDB();
+            initializeCart();
+            initializeView(stage, products);
+            try {
+                Socket socket = new Socket("localhost", ServerConstants.PORT);
+                try (ObjectSocket objectSocket = new ObjectSocket(socket)) {
+                    System.out.println("Client connected to server");
+                } catch (IOException e) {
+                    System.err.println("I/O error during communication with the server: " + e.getMessage());
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            } catch (IOException e) {
+                System.err.println("Failed to connect to the server: " + e.getMessage());
+                e.printStackTrace();
+            }
+        } catch (ProductLoadingException e) {
+            System.err.println("Erreur lors du chargement des produits");
+        }
     }
 
     private void initializeView(Stage stage, List<Product> products) throws IOException {
@@ -61,11 +83,15 @@ public class MainController extends Application implements CartListener, Quantit
         cart.addObserver(this);
     }
 
-    private List<Product> getProductsFromDB() {
-        productDB = new ProductDB();
-        initializeStock();
-        List<Product> products = productDB.getAllProductsFromDatabase();
-        return products;
+    private List<Product> getProductsFromDB() throws ProductLoadingException {
+        try{
+            productDB = new ProductDB();
+            initializeStock();
+            List<Product> products = productDB.getAllProductsFromDatabase();
+            return products;
+        } catch (ProductLoadingException e) {
+            throw new ProductLoadingException();
+        }
     }
 
     public static void main(String[] args) {
@@ -74,17 +100,17 @@ public class MainController extends Application implements CartListener, Quantit
 
     @Override
     public void onProductAddedToCart(Product product) {
-            removeStock(product);
-            cart.addProductToCart(product);
+        removeStock(product);
+        cart.addProductToCart(product);
     }
 
     @Override
     public void deleteSnack(Product product) {
-       int productId = product.getProductId();
-       int currentQuantityIncart = product.getQuantity();
-       updateStock(product, currentQuantityIncart);
-       removeProductFromCart(productId);
-       cart.updateProductQuantity(product, 0);
+        int productId = product.getProductId();
+        int currentQuantityIncart = product.getQuantity();
+        updateStock(product, currentQuantityIncart);
+        removeProductFromCart(productId);
+        cart.updateProductQuantity(product, 0);
     }
 
     @Override
