@@ -5,6 +5,7 @@ import be.helha.java24groupe02.models.Product;
 import be.helha.java24groupe02.models.ProductDB;
 import be.helha.java24groupe02.models.exceptions.NoMoreStockException;
 import be.helha.java24groupe02.client.views.TemplateViewSnack.QuantityChangeListener;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -253,6 +254,27 @@ public class SnackViewController {
         // Définir les actions des boutons
         addSnackToOrderButton.setOnAction(event -> updateOrder());
         confirmOrderButton.setOnAction(event -> confirmOrder());
+    }
+
+    public void updateProducts(List<Product> updatedProducts) {
+        this.products = updatedProducts;
+        Platform.runLater(this::refreshProductDisplay);
+    }
+
+    private void refreshProductDisplay() {
+        viewSnacksFlowPane.getChildren().clear();
+        for (Product product : products) {
+            addSnackToInterface(product);
+        }
+        updateOrderSummary();
+    }
+
+    private void updateOrderSummary() {
+        viewOrderVBox.getChildren().clear();
+        for (Product product : cart.getCartItems()) {
+            addSnackToOrderSummary(product);
+        }
+        updateCartTotal(cart.getTotalPrice());
     }
 
     public interface CartListener {

@@ -1,5 +1,6 @@
 package be.helha.java24groupe02.client.controllers;
 
+import be.helha.java24groupe02.client.network.SnackClient;
 import be.helha.java24groupe02.client.views.SnackViewController;
 import be.helha.java24groupe02.models.Cart;
 import be.helha.java24groupe02.models.CartObserver;
@@ -9,6 +10,7 @@ import be.helha.java24groupe02.models.exceptions.NoMoreStockException;
 import be.helha.java24groupe02.models.exceptions.ProductLoadingException;
 import be.helha.java24groupe02.client.views.TemplateViewSnack.QuantityChangeListener;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -22,6 +24,7 @@ public class MainController extends Application implements SnackViewController.C
     private Cart cart;
     private ProductDB productDB;
     private SnackViewController snackViewController;
+    private SnackClient snackClient;
 
     public void setSnackViewController(SnackViewController snackViewController) {
         this.snackViewController = snackViewController;
@@ -33,9 +36,24 @@ public class MainController extends Application implements SnackViewController.C
             List<Product> products = getProductsFromDB();
             initializeCart();
             initializeView(stage, products);
+            initializeNetworkClient();
         } catch (ProductLoadingException e) {
             e.showError();
         }
+    }
+
+    private void initializeNetworkClient() {
+        snackClient = new SnackClient();
+        new Thread(() -> {
+            snackClient.start();
+            snackClient.setProductsUpdateListener(this::updateProductsFromServer);
+        }).start();
+    }
+
+    private void updateProductsFromServer(List<Product> updatedProducts) {
+        Platform.runLater(() -> {
+            snackViewController.updateProducts(updatedProducts);
+        });
     }
 
     private void initializeView(Stage stage, List<Product> products) throws IOException {
