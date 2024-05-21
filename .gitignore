@@ -34,3 +34,4 @@ build/
 .DS_Store
 pom.xml
 /target
+Common/snacks_simple.db
