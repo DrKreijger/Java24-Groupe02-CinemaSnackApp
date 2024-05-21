@@ -39,7 +39,7 @@ public class ProductDB {
         return products;
     }
 
-    public void updateProductQuantityInStock (int productId, int newStock) {
+    public void updateProductQuantityInStock(int productId, int newStock) {
         try (Connection connection = DriverManager.getConnection(DATABASE_URL);
              PreparedStatement statement = connection.prepareStatement("UPDATE Products SET quantity_in_stock = ? WHERE product_id = ?")) {
             statement.setInt(1, newStock);
@@ -84,6 +84,4 @@ public class ProductDB {
         }
         return product;
     }
-
-
 }

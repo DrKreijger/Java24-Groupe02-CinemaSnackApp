@@ -15,30 +15,57 @@ public class SnackServer {
     private static final List<ClientHandler> clients = new CopyOnWriteArrayList<>();
     private static final ProductDB productDB = new ProductDB();
 
+    /**
+     * The main method of the SnackServer class. This method is responsible for starting the server and handling incoming client connections.
+     *
+     * @param args The command line arguments passed to the program. This parameter is not currently used.
+     */
     public static void main(String[] args) {
+        // Create a ServerSocket that listens on the specified PORT
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+            // Print a message to the console indicating that the server has started and on which port it is listening
             System.out.println("Serveur démarré sur le port " + PORT);
 
+            // Continuously listen for incoming client connections
             while (true) {
+                // Accept an incoming client connection and create a Socket for communication with the client
                 Socket clientSocket = serverSocket.accept();
+                // Create a new ClientHandler to handle communication with the connected client
                 ClientHandler clientHandler = new ClientHandler(clientSocket);
+                // Add the new ClientHandler to the list of active clients
                 clients.add(clientHandler);
+                // Start a new Thread that runs the ClientHandler's run method
                 new Thread(clientHandler).start();
             }
         } catch (IOException e) {
+            // Print any IOExceptions that occur to the console
             e.printStackTrace();
         }
     }
 
+    /**
+     * The ClientHandler class is a private static class within the SnackServer class.
+     * It implements the Runnable interface, allowing instances of this class to be used in a Thread.
+     * Each instance of this class is responsible for handling communication with a single client.
+     */
     private static class ClientHandler implements Runnable {
         private final Socket socket;
         private ObjectOutputStream out;
         private ObjectInputStream in;
 
+        /**
+         * The constructor for the ClientHandler class.
+         *
+         * @param socket The Socket object representing the connection to the client.
+         */
         public ClientHandler(Socket socket) {
             this.socket = socket;
         }
 
+        /**
+         * The run method is called when the Thread that this ClientHandler is running on is started.
+         * It handles the main communication loop with the client.
+         */
         @Override
         public void run() {
             try {
@@ -47,6 +74,7 @@ public class SnackServer {
 
                 sendInitialProductList();
 
+                // Main communication loop
                 while (true) {
                     String request = (String) in.readObject();
                     if (request.startsWith("ADD_TO_CART")) {
@@ -83,6 +111,11 @@ public class SnackServer {
             }
         }
 
+        /**
+         * This method sends the initial list of products to the client.
+         *
+         * @throws IOException If an I/O error occurs while sending the product list.
+         */
         private void sendInitialProductList() throws IOException {
             try {
                 List<Product> products = productDB.getAllProductsFromDatabase();
@@ -92,14 +125,20 @@ public class SnackServer {
             }
         }
 
+        /**
+         * This method updates the stock of a specific product.
+         *
+         * @param productId   The ID of the product to update.
+         * @param clientStock The new stock value for the product.
+         */
         private void updateProductStock(int productId, int clientStock) {
             try {
                 // Récupérer le produit depuis la base de données
                 Product product = productDB.getProductById(productId);
                 if (product != null) {
-                        int newStock = clientStock;
-                        productDB.updateProductQuantityInStock(productId, newStock);
-                        notifyAllClients();
+                    int newStock = clientStock;
+                    productDB.updateProductQuantityInStock(productId, newStock);
+                    notifyAllClients();
                 } else {
                     System.out.println("Le produit avec l'ID " + productId + " n'existe pas dans la base de données.");
                 }
@@ -108,6 +147,9 @@ public class SnackServer {
             }
         }
 
+        /**
+         * This method notifies all clients of a change in the product list.
+         */
         private void notifyAllClients() {
             try {
                 List<Product> products = productDB.getAllProductsFromDatabase();
