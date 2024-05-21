@@ -51,9 +51,17 @@ public class SnackServer {
                 while (true) {
                     String request = (String) in.readObject();
                     if (request.startsWith("ADD_TO_CART")) {
-                        String[] parts = request.split(" ");
-                        int productId = Integer.parseInt(parts[1]);
-                        updateProductStock(productId);
+                        int productId = Integer.parseInt(request.split(" ")[1]);
+                        updateProductStock(productId, -1);
+                    } else if (request.startsWith("DELETE_SNACK")) {
+                        int productId = Integer.parseInt(request.split(" ")[1]);
+                        updateProductStock(productId, 1);
+                    } else if (request.startsWith("ADD_SNACK_QUANTITY")) {
+                        int productId = Integer.parseInt(request.split(" ")[1]);
+                        updateProductStock(productId, -1);
+                    } else if (request.startsWith("REMOVE_SNACK_QUANTITY")) {
+                        int productId = Integer.parseInt(request.split(" ")[1]);
+                        updateProductStock(productId, 1);
                     }
                 }
             } catch (IOException | ClassNotFoundException e) {
@@ -77,11 +85,11 @@ public class SnackServer {
             }
         }
 
-        private void updateProductStock(int productId) {
+        private void updateProductStock(int productId, int delta) {
             try {
                 Product product = productDB.getProductById(productId);
-                if (product.getQuantityInStock() > 0) {
-                    product.removeStock();
+                if (product.getQuantityInStock() + delta >= 0) {
+                    product.setQuantityInStock(product.getQuantityInStock() + delta);
                     productDB.updateProductQuantityInStock(productId, product.getQuantityInStock());
                     notifyAllClients();
                 }

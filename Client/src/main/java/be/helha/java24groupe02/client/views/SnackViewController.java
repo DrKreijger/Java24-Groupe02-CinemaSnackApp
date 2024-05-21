@@ -232,11 +232,10 @@ public class SnackViewController {
         }
     }
 
-    public void initData(ProductDB productDB, List<Product> products, Cart cart) {
-        this.productDB = productDB;
+    public void initData(List<Product> products, Cart cart) {
         this.products = products;
         this.cart = cart;
-        if (!dataInitialized && productDB != null && products != null && cart != null) {
+        if (!dataInitialized && products != null && cart != null) {
             initializeView();
             dataInitialized = true;
         }
@@ -257,9 +256,14 @@ public class SnackViewController {
     }
 
     public void updateProducts(List<Product> updatedProducts) {
-        this.products = updatedProducts;
-        Platform.runLater(this::refreshProductDisplay);
+        products.clear();
+        products.addAll(updatedProducts);
+        viewSnacksFlowPane.getChildren().clear();
+        for (Product product : products) {
+            addSnackToInterface(product);
+        }
     }
+
 
     private void refreshProductDisplay() {
         viewSnacksFlowPane.getChildren().clear();
@@ -276,6 +280,8 @@ public class SnackViewController {
         }
         updateCartTotal(cart.getTotalPrice());
     }
+
+
 
     public interface CartListener {
         void onProductAddedToCart(Product product);
