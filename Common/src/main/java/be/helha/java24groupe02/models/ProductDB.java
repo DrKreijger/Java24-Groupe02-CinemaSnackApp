@@ -44,6 +44,7 @@ public class ProductDB {
              PreparedStatement statement = connection.prepareStatement("UPDATE Products SET quantity_in_stock = ? WHERE product_id = ?")) {
             statement.setInt(1, newStock);
             statement.setInt(2, productId);
+            System.out.println("Stock du produit " + productId + " mis à jour à " + newStock + " unités.");
             statement.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Erreur lors de la mise à jour du stock du produit : " + e.getMessage());

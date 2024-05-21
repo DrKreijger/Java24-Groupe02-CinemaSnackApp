@@ -45,23 +45,30 @@ public class SnackServer {
                 out = new ObjectOutputStream(socket.getOutputStream());
                 in = new ObjectInputStream(socket.getInputStream());
 
-                // Send initial product list to the client
                 sendInitialProductList();
 
                 while (true) {
                     String request = (String) in.readObject();
                     if (request.startsWith("ADD_TO_CART")) {
-                        int productId = Integer.parseInt(request.split(" ")[1]);
-                        updateProductStock(productId, -1);
+                        String[] parts = request.split(" ");
+                        int productId = Integer.parseInt(parts[1]);
+                        int clientStock = Integer.parseInt(parts[2]);
+                        updateProductStock(productId, clientStock);
                     } else if (request.startsWith("DELETE_SNACK")) {
-                        int productId = Integer.parseInt(request.split(" ")[1]);
-                        updateProductStock(productId, 1);
+                        String[] parts = request.split(" ");
+                        int productId = Integer.parseInt(parts[1]);
+                        int quantityRemoved = Integer.parseInt(parts[2]);
+                        updateProductStock(productId, quantityRemoved);
                     } else if (request.startsWith("ADD_SNACK_QUANTITY")) {
-                        int productId = Integer.parseInt(request.split(" ")[1]);
-                        updateProductStock(productId, -1);
+                        String[] parts = request.split(" ");
+                        int productId = Integer.parseInt(parts[1]);
+                        int clientStock = Integer.parseInt(parts[2]);
+                        updateProductStock(productId, clientStock);
                     } else if (request.startsWith("REMOVE_SNACK_QUANTITY")) {
-                        int productId = Integer.parseInt(request.split(" ")[1]);
-                        updateProductStock(productId, 1);
+                        String[] parts = request.split(" ");
+                        int productId = Integer.parseInt(parts[1]);
+                        int clientStock = Integer.parseInt(parts[2]);
+                        updateProductStock(productId, clientStock);
                     }
                 }
             } catch (IOException | ClassNotFoundException e) {
@@ -85,13 +92,16 @@ public class SnackServer {
             }
         }
 
-        private void updateProductStock(int productId, int delta) {
+        private void updateProductStock(int productId, int clientStock) {
             try {
+                // Récupérer le produit depuis la base de données
                 Product product = productDB.getProductById(productId);
-                if (product.getQuantityInStock() + delta >= 0) {
-                    product.setQuantityInStock(product.getQuantityInStock() + delta);
-                    productDB.updateProductQuantityInStock(productId, product.getQuantityInStock());
-                    notifyAllClients();
+                if (product != null) {
+                        int newStock = clientStock;
+                        productDB.updateProductQuantityInStock(productId, newStock);
+                        notifyAllClients();
+                } else {
+                    System.out.println("Le produit avec l'ID " + productId + " n'existe pas dans la base de données.");
                 }
             } catch (ProductLoadingException e) {
                 e.printStackTrace();

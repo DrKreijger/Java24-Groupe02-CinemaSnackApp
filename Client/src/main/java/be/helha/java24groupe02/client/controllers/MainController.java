@@ -101,22 +101,36 @@ public class MainController extends Application implements SnackViewController.C
 
     @Override
     public void onProductAddedToCart(Product product) {
-            snackClient.addToCart(product.getProductId());
+            product.removeStock();
+            int productId = product.getProductId();
+            int clientStock = product.getQuantityInStock();
+            snackClient.addToCart(productId, clientStock);
             cart.addProductToCart(product);
+            System.out.println("Product quantity in stock: " + product.getQuantityInStock());
     }
 
     @Override
     public void deleteSnack(Product product) {
-       snackClient.deleteSnackFromCart(product.getProductId());
-       cart.updateProductQuantity(product, 0);
-       removeProductFromCart(product.getProductId());
+        int productId = product.getProductId();
+        int currentQuantityInStock = product.getQuantityInStock();
+        int quantityRemoved = product.getQuantity();
+        int newQuantityInStock = currentQuantityInStock + quantityRemoved;
+        product.setQuantityInStock(newQuantityInStock);
+        snackClient.deleteSnackFromCart(productId, newQuantityInStock);
+        cart.updateProductQuantity(product, 0);
+        removeProductFromOrderSummary(product.getProductId());
+        System.out.println("Product quantity in stock: " + product.getQuantityInStock());
     }
 
     @Override
     public void addSnackQuantity(Product product) throws NoMoreStockException {
         if (product.getQuantityInStock() > 0) {
-            snackClient.addSnackQuantity(product.getProductId());
+            product.removeStock();
+            int productId = product.getProductId();
+            int clientStock = product.getQuantityInStock();
+            snackClient.addSnackQuantity(productId, clientStock);
             cart.updateProductQuantity(product, product.getQuantity() + 1);
+            System.out.println("Product quantity in stock: " + product.getQuantityInStock());
         } else {
             throw new NoMoreStockException();
         }
@@ -124,15 +138,20 @@ public class MainController extends Application implements SnackViewController.C
 
     @Override
     public void removeSnackQuantity(Product product) {
-        if(product.getQuantity() > 0) {
-            snackClient.removeSnackQuantity(product.getProductId());
-            cart.updateProductQuantity(product, product.getQuantity() - 1);
+        int productCurrentQuantity = product.getQuantity();
+        int productNewQuantity = productCurrentQuantity - 1;
+        if(productNewQuantity > 0) {
+            product.addStock();
+            int productId = product.getProductId();
+            int clientStock = product.getQuantityInStock();
+            snackClient.removeSnackQuantity(productId, clientStock);
+            cart.updateProductQuantity(product, 0);
         } else {
             deleteSnack(product);
         }
     }
 
-    private void  removeProductFromCart(int productId) {
+    private void removeProductFromOrderSummary(int productId) {
         snackViewController.removeProductFromOrderSummary(productId);
     }
 

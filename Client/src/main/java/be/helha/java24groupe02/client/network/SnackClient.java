@@ -12,7 +12,7 @@ public class SnackClient {
     private static final int SERVER_PORT = 3001;
     private ObjectOutputStream out;
     private ObjectInputStream in;
-    private Consumer<List<Product>> productsUpdateListener;
+    private ProductsUpdateListener productsUpdateListener;
 
     public void start() {
         try (Socket socket = new Socket(SERVER_ADDRESS, SERVER_PORT)) {
@@ -20,9 +20,9 @@ public class SnackClient {
             in = new ObjectInputStream(socket.getInputStream());
 
             while (true) {
-                List<Product> products = (List<Product>) in.readObject();
+                List<Product> updatedProducts = (List<Product>) in.readObject();
                 if (productsUpdateListener != null) {
-                    productsUpdateListener.accept(products);
+                    productsUpdateListener.onProductsUpdate(updatedProducts);
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -30,20 +30,20 @@ public class SnackClient {
         }
     }
 
-    public void addToCart(int productId) {
-            sendRequest("ADD_TO_CART " + productId);
+    public void addToCart(int productId, int clientStock) {
+            sendRequest("ADD_TO_CART " + productId + " " + clientStock);
     }
 
-    public void deleteSnackFromCart(int productId) {
-        sendRequest("DELETE_SNACK " + productId);
+    public void deleteSnackFromCart(int productId, int quantityRemoved) {
+        sendRequest("DELETE_SNACK " + productId + " " + quantityRemoved);
     }
 
-    public void addSnackQuantity(int productId) {
-        sendRequest("ADD_SNACK_QUANTITY " + productId);
+    public void addSnackQuantity(int productId, int clientStock) {
+        sendRequest("ADD_SNACK_QUANTITY " + productId + " " + clientStock);
     }
 
-    public void removeSnackQuantity(int productId) {
-        sendRequest("REMOVE_SNACK_QUANTITY " + productId);
+    public void removeSnackQuantity(int productId, int clientStock) {
+        sendRequest("REMOVE_SNACK_QUANTITY " + productId + " " + clientStock);
     }
 
     private void sendRequest(String request) {
@@ -54,8 +54,12 @@ public class SnackClient {
         }
     }
 
-    public void setProductsUpdateListener(Consumer<List<Product>> listener) {
+    public void setProductsUpdateListener(ProductsUpdateListener listener) {
         this.productsUpdateListener = listener;
+    }
+
+    public interface ProductsUpdateListener {
+        void onProductsUpdate(List<Product> updatedProducts);
     }
 }
 
