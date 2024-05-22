@@ -1,6 +1,7 @@
 package be.helha.java24groupe02.client.network;
 
 import be.helha.java24groupe02.models.Product;
+import javafx.application.Platform;
 
 import java.io.*;
 import java.net.*;
@@ -21,23 +22,75 @@ public class SnackClient {
     private ObjectInputStream in;
     // The listener for product updates
     private ProductsUpdateListener productsUpdateListener;
+    // The socket used to communicate with the server
+    private Socket socket;
+    // The client thread
+    private Thread clientThread;
+    // A flag indicating whether the client is running
+    private boolean running;
 
     /**
      * Starts the client and continuously listens for product updates from the server.
      */
     public void start() {
-        try (Socket socket = new Socket(SERVER_ADDRESS, SERVER_PORT)) {
-            out = new ObjectOutputStream(socket.getOutputStream());
-            in = new ObjectInputStream(socket.getInputStream());
+        running = true;
+        clientThread = new Thread(() -> {
+            try {
+                socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
+                out = new ObjectOutputStream(socket.getOutputStream());
+                in = new ObjectInputStream(socket.getInputStream());
 
-            // Continuously listen for product updates
-            while (true) {
-                List<Product> updatedProducts = (List<Product>) in.readObject();
-                if (productsUpdateListener != null) {
-                    productsUpdateListener.onProductsUpdate(updatedProducts);
+                // Continuously listen for product updates
+                while (running) {
+                    List<Product> updatedProducts = (List<Product>) in.readObject();
+                    if (productsUpdateListener != null) {
+                        productsUpdateListener.onProductsUpdate(updatedProducts);
+                    }
                 }
+            } catch (IOException | ClassNotFoundException e) {
+                if (running) {
+                    e.printStackTrace();
+                }
+            } finally {
+                clientThread.interrupt();
+                closeConnections();
+                Platform.exit();
+                System.exit(0);
             }
-        } catch (IOException | ClassNotFoundException e) {
+        });
+        clientThread.start();
+    }
+
+    /**
+     * Closes the connections to the server.
+     */
+    public void stop() {
+        System.out.println("Stopping client...");
+        running = false;
+        try {
+            if (socket != null) {
+                socket.close();
+            }
+            if (clientThread != null) {
+                clientThread.interrupt();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Closes the output and input streams.
+     */
+    private void closeConnections() {
+        try {
+            if (out != null) {
+                out.close();
+            }
+            if (in != null) {
+                in.close();
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
