@@ -22,7 +22,6 @@ import java.util.List;
 public class MainController extends Application implements SnackViewController.CartListener, QuantityChangeListener, CartObserver {
 
     private Cart cart;
-    private ProductDB productDB;
     private SnackViewController snackViewController;
     private SnackClient snackClient;
 
@@ -31,19 +30,17 @@ public class MainController extends Application implements SnackViewController.C
     }
 
     @Override
-    public void start(Stage stage) throws IOException {
-            initializeCart();
-            initializeNetworkClient();
+    public void start(Stage stage) {
+            try {
+                initializeCart();
+                initializeNetworkClient();
+            } catch (Exception e) {
+                Platform.exit();
+            }
     }
 
     public static void main(String[] args) {
         launch();
-    }
-
-    private void initializeNetworkClient() {
-        snackClient = new SnackClient();
-        snackClient.setProductsUpdateListener(this::updateProductsFromServer);
-        new Thread(snackClient::start).start();
     }
 
     private void updateProductsFromServer(List<Product> updatedProducts) {
@@ -67,11 +64,16 @@ public class MainController extends Application implements SnackViewController.C
         initializeStage(root);
     }
 
-    private static void initializeStage(Parent root) {
+    private void initializeStage(Parent root) {
         Stage stage = new Stage();
         Scene scene = new Scene(root);
         stage.setTitle("Snacks App");
         stage.setScene(scene);
+        stage.setOnCloseRequest(event -> {
+            snackClient.stop();
+            Platform.exit();
+            System.exit(0);
+        });
         stage.show();
     }
 
@@ -83,20 +85,17 @@ public class MainController extends Application implements SnackViewController.C
         setSnackViewController(controller);
     }
 
+    private void initializeNetworkClient() {
+        snackClient = new SnackClient();
+        new Thread(() -> {
+            snackClient.start();
+            snackClient.setProductsUpdateListener(this::updateProductsFromServer);
+        }).start();
+    }
+
     private void initializeCart() {
         cart = new Cart();
         cart.addObserver(this);
-    }
-
-    private List<Product> getProductsFromDB() throws ProductLoadingException {
-        try{
-            productDB = new ProductDB();
-            initializeStock();
-            List<Product> products = productDB.getAllProductsFromDatabase();
-            return products;
-        } catch (ProductLoadingException e) {
-            throw new ProductLoadingException();
-        }
     }
 
     @Override
@@ -153,36 +152,6 @@ public class MainController extends Application implements SnackViewController.C
 
     private void removeProductFromOrderSummary(int productId) {
         snackViewController.removeProductFromOrderSummary(productId);
-    }
-
-    private void addStock(Product product) {
-        int productId = product.getProductId();
-        product.addStock();
-        productDB.updateProductQuantityInStock(productId, product.getQuantityInStock());
-    }
-
-    private void removeStock(Product product) {
-        int productId = product.getProductId();
-        int productQuantityInStock = product.getQuantityInStock();
-        if(productQuantityInStock > 0) {
-            product.removeStock();
-            productDB.updateProductQuantityInStock(productId, product.getQuantityInStock());
-        } else {
-            System.err.println("Stock insuffisant");
-        }
-    }
-
-    private void updateStock(Product product, int quantity) {
-        int productId = product.getProductId();
-        int currentQuantityInStock = product.getQuantityInStock();
-        int newQuantityInStock = currentQuantityInStock + quantity;
-        product.setQuantityInStock(newQuantityInStock);
-        productDB.updateProductQuantityInStock(productId, newQuantityInStock);
-    }
-
-    private void initializeStock() {
-        ProductDB productDB = new ProductDB();
-        productDB.initializeStockToDefault();
     }
 
     @Override
