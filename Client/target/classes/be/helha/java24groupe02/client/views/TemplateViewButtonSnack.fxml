@@ -12,6 +12,9 @@
       <VBox fx:id="SnackOrderVbox" spacing="5.0">
          <children>
             <ImageView fx:id="ImageSnackOrder" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../../java.png" />
+               </image>
             </ImageView>
             <Label fx:id="NameSnackOrder" text="Nom_snack">
                <font>

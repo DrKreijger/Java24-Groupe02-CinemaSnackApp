@@ -1,1 +1,1 @@
-{"Products":[{"Name":"Popcorn","Flavor":"Salé","Size":"Petit","Price per item":2.0,"Quantity":1,"Total price per item":2.0}],"Total order price":2.0}
+{"Products":[{"Name":"Coca-Cola","Size":"Grand","Price per item":1.5,"Quantity":10,"Total price per item":15.0},{"Name":"Chips","Flavor":"Salé","Size":"Grand","Price per item":1.5,"Quantity":1,"Total price per item":1.5},{"Name":"Popcorn","Flavor":"Salé","Size":"Grand","Price per item":3.0,"Quantity":1,"Total price per item":3.0}],"Total order price":19.5}
