@@ -48,11 +48,15 @@ public class MainController extends Application implements SnackViewController.C
             if (snackViewController == null) {
                 try {
                     initializeView(updatedProducts);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             } else {
+                try {
                 snackViewController.updateProducts(updatedProducts);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
