@@ -1,7 +1,5 @@
 package be.helha.java24groupe02.client.views;
 
-import be.helha.java24groupe02.common.network.ObjectSocket;
-import be.helha.java24groupe02.common.network.ServerConstants;
 import be.helha.java24groupe02.models.Cart;
 import be.helha.java24groupe02.models.Product;
 import be.helha.java24groupe02.models.ProductDB;
@@ -18,7 +16,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
 import java.io.IOException;
-import java.net.Socket;
 import java.util.List;
 
 import javafx.util.Pair;
@@ -94,24 +91,23 @@ public class SnackViewController {
      * Ajoute un snack à la commande au résumé de la commande.
      */
     private void addSnackToOrderSummary(Product productInCart) {
-            Pair<Parent, TemplateViewSnack> pair = loadTemplateViewSnackController(productInCart);
-            Parent root = pair.getKey();
-            TemplateViewSnack controller = pair.getValue();
-            setTemplateViewSnack(controller);
-            controller.getSelectedProductData(selectedProduct);
-            controller.setQuantityChangeListener(quantityChangeListener);
-            controller.addSnackQuantityButton.setOnAction(event -> {
-                try {
-                    controller.handleAddSnackQuantity(productInCart);
-                } catch (NoMoreStockException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-            controller.removeSnackQuantityButton.setOnAction(event -> controller.handleRemoveSnackQuantity(productInCart));
-            controller.DeleteSnackCart.setOnAction(event -> controller.handleDeleteSnackCart(productInCart));
-            controller.setQuantityChangeListener(quantityChangeListener);
-
-            viewOrderVBox.getChildren().add(root);
+        Pair<Parent, TemplateViewSnack> pair = loadTemplateViewSnackController(productInCart);
+        Parent root = pair.getKey();
+        TemplateViewSnack controller = pair.getValue();
+        setTemplateViewSnack(controller);
+        controller.getSelectedProductData(selectedProduct);
+        controller.setQuantityChangeListener(quantityChangeListener);
+        controller.addSnackQuantityButton.setOnAction(event -> {
+            try {
+                controller.handleAddSnackQuantity(productInCart);
+            } catch (NoMoreStockException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        controller.removeSnackQuantityButton.setOnAction(event -> controller.handleRemoveSnackQuantity(productInCart));
+        controller.DeleteSnackCart.setOnAction(event -> controller.handleDeleteSnackCart(productInCart));
+        controller.setQuantityChangeListener(quantityChangeListener);
+        viewOrderVBox.getChildren().add(root);
     }
 
     /**
@@ -185,7 +181,7 @@ public class SnackViewController {
     /**
      * Met à jour la commande.
      */
-    private void updateOrder() throws IOException {
+    private void updateOrder() {
         if (selectedProduct != null && cartListener != null) {
             int selectedProductQuantity = selectedProduct.getQuantity();
             selectedProductQuantity++;
@@ -195,7 +191,7 @@ public class SnackViewController {
                 try {
                     // Le produit est déjà dans le panier, aucune action supplémentaire requise
                     cartListener.addSnackQuantity(selectedProduct);
-                    templateViewSnack.snackQuantityVisual(Integer.toString(selectedProduct.getProductId()), selectedProductQuantity, selectedProduct);
+                    templateViewSnack.snackQuantityVisual(Integer.toString(selectedProduct.getProductId()) ,selectedProductQuantity, selectedProduct);
                 } catch (NoMoreStockException e) {
                     e.showError();
                 }
@@ -204,19 +200,9 @@ public class SnackViewController {
                 addSnackToOrderSummary(selectedProduct);
             }
         }
-        try (Socket socket = new Socket("localhost", ServerConstants.PORT);
-             ObjectSocket objectSocket = new ObjectSocket(socket)) {
-            String message = selectedProduct.getName();
-            objectSocket.write(message);
-
-            int response = (int) objectSocket.read();
-            System.out.println("Response from server: Il reste " + response + " " + message + " en stock");
-        } catch (Exception e) {
-            System.err.println("Error during communication with the server: " + e.getMessage());
-            e.printStackTrace();
-        }
         updateCartTotal(cart.getTotalPrice());
     }
+
 
     private Product findProductInCart(int productId) {
         for (Product product : cart.getCartItems()) {
@@ -265,13 +251,7 @@ public class SnackViewController {
             addSnackToInterface(product);
         }
         // Définir les actions des boutons
-        addSnackToOrderButton.setOnAction(event -> {
-            try {
-                updateOrder();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        addSnackToOrderButton.setOnAction(event -> updateOrder());
         confirmOrderButton.setOnAction(event -> confirmOrder());
     }
 
