@@ -36,6 +36,5 @@ build/
 
 ### Mac OS ###
 .DS_Store
-pom.xml
 /target
 snacks_simple.db
