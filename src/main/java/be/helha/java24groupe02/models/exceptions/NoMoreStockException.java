@@ -1,4 +1,4 @@
-package be.helha.java24groupe02.server.models.exceptions;
+package be.helha.java24groupe02.models.exceptions;
 
 import javafx.scene.control.Alert;
 

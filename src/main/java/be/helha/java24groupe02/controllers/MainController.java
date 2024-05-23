@@ -84,14 +84,10 @@ public class MainController extends Application implements CartListener, Quantit
     }
 
     private List<Product> getProductsFromDB() throws ProductLoadingException {
-        try{
-            productDB = new ProductDB();
-            initializeStock();
-            List<Product> products = productDB.getAllProductsFromDatabase();
-            return products;
-        } catch (ProductLoadingException e) {
-            throw new ProductLoadingException();
-        }
+        productDB = new ProductDB();
+        initializeStock();
+        List<Product> products = productDB.getAllProductsFromDatabase();
+        return products;
     }
 
     public static void main(String[] args) {

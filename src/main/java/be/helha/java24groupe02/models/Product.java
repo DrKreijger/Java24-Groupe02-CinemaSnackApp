@@ -1,5 +1,5 @@
 
-package be.helha.java24groupe02.server.models;
+package be.helha.java24groupe02.models;
 
 public class Product {
 
