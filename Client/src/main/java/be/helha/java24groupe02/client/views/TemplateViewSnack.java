@@ -102,7 +102,7 @@ public class TemplateViewSnack {
         if (children != null && !children.isEmpty()) {
             // Parcourir les enfants pour trouver le TemplateViewSnack avec l'identifiant unique
             for (Node node : children) {
-                if (node instanceof Parent root && ((Parent) node).getId() != null && ((Parent) node).getId().equals(uniqueId)) {
+                if (node instanceof Parent root && node.getId() != null && node.getId().equals(uniqueId)) {
                     // Identifier le nœud racine du TemplateViewSnack
                     // Accéder au label à l'intérieur du TemplateViewSnack en utilisant un sélecteur CSS
                     Label quantityLabel = (Label) root.lookup("#QuantitySnackCart");
@@ -139,7 +139,7 @@ public class TemplateViewSnack {
 
     public interface QuantityChangeListener {
         void deleteSnack(Product product);
-        void addSnackQuantity(Product product) throws NoMoreStockException, NoMoreStockException;
+        void addSnackQuantity(Product product) throws NoMoreStockException;
         void removeSnackQuantity(Product product);
     }
 

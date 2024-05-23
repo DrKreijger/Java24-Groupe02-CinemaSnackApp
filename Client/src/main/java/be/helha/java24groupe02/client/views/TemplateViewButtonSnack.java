@@ -35,26 +35,6 @@ public class TemplateViewButtonSnack {
     public void initialize() {
     }
 
-    public Label getFlavorSnackOrder() {
-        return FlavorSnackOrder;
-    }
-
-    public Label getNameSnackOrder() {
-        return NameSnackOrder;
-    }
-
-    public Label getPriceSnackOrder() {
-        return PriceSnackOrder;
-    }
-
-    public Label getSizeSnackOrder() {
-        return SizeSnackOrder;
-    }
-
-    public ImageView getImageSnackOrder() {
-        return ImageSnackOrder;
-    }
-
     public void setProductData(Product products) {
         // Charger l'image du snack
         URL productImageURL = (products.getImagePath());

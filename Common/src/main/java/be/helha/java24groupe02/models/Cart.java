@@ -8,8 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Cart {
-    private List<Product> cartItems;
-    private List<CartObserver> observerList;
+    private final List<Product> cartItems;
+    private final List<CartObserver> observerList;
     private double totalPrice;
 
     public Cart() {

@@ -1,17 +1,16 @@
 package be.helha.java24groupe02.models;
 
-import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URL;
 
 public class Product implements Serializable {
 
-    private int productId;
-    private String name;
-    private URL imagePath;
-    private String flavor;
-    private String size;
-    private double price;
+    private final int productId;
+    private final String name;
+    private final URL imagePath;
+    private final String flavor;
+    private final String size;
+    private final double price;
     private int quantity;
     private int quantityInStock;
 

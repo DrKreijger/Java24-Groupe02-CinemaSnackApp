@@ -4,9 +4,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
 public class ExceptionsWithAlertTemplate extends Exception {
-    private String alertTitle;
-    private String alertHeaderText;
-    private String alertContentText;
+    private final String alertTitle;
+    private final String alertHeaderText;
+    private final String alertContentText;
 
     public ExceptionsWithAlertTemplate(String alertTitle, String alertHeaderText, String alertContentText) {
         this.alertTitle = alertTitle;

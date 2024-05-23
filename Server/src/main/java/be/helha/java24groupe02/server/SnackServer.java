@@ -6,7 +6,6 @@ import be.helha.java24groupe02.models.exceptions.ProductLoadingException;
 
 import java.io.*;
 import java.net.*;
-import java.sql.*;
 import java.util.*;
 import java.util.concurrent.*;
 

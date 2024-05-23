@@ -6,7 +6,6 @@ import javafx.application.Platform;
 import java.io.*;
 import java.net.*;
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * The SnackClient class is responsible for communicating with the server and handling product updates.
