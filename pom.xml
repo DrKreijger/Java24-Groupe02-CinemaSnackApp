@@ -4,10 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
+    <groupId>be.helha.java24groupe02</groupId>
     <artifactId>Java24-Groupe02</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <name>Java24-Groupe02</name>
+    <modules>
+        <module>Client</module>
+        <module>Common</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -19,6 +24,11 @@
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.44.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.12.0</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -112,7 +122,7 @@
 
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>be.helha.java24groupe02.controllers.Launcher</mainClass>
+                                    <mainClass>be.helha.java24groupe02.client.controllers.Launcher</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
@@ -137,8 +147,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>org.example.java24groupe02/be.helha.java24groupe02.controllers.MainController
-                            </mainClass>
+                            <mainClass>be.helha.java24groupe02.client.controllers.Launcher</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

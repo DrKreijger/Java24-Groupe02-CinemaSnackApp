@@ -3,10 +3,6 @@
 !**/src/test/**/target/
 
 ### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
 .idea/copilot/
 *.iws
 *.iml
@@ -36,6 +32,5 @@ build/
 
 ### Mac OS ###
 .DS_Store
-pom.xml
 /target
-snacks_simple.db
+Common/snacks_simple.db
