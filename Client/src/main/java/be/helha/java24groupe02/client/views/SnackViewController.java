@@ -1,24 +1,23 @@
 package be.helha.java24groupe02.client.views;
 
+import be.helha.java24groupe02.client.views.TemplateViewSnack.QuantityChangeListener;
 import be.helha.java24groupe02.models.Cart;
 import be.helha.java24groupe02.models.Product;
 import be.helha.java24groupe02.models.ProductDB;
 import be.helha.java24groupe02.models.exceptions.NoMoreStockException;
-import be.helha.java24groupe02.client.views.TemplateViewSnack.QuantityChangeListener;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.Label;
+import javafx.util.Pair;
+
 import java.io.IOException;
 import java.util.List;
-
-import javafx.util.Pair;
 
 /**
  * Contrôleur de vue pour la gestion des snacks.

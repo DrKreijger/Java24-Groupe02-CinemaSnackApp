@@ -3,10 +3,11 @@ package be.helha.java24groupe02.client.network;
 import be.helha.java24groupe02.models.Product;
 import javafx.application.Platform;
 
-import java.io.*;
-import java.net.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * The SnackClient class is responsible for communicating with the server and handling product updates.

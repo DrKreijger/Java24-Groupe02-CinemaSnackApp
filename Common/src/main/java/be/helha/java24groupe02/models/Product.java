@@ -1,6 +1,5 @@
 package be.helha.java24groupe02.models;
 
-import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URL;
 

@@ -1,11 +1,11 @@
 package be.helha.java24groupe02.models;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.google.gson.Gson;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Cart {
     private List<Product> cartItems;

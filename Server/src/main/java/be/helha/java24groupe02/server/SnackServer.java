@@ -4,11 +4,13 @@ import be.helha.java24groupe02.models.Product;
 import be.helha.java24groupe02.models.ProductDB;
 import be.helha.java24groupe02.models.exceptions.ProductLoadingException;
 
-import java.io.*;
-import java.net.*;
-import java.sql.*;
-import java.util.*;
-import java.util.concurrent.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class SnackServer {
     private static final int PORT = 3001;

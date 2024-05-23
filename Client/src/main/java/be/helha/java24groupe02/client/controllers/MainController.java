@@ -2,19 +2,18 @@ package be.helha.java24groupe02.client.controllers;
 
 import be.helha.java24groupe02.client.network.SnackClient;
 import be.helha.java24groupe02.client.views.SnackViewController;
+import be.helha.java24groupe02.client.views.TemplateViewSnack.QuantityChangeListener;
 import be.helha.java24groupe02.models.Cart;
 import be.helha.java24groupe02.models.CartObserver;
 import be.helha.java24groupe02.models.Product;
-import be.helha.java24groupe02.models.ProductDB;
 import be.helha.java24groupe02.models.exceptions.NoMoreStockException;
-import be.helha.java24groupe02.models.exceptions.ProductLoadingException;
-import be.helha.java24groupe02.client.views.TemplateViewSnack.QuantityChangeListener;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.util.List;
 
