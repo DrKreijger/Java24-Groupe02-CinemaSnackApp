@@ -3,16 +3,13 @@ package be.helha.java24groupe02.models;
 import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class Cart {
-    private List<Product> cartItems;
-    private List<CartObserver> observerList;
+    private final List<Product> cartItems;
+    private final List<CartObserver> observerList;
     private double totalPrice;
 
     public Cart() {
@@ -47,7 +44,8 @@ public class Cart {
             if(quantity != 0) {
                 productToUpdate.setQuantity(quantity);
             } else {
-                cartItems.remove(product);
+                cartItems.remove(productToUpdate);
+                System.out.println("Product removed from cart");
             }
             updateCartPrice();
         }
