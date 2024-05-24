@@ -11,10 +11,21 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represents a database of products in an e-commerce application.
+ * It provides methods to get all products from the database, update the quantity in stock of a product, initialize the stock to a default value, and get a product by its ID.
+ */
 public class ProductDB {
 
+    // The URL of the database
     private static final String DATABASE_URL = "jdbc:sqlite:snacks_simple.db";
 
+    /**
+     * Returns a list of all products in the database.
+     *
+     * @return a list of all products in the database
+     * @throws ProductLoadingException if there is an error loading the products from the database
+     */
     public List<Product> getAllProductsFromDatabase() throws ProductLoadingException {
         List<Product> products = new ArrayList<>();
 
@@ -39,6 +50,12 @@ public class ProductDB {
         return products;
     }
 
+    /**
+     * Updates the quantity in stock of a product in the database.
+     *
+     * @param productId the ID of the product
+     * @param newStock the new quantity in stock
+     */
     public void updateProductQuantityInStock(int productId, int newStock) {
         try (Connection connection = DriverManager.getConnection(DATABASE_URL);
              PreparedStatement statement = connection.prepareStatement("UPDATE Products SET quantity_in_stock = ? WHERE product_id = ?")) {
@@ -52,6 +69,9 @@ public class ProductDB {
         }
     }
 
+    /**
+     * Initializes the quantity in stock of all products in the database to a default value.
+     */
     public void initializeStockToDefault() {
         try (Connection connection = DriverManager.getConnection(DATABASE_URL);
              PreparedStatement statement = connection.prepareStatement("UPDATE Products SET quantity_in_stock = 10")) {
@@ -63,6 +83,13 @@ public class ProductDB {
         }
     }
 
+    /**
+     * Returns a product from the database by its ID.
+     *
+     * @param productId the ID of the product
+     * @return the product with the specified ID
+     * @throws ProductLoadingException if there is an error loading the product from the database
+     */
     public Product getProductById(int productId) throws ProductLoadingException {
         Product product = null;
         try (Connection connection = DriverManager.getConnection(DATABASE_URL);

@@ -8,36 +8,72 @@ import com.google.gson.Gson;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * This class represents a shopping cart in an e-commerce application.
+ * It manages the products added to the cart, the total price of the cart, and notifies observers when the cart is updated.
+ */
 public class Cart {
+    // List of products in the cart
     private final List<Product> cartItems;
+    // List of observers to be notified when the cart is updated
     private final List<CartObserver> observerList;
+    // Total price of the products in the cart
     private double totalPrice;
 
+    /**
+     * Constructs a new Cart with an empty list of products, an empty list of observers, and a total price of 0.
+     */
     public Cart() {
         this.observerList = new ArrayList<>();
         this.cartItems = new ArrayList<>();
         this.totalPrice = 0.0;
     }
 
+    /**
+     * Adds an observer to the list of observers.
+     *
+     * @param observer the observer to add
+     */
     public void addObserver(CartObserver observer) {
         observerList.add(observer);
     }
 
+    /**
+     * Returns the list of products in the cart.
+     *
+     * @return the list of products in the cart
+     */
     public List<Product> getCartItems() {
         return cartItems;
     }
 
+    /**
+     * Returns the total price of the products in the cart.
+     *
+     * @return the total price of the products in the cart
+     */
     public double getTotalPrice() {
         return totalPrice;
     }
 
+    /**
+     * Adds a product to the cart and updates the total price of the cart.
+     *
+     * @param product the product to add
+     */
     public void addProductToCart(Product product) {
         product.setQuantity(1);
         cartItems.add(product);
         updateCartPrice();
     }
 
-
+    /**
+     * Updates the quantity of a product in the cart and updates the total price of the cart.
+     * If the new quantity is 0, the product is removed from the cart.
+     *
+     * @param product the product to update
+     * @param quantity the new quantity of the product
+     */
     public void updateProductQuantity(Product product, int quantity) {
         if (cartItems.contains(product)) {
             int index = cartItems.indexOf(product);
@@ -52,6 +88,9 @@ public class Cart {
         }
     }
 
+    /**
+     * Updates the total price of the products in the cart and notifies the observers.
+     */
     private void updateCartPrice() {
         this.totalPrice = 0;
         for (Product product : cartItems) {
@@ -60,12 +99,19 @@ public class Cart {
         notifyCartObservers();
     }
 
+    /**
+     * Notifies all observers that the cart has been updated.
+     */
     private void notifyCartObservers() {
         for (CartObserver observer : observerList) {
             observer.cartUpdated();
         }
     }
 
+    /**
+     * Generates an order summary of the cart, converts it to JSON, and writes it to a file.
+     * The file name is "ordersummary.json", but if a file with that name already exists, a number is appended to the file name.
+     */
     public void generateOrderSummary() {
         List<OrderSummaryProduct> summaryProducts = cartItems.stream()
                 .map(product -> new OrderSummaryProduct(product.getName(), product.getFlavor(), product.getSize(), product.getPrice(), product.getQuantity(), product.getPrice() * product.getQuantity()))

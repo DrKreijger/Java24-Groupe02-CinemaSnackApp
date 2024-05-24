@@ -14,51 +14,57 @@ import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
 
+/**
+ * This class represents a template view for a snack order summary in a JavaFX application.
+ * It manages the display of product data in the user interface and the interaction with the cart.
+ */
 public class TemplateViewSnackOrderSummary {
+
+    // JavaFX UI components
     @FXML
     private AnchorPane AnchorPaneSnackOrderSummary;
-
     @FXML
     private Label NameSnackCart;
-
     @FXML
     private Label FlavorSnackCart;
-
     @FXML
     private Label SizeSnackCart;
-
     @FXML
     private Label PriceSnackCart;
-
     @FXML
     private ImageView ImageSnackCart;
-
     @FXML
     public Label QuantitySnackCart;
-
     @FXML
     public Button removeSnackQuantityButton;
-
     @FXML
     public Button addSnackQuantityButton;
-
     @FXML
     public Button DeleteSnackCart;
 
+    // The controller of the snack view
     private SnackViewController snackViewController;
 
+    // The unique id of the snack
     private int uniqueId;
 
+    // Listener for changes in the quantity of the snack
+    private QuantityChangeListener quantityChangeListener;
 
+    /**
+     * Initializes the view. This method is called after all @FXML annotated members have been injected.
+     */
     @FXML
     public void initialize() {
     }
 
-    private QuantityChangeListener quantityChangeListener;
-
-
+    /**
+     * Sets the product data to be displayed in the view.
+     *
+     * @param selectedProduct the product whose data is to be displayed
+     */
     public void getSelectedProductData (Product selectedProduct) {
-        // Charger l'image du snack
+        // Load the image of the snack
         URL selectedProductImageURL = (selectedProduct.getImagePath());
         Image productImage = new Image(selectedProductImageURL.toExternalForm());
         ImageSnackCart.setImage(productImage);
@@ -70,6 +76,12 @@ public class TemplateViewSnackOrderSummary {
         AnchorPaneSnackOrderSummary.setId(String.valueOf(selectedProduct.getProductId()));
     }
 
+    /**
+     * Handles the event of adding quantity to a snack.
+     *
+     * @param selectedProduct the product to add quantity to
+     * @throws NoMoreStockException if the product does not have stock
+     */
     public void handleAddSnackQuantity(Product selectedProduct) throws NoMoreStockException {
         try {
             if (quantityChangeListener != null) {
@@ -82,7 +94,11 @@ public class TemplateViewSnackOrderSummary {
         }
     }
 
-
+    /**
+     * Handles the event of removing quantity from a snack.
+     *
+     * @param selectedProduct the product to remove quantity from
+     */
     public void handleRemoveSnackQuantity(Product selectedProduct) {
         int quantity = selectedProduct.getQuantity();
         quantity--;
@@ -93,56 +109,90 @@ public class TemplateViewSnackOrderSummary {
         }
     }
 
-    
+    /**
+     * Updates the visual representation of the snack quantity in the view.
+     *
+     * @param uniqueId the unique id of the snack
+     * @param quantity the new quantity of the snack
+     * @param selectedProduct the product to update the quantity of
+     */
     public void snackQuantityVisual(String uniqueId, int quantity, Product selectedProduct) {
-        // Obtenir les enfants de viewOrderVBox depuis SnackViewController
+        // Get the children of viewOrderVBox from SnackViewController
         ObservableList<Node> children = snackViewController.getViewOrderVBoxChildren();
 
-        // Vérifier si la liste des enfants n'est pas vide
+        // Check if the list of children is not empty
         if (children != null && !children.isEmpty()) {
-            // Parcourir les enfants pour trouver le TemplateViewSnackOrderSummary avec l'identifiant unique
+            // Iterate over the children to find the TemplateViewSnackOrderSummary with the unique id
             for (Node node : children) {
                 if (node instanceof Parent root && node.getId() != null && node.getId().equals(uniqueId)) {
-                    // Identifier le nœud racine du TemplateViewSnackOrderSummary
-                    // Accéder au label à l'intérieur du TemplateViewSnackOrderSummary en utilisant un sélecteur CSS
+                    // Identify the root node of the TemplateViewSnackOrderSummary
+                    // Access the label inside the TemplateViewSnackOrderSummary using a CSS selector
                     Label quantityLabel = (Label) root.lookup("#QuantitySnackCart");
                     Label priceLabel = (Label) root.lookup("#PriceSnackCart");
                     if (quantityLabel != null) {
-                        // Modifier le texte du label avec la nouvelle quantité
+                        // Update the text of the label with the new quantity
                         quantityLabel.setText(String.valueOf(quantity));
                         priceLabel.setText(String.valueOf(quantity * selectedProduct.getPrice()));
                     }
-                    // Sortir de la boucle une fois que le TemplateViewSnackOrderSummary approprié est trouvé
+                    // Exit the loop once the appropriate TemplateViewSnackOrderSummary is found
                     break;
                 }
             }
         }
     }
 
-
+    /**
+     * Updates the visual representation of the snack quantity in the view.
+     *
+     * @param quantity the new quantity of the snack
+     * @param selectedProduct the product to update the quantity of
+     */
     public void snackQuantityVisual(int quantity, Product selectedProduct) {
         QuantitySnackCart.setText(String.valueOf(quantity));
         PriceSnackCart.setText(String.valueOf(selectedProduct.getPrice() * quantity));
     }
 
+    /**
+     * Handles the event of deleting a snack from the cart.
+     *
+     * @param selectedProduct the product to delete
+     */
     public void handleDeleteSnackCart(Product selectedProduct) {
         quantityChangeListener.deleteSnack(selectedProduct);
     }
 
+    /**
+     * Sets the snack view controller.
+     *
+     * @param snackViewController the snack view controller to set
+     */
     public void setSnackViewController(SnackViewController snackViewController) {
         this.snackViewController = snackViewController;
     }
 
+    /**
+     * Sets the unique id of the snack.
+     *
+     * @param uniqueId the unique id to set
+     */
     public void setUniqueId(int uniqueId) {
         this.uniqueId = uniqueId;
     }
 
+    /**
+     * Interface for a quantity change listener.
+     */
     public interface QuantityChangeListener {
         void deleteSnack(Product product);
         void addSnackQuantity(Product product) throws NoMoreStockException;
         void removeSnackQuantity(Product product);
     }
 
+    /**
+     * Sets the quantity change listener.
+     *
+     * @param listener the quantity change listener to set
+     */
     public void setQuantityChangeListener(QuantityChangeListener listener) {
         this.quantityChangeListener = listener;
     }
