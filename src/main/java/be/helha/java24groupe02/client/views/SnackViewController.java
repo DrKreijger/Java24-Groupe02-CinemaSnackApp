@@ -261,14 +261,6 @@ public class SnackViewController {
         }
     }
 
-    private void updateOrderSummary() {
-        viewOrderVBox.getChildren().clear();
-        for (Product product : cart.getCartItems()) {
-            addSnackToOrderSummary(product);
-        }
-        updateCartTotal(cart.getTotalPrice());
-    }
-
 
 
     public interface CartListener {

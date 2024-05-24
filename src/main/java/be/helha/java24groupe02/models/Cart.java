@@ -1,5 +1,6 @@
 package be.helha.java24groupe02.models;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.Gson;
@@ -78,11 +79,22 @@ public class Cart {
 
         Gson gson = new Gson();
         var json = gson.toJson(orderSummary);
-        
+
+        String fileName = "ordersummary.json";
+        int counter = 1;
+        File file = new File(fileName);
+
+        // Check if the file already exists
+        while (file.exists()) {
+            fileName = "ordersummary" + counter + ".json";
+            file = new File(fileName);
+            counter++;
+        }
+
         // Write JSON to file
-        try (FileWriter fileWriter = new FileWriter("OrderSummary.json")) {
+        try (FileWriter fileWriter = new FileWriter(fileName)) {
             fileWriter.write(json);
-            System.out.println("Order summary written");
+            System.out.println("Order summary written to " + fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
