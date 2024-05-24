@@ -1,8 +1,5 @@
 package be.helha.java24groupe02.models;
 
-import be.helha.java24groupe02.models.Cart;
-import be.helha.java24groupe02.models.CartObserver;
-import be.helha.java24groupe02.models.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

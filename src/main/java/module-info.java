@@ -8,7 +8,6 @@ module be.helha.java24groupe02 {
     requires net.synedra.validatorfx;
     requires eu.hansolo.tilesfx;
     requires java.sql;
-    requires org.xerial.sqlitejdbc;
     requires com.google.gson;
 
     exports be.helha.java24groupe02.client.views;
