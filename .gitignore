@@ -33,4 +33,4 @@ build/
 ### Mac OS ###
 .DS_Store
 /target
-Common/snacks_simple.db
+
