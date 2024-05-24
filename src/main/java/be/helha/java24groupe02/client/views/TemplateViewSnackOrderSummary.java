@@ -14,7 +14,7 @@ import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
 
-public class TemplateViewSnack {
+public class TemplateViewSnackOrderSummary {
     @FXML
     private AnchorPane AnchorPaneSnackOrderSummary;
 
@@ -100,11 +100,11 @@ public class TemplateViewSnack {
 
         // Vérifier si la liste des enfants n'est pas vide
         if (children != null && !children.isEmpty()) {
-            // Parcourir les enfants pour trouver le TemplateViewSnack avec l'identifiant unique
+            // Parcourir les enfants pour trouver le TemplateViewSnackOrderSummary avec l'identifiant unique
             for (Node node : children) {
                 if (node instanceof Parent root && node.getId() != null && node.getId().equals(uniqueId)) {
-                    // Identifier le nœud racine du TemplateViewSnack
-                    // Accéder au label à l'intérieur du TemplateViewSnack en utilisant un sélecteur CSS
+                    // Identifier le nœud racine du TemplateViewSnackOrderSummary
+                    // Accéder au label à l'intérieur du TemplateViewSnackOrderSummary en utilisant un sélecteur CSS
                     Label quantityLabel = (Label) root.lookup("#QuantitySnackCart");
                     Label priceLabel = (Label) root.lookup("#PriceSnackCart");
                     if (quantityLabel != null) {
@@ -112,7 +112,7 @@ public class TemplateViewSnack {
                         quantityLabel.setText(String.valueOf(quantity));
                         priceLabel.setText(String.valueOf(quantity * selectedProduct.getPrice()));
                     }
-                    // Sortir de la boucle une fois que le TemplateViewSnack approprié est trouvé
+                    // Sortir de la boucle une fois que le TemplateViewSnackOrderSummary approprié est trouvé
                     break;
                 }
             }
