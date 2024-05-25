@@ -16,5 +16,5 @@ Pour lancer ce projet, veuillez suivre les étapes ci-dessous :
 
 Pour plus d'informations et de documentation, vous pouvez accéder à notre espace Notion :
 - [Lien vers Notion](https://www.notion.so/invite/496ca7869a60ee176d5b786f37816e4c3db0b075)
-- [Lien vers la vidéo de présentation](A venir)
+- [Lien vers la vidéo de présentation](https://www.youtube.com/watch?v=IL1FH3bHfDc)
 
