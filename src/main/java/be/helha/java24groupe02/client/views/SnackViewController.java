@@ -230,6 +230,7 @@ public class SnackViewController {
     }
 
     public void removeProductFromOrderSummary(int productId) {
+        System.out.println("Removing product from order summary");
         for (Node node : viewOrderVBox.getChildren()) {
             if (node instanceof Parent parent) {
                 String id = parent.getId();
